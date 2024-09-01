@@ -1,0 +1,40 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/mixins.scss";
+
+.container {
+  list-style: none;
+  padding: toRem(10) toRem(14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-radius: toRem(6);
+  @include defaultTransition();
+  cursor: pointer;
+
+
+  .link{
+    font-size: toRem(14);
+    font-weight: bold;
+    text-decoration: none;
+    color: $white;
+  }
+
+  &:hover {
+    color: $light-brown;
+  }
+
+  &[data-is-selected="true"] {
+    background-color: $white;
+
+    .link {
+      color: $dark-brown;
+    }
+
+    &:hover {
+      background: rgba($white, 0.9);
+      color: $light-brown;
+    }
+  }
+}

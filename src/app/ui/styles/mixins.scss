@@ -1,0 +1,52 @@
+@mixin textGradient($color1, $color2) {
+  background: $color1;
+  background: linear-gradient(to right, $color1 12%, $color2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@mixin defaultTransition() {
+  transition: all 0.3s ease;
+}
+
+@mixin hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome */
+  }
+}
+
+@mixin ellipsis-multiline($num-lines, $overflow: null) {
+  white-space: normal;
+  -webkit-line-clamp: $num-lines;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: $overflow;
+}
+
+/* For smartphones and touchscreens */
+@mixin is-touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
+/* For desktop mouse and touch pad */
+@mixin non-touch-device {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin desktop-hover-state {
+  @include non-touch-device {
+    @content;
+  }
+}
+
+@mixin mobile-active-state {
+  @include is-touch-device {
+    @content;
+  }
+}

@@ -1,0 +1,12 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: toRem(16);
+  list-style: none;
+  border: toRem(1.9) solid $white;
+  border-radius: toRem(10);
+  padding: toRem(5) toRem(10);
+}

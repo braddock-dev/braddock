@@ -1,0 +1,32 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+
+.container{
+  all: unset;
+  padding: toRem(0) toRem(15);
+  border-radius: toRem(10);
+  font-size: toRem(14);
+  font-weight: bold;
+  height: toRem(46);
+
+  &[data-button-color="white"] {
+    background-color: $white;
+    color: $dark-brown;
+  }
+
+    &[data-button-color="black"] {
+      background-color: $dark-brown;
+      color: $white;
+    }
+
+    &[data-button-color="brown"] {
+      background-color: $brown;
+      color: $white;
+    }
+
+    &[data-button-color="light-brown"] {
+      background-color: $light-brown;
+      color: $white;
+    }
+
+}

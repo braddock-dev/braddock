@@ -1,0 +1,15 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: toRem(20) 0;
+
+  .logo {
+    width: toRem(50);
+    height: auto;
+  }
+}
