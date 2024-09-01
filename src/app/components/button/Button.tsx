@@ -12,6 +12,7 @@ interface IButtonColorsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: ButtonColors;
   icon?: ReactElement;
   children: ReactElement;
+  fullWidth?: boolean;
 }
 
 export default function Button({
@@ -21,9 +22,10 @@ export default function Button({
 }: IButtonColorsProps) {
   return (
     <button
-      className={styles.container}
       {...defaultButtonProps}
+      className={`${styles.container} ${defaultButtonProps.className}`}
       data-button-color={color}
+      data-full-width={defaultButtonProps.fullWidth}
     >
       {icon}
       {defaultButtonProps.children}

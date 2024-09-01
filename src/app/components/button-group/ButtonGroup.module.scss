@@ -1,0 +1,102 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/mixins.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: toRem(12);
+  justify-content: flex-start;
+  overflow: clip;
+  @include disableSelection;
+
+  .title {
+    font-size: toRem(14);
+    font-weight: 700;
+    color: $white;
+    text-align: left;
+  }
+
+  .counter{
+    font-size: toRem(14);
+    font-weight: 700;
+    color: $light-brown;
+    text-align: left;
+  }
+
+  .itemsContainer{
+    display: block;
+  }
+
+  .groupContainer{
+    display: block;
+    position: relative;
+  }
+
+  &:hover .nextButton, &:hover .prevButton {
+    opacity: 1;
+  }
+
+}
+
+
+
+.swiperContainer {
+  overflow: unset !important;
+  width: 100%;
+  position: relative;
+}
+
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.icon{
+  stroke: $brown;
+  width: 24px;
+  height: 24px;
+}
+
+.nextButton{
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  height: 100%;
+  width: 24px;
+  z-index: 100;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background: $white;
+  border-radius: 6px;
+  @include defaultTransition;
+}
+
+.prevButton{
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-grow: 1;
+  background: $white;
+  border-radius: 6px;
+  width: 24px;
+  @include defaultTransition;
+
+
+  .icon {
+    transform: rotate(180deg);
+  }
+
+}

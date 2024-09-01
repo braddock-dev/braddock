@@ -9,16 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.53.1",
+    "@tanstack/react-query-devtools": "^5.53.1",
+    "@types/react-slick": "^0.23.13",
+    "dayjs": "^1.11.13",
     "next": "14.2.7",
     "react": "^18",
     "react-dom": "^18",
-    "sass": "^1.77.8"
+    "react-slick": "^0.30.2",
+    "sass": "^1.77.8",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^11.1.11",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.7",
     "prettier": "3.3.3",

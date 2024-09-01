@@ -8,6 +8,9 @@
   font-size: toRem(14);
   font-weight: bold;
   height: toRem(46);
+  justify-content: center;
+  display: flex;
+  align-items: center;
 
   &[data-button-color="white"] {
     background-color: $white;
@@ -28,5 +31,9 @@
       background-color: $light-brown;
       color: $white;
     }
+
+  &[data-full-width="true"] {
+    width: 100%;
+  }
 
 }

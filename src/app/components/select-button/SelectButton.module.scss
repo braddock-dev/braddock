@@ -1,0 +1,35 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/mixins.scss";
+
+.container{
+  all: unset;
+  position: relative;
+  padding: toRem(10) toRem(15);
+  border-radius: toRem(6);
+  background: $dark-brown;
+  color: $white;
+  border: toRem(1.5) solid rgba($white, 0.2);
+  white-space: nowrap;
+  cursor: pointer;
+  @include defaultTransition;
+  text-transform: uppercase;
+
+  &[data-is-selected="true"]{
+    background-color: rgba($brown01, 0.5);
+    border-color: transparent;
+  }
+
+  &:hover:not([data-is-selected="true"]){
+    background-color: rgba($light-brown, 1);
+    border-color: transparent;
+  }
+
+  &[data-button-type="horizontal"] {
+
+  }
+
+  &[data-button-type="vertical"] {
+
+  }
+}

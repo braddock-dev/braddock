@@ -1,0 +1,77 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+
+.container{
+  position: relative;
+  margin-top: toRem(64);
+  overflow: hidden;
+  width: 100%;
+  max-width: toRem(400);
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: toRem(24);
+  border-radius: toRem(32);
+  padding: toRem(26) toRem(5) toRem(26) toRem(20);
+  border: toRem(2) solid $white;
+
+  .title{
+    font-size: toRem(22);
+    font-weight: bold;
+    color: $white;
+    text-align: left;
+  }
+
+  .servicesContainer{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(16);
+    overflow-y: auto;
+  }
+
+  .groupButtonsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(24);
+  }
+
+  .buttonContainer{
+    width: 100%;
+    padding-right: 15px;
+    display: flex;
+    justify-content: center;
+
+    .button{
+      color: $brown;
+      font-size: toRem(16);
+    }
+  }
+}
+
+.dateSlot{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: toRem(8);
+  padding: toRem(3) 0;
+
+  .date{
+    font-size: toRem(14);
+    font-weight: bold;
+    color: $white;
+  }
+
+  .weekday{
+    font-size: toRem(10);
+    font-weight: bold;
+    color: $white;
+  }
+}
+
+.buttonText{
+  font-size: toRem(14);
+  font-weight: bold;
+  color: $white;
+  text-align: center;
+}

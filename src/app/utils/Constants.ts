@@ -17,4 +17,9 @@ export const Constants = {
       href: "#gallery",
     },
   },
+  DATE_FORMAT: {
+    DAY: "DD",
+    WEEKDAY: "ddd",
+    TIME: "HH:mm",
+  },
 };
