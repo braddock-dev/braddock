@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getPageScrollPosition } from "@/app/utils/functions";
 
 /**
  * Hook to detect if the current device size is equal or lower than the specified breakpoint.
@@ -44,4 +45,26 @@ export const useIsDeviceSize = (breakpoint: string) => {
   }, [breakpoint]);
 
   return { isDeviceSize, isDeviceSizeInLandscape };
+};
+
+export const useScrollPosition = () => {
+  const [scrollPosition, setScrollPosition] = useState<{
+    x: number;
+    y: number;
+  }>({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = getPageScrollPosition();
+      setScrollPosition(scrollPosition);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return scrollPosition;
 };

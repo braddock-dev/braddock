@@ -1,12 +1,19 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
 @import "src/app/ui/styles/breakpoints.scss";
+@import "src/app/ui/styles/mixins.scss";
 
 .container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  @include defaultTransition;
+
+  &[data-is-sticky="true"] {
+    background-color: $brown;
+    box-shadow: 0 0 10px rgba($brown, 0.1);
+  }
 
   .headerContent{
     display: flex;
