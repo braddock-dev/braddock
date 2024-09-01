@@ -3,7 +3,7 @@ import styles from "./MenuItems.module.scss";
 
 import MenuItem, {
   IMenuItem,
-} from "@/app/components/menu-items/menu-item/MenuItem";
+} from "@/app/ui/components/menu-items/menu-item/MenuItem";
 import { Constants } from "@/app/utils/Constants";
 import { useEffect, useState } from "react";
 
@@ -14,7 +14,10 @@ const menuItems: IMenuItem[] = [
   Constants.MENU_ITEMS.GALLERY,
 ];
 
-export default function MenuItems() {
+interface IMenuItemsProps {
+  className?: string;
+}
+export default function MenuItems(props: IMenuItemsProps) {
   const [selectedMenuItem, setSelectedMenuItem] = useState<string>("");
 
   useEffect(() => {
@@ -39,7 +42,7 @@ export default function MenuItems() {
   }, [menuItems]);
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${props.className}`}>
       {menuItems.map((menuItem, index) => (
         <MenuItem
           menuItem={menuItem}

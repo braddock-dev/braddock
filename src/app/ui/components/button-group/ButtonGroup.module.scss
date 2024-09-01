@@ -1,6 +1,7 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
 @import "src/app/ui/styles/mixins.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .container {
   display: flex;
@@ -15,6 +16,10 @@
     font-weight: 700;
     color: $white;
     text-align: left;
+
+    @include max-sm {
+      font-size: toRem(12);
+    }
   }
 
   .counter{

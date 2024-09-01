@@ -1,7 +1,7 @@
 "use client";
 import SelectButton, {
   ISelectButton,
-} from "@/app/components/select-button/SelectButton";
+} from "@/app/ui/components/select-button/SelectButton";
 import { useCallback, useMemo, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";

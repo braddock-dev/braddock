@@ -1,6 +1,7 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
 @import "src/app/ui/styles/mixins.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .container{
   all: unset;
@@ -16,13 +17,15 @@
   text-transform: uppercase;
 
   &[data-is-selected="true"]{
-    background-color: rgba($brown01, 0.5);
+    background-color: $brown01;
     border-color: transparent;
   }
 
-  &:hover:not([data-is-selected="true"]){
-    background-color: rgba($light-brown, 1);
-    border-color: transparent;
+  @include desktop-hover-state (){
+    &:hover:not([data-is-selected="true"]){
+      background-color: rgba($light-brown, 1);
+      border-color: transparent;
+    }
   }
 
   &[data-button-type="horizontal"] {

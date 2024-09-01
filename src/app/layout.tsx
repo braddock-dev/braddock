@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./ui/styles/globals.scss";
-import QueryClientWrapper from "@/app/components/QueryClientWrapper";
+import QueryClientWrapper from "@/app/ui/components/QueryClientWrapper";
+import ResponsivenessProvider from "@/app/ui/components/responsiveness-provider/ResponsivenessProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <QueryClientWrapper>{children}</QueryClientWrapper>
+        <ResponsivenessProvider>
+          <QueryClientWrapper>{children}</QueryClientWrapper>
+        </ResponsivenessProvider>
       </body>
     </html>
   );

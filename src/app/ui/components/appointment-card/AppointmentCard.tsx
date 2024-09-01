@@ -1,19 +1,22 @@
 "use client";
 
 import styles from "./AppointmentCard.module.scss";
-import ButtonGroup from "@/app/components/button-group/ButtonGroup";
+import ButtonGroup from "@/app/ui/components/button-group/ButtonGroup";
 import {
   ButtonType,
   ISelectButton,
-} from "@/app/components/select-button/SelectButton";
+} from "@/app/ui/components/select-button/SelectButton";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointmentInfo } from "@/app/backend/actions/appointmentActions";
 import { IDateSlot } from "@/app/backend/appointments/AppointmentsData";
 import { Constants } from "@/app/utils/Constants";
 import dayjs from "dayjs";
-import Button, { ButtonColors } from "@/app/components/button/Button";
+import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 
-export default function AppointmentCard() {
+interface IAppointmentCardProps {
+  className?: string;
+}
+export default function AppointmentCard(props: IAppointmentCardProps) {
   const { data, isFetching } = useQuery({
     queryKey: ["appointmentInfo"],
     queryFn: () => getAppointmentInfo(),
@@ -52,7 +55,7 @@ export default function AppointmentCard() {
   );
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${props.className}`}>
       <h1 className={styles.title}>AGENDE UM HORÁRIO</h1>
 
       <div className={styles.groupButtonsContainer}>

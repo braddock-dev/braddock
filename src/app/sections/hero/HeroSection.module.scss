@@ -1,5 +1,7 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/mixins.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .container {
   width: 100%;
@@ -8,6 +10,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+
+  @include max-md {
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-bottom: toRem(40);
+    padding-top: toRem(70);
+  }
 
   .title{
     position: absolute;
@@ -17,7 +30,36 @@
     color: $white;
     font-size: toRem(55);
     font-weight: bolder;
+    @include defaultTransition();
+
+    @include max-md {
+      font-size: toRem(25);
+      bottom: unset;
+      position: static;
+      text-align: center;
+      margin-top: toRem(20);
+      max-width: 80%;
+      line-height: 1.5;
+
+      br{
+        display: none;
+      }
+    }
+
+    @include max-sm {
+      margin-top: toRem(16);
+      font-size: toRem(23);
+      max-width: 96%;
+    }
   }
+
+  .appointmentCard{
+
+    @include max-md {
+      margin-top: toRem(24);
+    }
+  }
+
 }
 
 .shadow {
@@ -42,4 +84,8 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
+
+  @include max-sm() {
+    object-position: center;
+  }
 }

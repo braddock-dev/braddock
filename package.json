@@ -20,7 +20,8 @@
     "sass": "^1.77.8",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.1.11",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

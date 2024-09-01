@@ -1,0 +1,45 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  .headerContent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: $section-content-max-width;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+
+    @include max-custom-breakpoint($section-content-max-width) {
+      padding: $section-padding;
+    }
+
+    padding: toRem(20) 0;
+
+    .logo {
+      width: toRem(50);
+      height: auto;
+
+      @include max-md() {
+        width: toRem(40);
+      }
+
+    }
+
+    @include max-md() {
+      .menuItemsContainer{
+        display: none;
+      }
+    }
+
+  }
+
+}

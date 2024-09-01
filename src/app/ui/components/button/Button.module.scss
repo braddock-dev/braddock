@@ -1,5 +1,6 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .container{
   all: unset;
@@ -34,6 +35,12 @@
 
   &[data-full-width="true"] {
     width: 100%;
+  }
+
+  @include max-md() {
+    font-size: toRem(11);
+    height: toRem(35);
+    padding: toRem(0) toRem(10);
   }
 
 }

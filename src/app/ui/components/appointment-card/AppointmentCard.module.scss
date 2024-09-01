@@ -1,9 +1,9 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .container{
   position: relative;
-  margin-top: toRem(64);
   overflow: hidden;
   width: 100%;
   max-width: toRem(400);
@@ -20,6 +20,10 @@
     font-weight: bold;
     color: $white;
     text-align: left;
+
+    @include max-md {
+      font-size: toRem(18);
+    }
   }
 
   .servicesContainer{
@@ -44,6 +48,11 @@
     .button{
       color: $brown;
       font-size: toRem(16);
+
+        @include max-sm {
+            font-size: toRem(14);
+          height: 44px;
+        }
     }
   }
 }
@@ -60,12 +69,20 @@
     font-size: toRem(14);
     font-weight: bold;
     color: $white;
+
+    @include max-sm {
+      font-size: toRem(12);
+    }
   }
 
   .weekday{
     font-size: toRem(10);
     font-weight: bold;
     color: $white;
+
+    @include max-sm {
+      font-size: toRem(8);
+    }
   }
 }
 
@@ -74,4 +91,9 @@
   font-weight: bold;
   color: $white;
   text-align: center;
+
+  @include max-sm {
+    font-size: toRem(12);
+  }
+
 }
