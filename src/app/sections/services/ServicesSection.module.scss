@@ -1,8 +1,8 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .sectionContainer{
-  height: 100vh;
   background: $light-brown01;
   width: 100%;
 }
@@ -15,11 +15,21 @@
   flex-direction: column;
   gap: toRem(100);
 
+  @include max-md() {
+    padding: toRem(50) 0;
+    gap: toRem(30);
+  }
+
   .serviceInfo{
     width: 100%;
     display: flex;
     justify-content: space-between;
     gap: toRem(80);
+
+    @include max-md() {
+      flex-direction: column;
+      gap: toRem(30);
+    }
 
     .left{
       display: flex;
@@ -28,11 +38,20 @@
       align-items: flex-start;
       gap: toRem(30);
 
+      @include max-md() {
+        gap: toRem(15);
+      }
+
       .description{
         color: $gray;
         font-size: toRem(17);
         line-height: toRem(30);
         font-weight: 400;
+
+        @include max-md() {
+          font-size: toRem(15);
+          text-align: left;
+        }
 
         .highlight{
           color: $brown;
@@ -45,11 +64,19 @@
         flex-direction: column;
         gap: toRem(14);
 
+        @include max-md() {
+          gap: toRem(10);
+        }
+
         .counter{
           font-weight: 700;
           color: $brown;
           font-size: toRem(18);
           letter-spacing: 1px;
+
+          @include max-md() {
+            font-size: toRem(16);
+          }
         }
 
         .arrows{
@@ -64,6 +91,10 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+
+            @include max-md() {
+              height: toRem(12);
+            }
 
             &[data-disabled="true"]{
               cursor: not-allowed;
@@ -96,10 +127,15 @@
 
       .imageContainer{
         position: relative;
-        width: 100%;
-        height: 100%;
+        width: 350px;
+        height: 350px;
         overflow: hidden;
         border-radius: toRem(16);
+
+        @include max-md() {
+          width: 200px;
+          height: 200px;
+        }
 
         .image{
           width: 100%;
@@ -126,6 +162,12 @@
     gap: toRem(100);
     padding: toRem(50) 0;
 
+    @include max-md() {
+      flex-direction: column;
+      gap: toRem(50);
+      padding: toRem(30) 0;
+    }
+
     .testimonials{
       max-width: toRem(500);
     }
@@ -140,11 +182,15 @@
 }
 
 .title{
-  font-size: toRem(45);
+  font-size: toRem(40);
   font-weight: 900;
   color: $brown;
   white-space: nowrap;
   text-align: left;
+
+  @include max-md() {
+    font-size: toRem(30);
+  }
 }
 
 

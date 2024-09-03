@@ -30,6 +30,16 @@ const images: IImages[] = [
   { image: Image6 },
 ];
 
+const breakpoints = {
+  0: {
+    spaceBetween: 10,
+  },
+  768: {
+    spaceBetween: 25,
+    loop: true,
+  },
+};
+
 export default function ServicesSection() {
   const [hidden, setHidden] = useState<boolean>(true);
   const swiperRef = useRef<SwiperRef | null>(null);
@@ -62,7 +72,9 @@ export default function ServicesSection() {
             </p>
 
             <div className={styles.controls}>
-              <div className={styles.counter}>(1/10)</div>
+              <div className={styles.counter}>
+                ({currentSlide + 1}/{images.length})
+              </div>
               <div className={styles.arrows}>
                 <ArrowRight
                   className={`${styles.arrow} ${styles.arrowLeft}`}
@@ -73,6 +85,7 @@ export default function ServicesSection() {
                 <ArrowRight
                   className={`${styles.arrow} ${styles.arrowRight}`}
                   id={nextButtonId}
+                  data-disabled={currentSlide === images.length - 1}
                 />
               </div>
             </div>
@@ -80,9 +93,7 @@ export default function ServicesSection() {
 
           <div className={styles.right}>
             <Swiper
-              spaceBetween={25}
               slidesPerView="auto"
-              loop
               mousewheel={{ enabled: true, forceToAxis: true }}
               modules={[Mousewheel, Navigation, Autoplay]}
               scrollbar={{ draggable: true }}
@@ -95,15 +106,12 @@ export default function ServicesSection() {
                 prevEl: `#${prevButtonId}`,
               }}
               autoplay={{ delay: 5000, disableOnInteraction: true }}
+              breakpoints={breakpoints}
             >
               {images.map((image, index) => (
-                <SwiperSlide
-                  key={index}
-                  className={styles.imageContainer}
-                  style={{ width: "350px" }}
-                >
+                <SwiperSlide key={index} className={styles.imageContainer}>
                   <Image
-                    style={styles.image}
+                    className={styles.image}
                     src={image.image}
                     alt={"image"}
                     width={350}

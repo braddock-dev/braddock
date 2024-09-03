@@ -1,6 +1,7 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
 @import "src/app/ui/styles/mixins.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .container{
   width: 100%;
@@ -51,6 +52,10 @@
       font-size: toRem(16);
       color: $light-brown;
       font-weight: 700;
+
+      @include max-md() {
+        font-size: toRem(14);
+      }
     }
 
     .controls{

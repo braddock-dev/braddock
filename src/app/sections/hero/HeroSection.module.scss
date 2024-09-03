@@ -32,6 +32,10 @@
     font-weight: 800;
     @include defaultTransition();
 
+    @include max-lg {
+      font-size: toRem(30);
+    }
+
     @include max-md {
       font-size: toRem(25);
       bottom: unset;

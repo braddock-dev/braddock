@@ -1,5 +1,6 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
 
 .container{
   display: flex;
@@ -19,12 +20,20 @@
       font-size: toRem(16);
       color: $dark-brown;
       font-weight: 500;
+
+      @include max-md() {
+        font-size: toRem(14);
+      }
     }
 
     .price{
-      font-size: toRem(18);
+      font-size: toRem(16);
       color: $brown;
       font-weight: 700;
+
+      @include max-md() {
+        font-size: toRem(14);
+      }
     }
   }
 }
