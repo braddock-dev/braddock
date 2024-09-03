@@ -22,7 +22,13 @@ export default function Header() {
 
         <MenuItems className={styles.menuItemsContainer} />
 
-        <Button color={ButtonColors.WHITE}>CONTACTE-NOS</Button>
+        <Button
+          color={ButtonColors.WHITE}
+          href={`https://wa.me/+351915917539?text=${encodeURI("Saudações, gostaria de marcar um horário para cortar o cabelo.")}`}
+          target={"_blank"}
+        >
+          CONTACTE-NOS
+        </Button>
       </div>
     </div>
   );
