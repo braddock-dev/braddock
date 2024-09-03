@@ -59,6 +59,7 @@ export const useScrollPosition = () => {
       setScrollPosition(scrollPosition);
     };
 
+    setScrollPosition(getPageScrollPosition());
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {

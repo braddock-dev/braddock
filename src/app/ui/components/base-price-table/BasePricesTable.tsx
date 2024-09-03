@@ -17,10 +17,6 @@ const prices = [
     name: "Corte de cabelo + Barba + Cera",
     price: "20€",
   },
-  {
-    name: "Corte de cabelo + Barba + Cera + Máscara",
-    price: "25€",
-  },
 ];
 
 export default function BasePricesTable() {
