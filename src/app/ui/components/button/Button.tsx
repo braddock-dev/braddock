@@ -1,5 +1,6 @@
 import styles from "./Button.module.scss";
 import { ButtonHTMLAttributes, ReactElement } from "react";
+import Link from "next/link";
 
 export enum ButtonColors {
   WHITE = "white",
@@ -10,14 +11,16 @@ export enum ButtonColors {
 
 interface IButtonColorsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: ButtonColors;
-  icon?: ReactElement;
   children: ReactElement;
   fullWidth?: boolean;
+  href?: string;
+  target?: "_blank" | "_self";
 }
 
 export default function Button({
-  icon,
   color,
+  href,
+  target,
   ...defaultButtonProps
 }: IButtonColorsProps) {
   return (
@@ -27,8 +30,13 @@ export default function Button({
       data-button-color={color}
       data-full-width={defaultButtonProps.fullWidth}
     >
-      {icon}
-      {defaultButtonProps.children}
+      {href ? (
+        <Link className={styles.link} href={href} target={target}>
+          {defaultButtonProps.children}
+        </Link>
+      ) : (
+        defaultButtonProps.children
+      )}
     </button>
   );
 }
