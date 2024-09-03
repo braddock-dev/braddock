@@ -4,7 +4,19 @@ import "./ui/styles/globals.scss";
 import QueryClientWrapper from "@/app/ui/components/QueryClientWrapper";
 import ResponsivenessProvider from "@/app/ui/components/responsiveness-provider/ResponsivenessProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  preload: true,
+});
+
+const interItalic = Inter({
+  style: "italic",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  preload: true,
+  variable: "--font-inter-italic",
+});
 
 export const metadata: Metadata = {
   title: "Braddock | Faça o seu agendamento online!",
@@ -19,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${interItalic.variable} ${inter.className}`}>
         <ResponsivenessProvider>
           <QueryClientWrapper>{children}</QueryClientWrapper>
         </ResponsivenessProvider>

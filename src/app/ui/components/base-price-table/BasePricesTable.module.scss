@@ -1,0 +1,29 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: toRem(20);
+
+  .row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: toRem(16);
+    border-bottom: toRem(1) solid $brown;
+    padding-bottom: toRem(10);
+
+    .name{
+      font-size: toRem(18);
+      color: $dark-brown;
+      font-weight: 500;
+    }
+
+    .price{
+      font-size: toRem(18);
+      color: $brown;
+      font-weight: 700;
+    }
+  }
+}

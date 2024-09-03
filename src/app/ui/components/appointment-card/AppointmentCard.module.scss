@@ -16,8 +16,8 @@
   border: toRem(2) solid $white;
 
   .title{
-    font-size: toRem(22);
-    font-weight: bold;
+    font-size: toRem(20);
+    font-weight: 700;
     color: $white;
     text-align: left;
 
@@ -67,7 +67,7 @@
 
   .date{
     font-size: toRem(14);
-    font-weight: bold;
+    font-weight: 800;
     color: $white;
 
     @include max-sm {
@@ -77,7 +77,7 @@
 
   .weekday{
     font-size: toRem(10);
-    font-weight: bold;
+    font-weight: 500;
     color: $white;
 
     @include max-sm {
@@ -88,7 +88,7 @@
 
 .buttonText{
   font-size: toRem(14);
-  font-weight: bold;
+  font-weight: 900;
   color: $white;
   text-align: center;
 
