@@ -12,6 +12,8 @@ import { IDateSlot } from "@/app/backend/appointments/AppointmentsData";
 import { Constants } from "@/app/utils/Constants";
 import dayjs from "dayjs";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
+import { motion } from "framer-motion";
+import { fadeInAnimation } from "@/app/utils/animations";
 
 interface IAppointmentCardProps {
   className?: string;
@@ -41,7 +43,7 @@ export default function AppointmentCard(props: IAppointmentCardProps) {
   });
 
   const timeSlots = data.dateSlots[0].timeSlots.map(
-    (timeSlot, index): ISelectButton => {
+    (timeSlot): ISelectButton => {
       return {
         text: (
           <span className={styles.buttonText}>
@@ -55,7 +57,10 @@ export default function AppointmentCard(props: IAppointmentCardProps) {
   );
 
   return (
-    <div className={`${styles.container} ${props.className}`}>
+    <motion.div
+      {...fadeInAnimation}
+      className={`${styles.container} ${props.className}`}
+    >
       <h1 className={styles.title}>AGENDE UM HORÁRIO</h1>
 
       <div className={styles.groupButtonsContainer}>
@@ -90,7 +95,7 @@ export default function AppointmentCard(props: IAppointmentCardProps) {
           AGENDAR AGORA
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

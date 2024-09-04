@@ -6,8 +6,8 @@ export const defaultAppearAnimation: MotionProps = {
   transition: { duration: 0.3 },
 };
 
-export const typeAnimation: MotionProps = {
-  initial: { opacity: 0, x: 20 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.3 },
+export const fadeInAnimation: MotionProps = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 1.5 },
 };
