@@ -11,7 +11,7 @@ export enum ButtonColors {
 
 interface IButtonColorsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: ButtonColors;
-  children: ReactElement;
+  children: ReactElement | string;
   fullWidth?: boolean;
   href?: string;
   target?: "_blank" | "_self";

@@ -15,7 +15,7 @@ class AppointmentManager {
     console.log(this.LOG_TAG, "initialized...");
   }
 
-  public async getAppointmentInfo(): Promise<any> {
+  public async getAppointmentInfo(): Promise<IAppointmentInfo> {
     Logger.debug(this.LOG_TAG, "start get services");
 
     try {
