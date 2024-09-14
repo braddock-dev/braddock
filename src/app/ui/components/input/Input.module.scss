@@ -28,6 +28,7 @@
     padding: 0 toRem(16);
     transition: all 0.2s;
     background: $black;
+    color: $white;
 
     &:focus {
       outline: none;

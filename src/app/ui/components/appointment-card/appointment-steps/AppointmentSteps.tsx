@@ -31,7 +31,7 @@ interface IAppointmentStepsProps {
 }
 export default function AppointmentSteps(props: IAppointmentStepsProps) {
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.COMPLETE_APPOINTMENT,
+    APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
 
   const barberServices = props.services.map((service): ISelectButton => {
@@ -119,8 +119,21 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
         <div className={styles.section}>
           <p className={styles.title}>INFORMAÇÃO PESSOAL:</p>
           <div className={styles.formInputs}>
-            <Input name={"name"} placeholder={"Seu Nome"} floatingMode />
-            <Input name={"phone"} placeholder={"Seu Contacto"} floatingMode />
+            <Input
+              type={"text"}
+              inputMode={"text"}
+              name={"name"}
+              placeholder={"Seu Nome"}
+              floatingMode
+            />
+
+            <Input
+              type={"tel"}
+              inputMode={"tel"}
+              name={"phone"}
+              placeholder={"Seu Contacto"}
+              floatingMode
+            />
           </div>
         </div>
 
