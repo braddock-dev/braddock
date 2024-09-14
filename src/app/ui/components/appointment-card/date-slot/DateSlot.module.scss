@@ -1,0 +1,33 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
+
+
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: toRem(8);
+  padding: toRem(3) 0;
+
+  .date{
+    font-size: toRem(12);
+    font-weight: 800;
+    color: $white;
+
+    @include max-sm {
+      font-size: toRem(12);
+    }
+  }
+
+  .weekday{
+    font-size: toRem(10);
+    font-weight: 500;
+    color: $white;
+
+    @include max-sm {
+      font-size: toRem(8);
+    }
+  }
+}

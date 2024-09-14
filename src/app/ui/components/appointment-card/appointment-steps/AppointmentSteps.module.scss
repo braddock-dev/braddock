@@ -1,0 +1,66 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
+@import "src/app/ui/styles/mixins.scss";
+
+.container {
+  @include defaultTransition;
+  .servicesContainer{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(12);
+    justify-content: flex-start;
+    overflow: clip;
+    @include disableSelection;
+    @include defaultTransition;
+
+    .title {
+      font-size: toRem(13);
+      font-weight: 700;
+      color: $white;
+      text-align: left;
+
+      @include max-sm {
+        font-size: toRem(12);
+      }
+    }
+  }
+
+  .groupButtonsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(24);
+  }
+
+  .buttonContainer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    gap: toRem(16);
+    justify-content: center;
+    padding: toRem(20) toRem(16);
+    background: rgba($black01, 0.8);
+
+    .button{
+      font-size: toRem(16);
+
+      @include max-sm {
+        font-size: toRem(14);
+        height: 44px;
+      }
+    }
+  }
+}
+
+.buttonText{
+  font-size: toRem(12);
+  font-weight: 700;
+  color: $white;
+  text-align: center;
+
+  @include max-sm {
+    font-size: toRem(12);
+  }
+}
