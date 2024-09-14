@@ -120,3 +120,8 @@
     font-size: toRem(12);
   }
 }
+
+.fullWidth {
+  width: 100%;
+  display: flex;
+}

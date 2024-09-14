@@ -16,8 +16,9 @@ import {
 import dayjs from "dayjs";
 import { Constants } from "@/app/utils/Constants";
 import DateSlot from "@/app/ui/components/appointment-card/date-slot/DateSlot";
-import { ReactElement, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import Input from "@/app/ui/components/input/Input";
+import AuthButtonWrapper from "@/app/ui/components/AuthButtonWrapper";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -29,9 +30,9 @@ interface IAppointmentStepsProps {
   services: IService[];
   dateSlots: IDateSlot[];
 }
-export default function AppointmentSteps(props: IAppointmentStepsProps) {
+function AppointmentSteps(props: IAppointmentStepsProps) {
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.SERVICES_SELECTION,
+    APPOINTMENT_STEPS.DATE_SELECTION,
   );
 
   const barberServices = props.services.map((service): ISelectButton => {
@@ -70,6 +71,10 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
 
   const handleStartAppointment = () => {
     alert("Start appointment");
+  };
+
+  const handleStarAuth = () => {
+    handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -168,25 +173,30 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
     ),
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
       <>
-        <Button
-          fullWidth
-          color={ButtonColors.WHITE}
-          outline
-          className={styles.button}
-          onClick={() => handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)}
-        >
-          VOLTAR
-        </Button>
-        <Button
-          fullWidth
-          color={ButtonColors.WHITE}
-          className={styles.button}
-          onClick={() =>
-            handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT)
-          }
-        >
-          CONTINUAR
-        </Button>
+        <div className={styles.fullWidth}>
+          <Button
+            fullWidth
+            color={ButtonColors.WHITE}
+            outline
+            className={styles.button}
+            onClick={() =>
+              handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)
+            }
+          >
+            VOLTAR
+          </Button>
+        </div>
+
+        <AuthButtonWrapper className={styles.fullWidth}>
+          <Button
+            fullWidth
+            color={ButtonColors.WHITE}
+            className={styles.button}
+            onClick={handleStarAuth}
+          >
+            CONTINUAR
+          </Button>
+        </AuthButtonWrapper>
       </>
     ),
     [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (
@@ -222,3 +232,5 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
     </div>
   );
 }
+
+export default React.memo(AppointmentSteps);

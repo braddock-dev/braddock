@@ -11,12 +11,14 @@ interface IAppointmentCardProps {
   className?: string;
 }
 export default function AppointmentCard(props: IAppointmentCardProps) {
-  const { data, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["appointmentInfo"],
     queryFn: () => getAppointmentInfo(),
   });
 
-  if (isFetching || !data) return <div>Carregando...</div>;
+  if (isLoading || !data) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <motion.div
