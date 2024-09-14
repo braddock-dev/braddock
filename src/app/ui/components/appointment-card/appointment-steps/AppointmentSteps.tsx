@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import { Constants } from "@/app/utils/Constants";
 import DateSlot from "@/app/ui/components/appointment-card/date-slot/DateSlot";
 import { ReactElement, useState } from "react";
+import Input from "@/app/ui/components/input/Input";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -30,7 +31,7 @@ interface IAppointmentStepsProps {
 }
 export default function AppointmentSteps(props: IAppointmentStepsProps) {
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.SERVICES_SELECTION,
+    APPOINTMENT_STEPS.COMPLETE_APPOINTMENT,
   );
 
   const barberServices = props.services.map((service): ISelectButton => {
@@ -68,7 +69,7 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
   };
 
   const handleStartAppointment = () => {
-    console.log("Start appointment");
+    alert("Start appointment");
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -114,7 +115,30 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
       </>
     ),
     [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (
-      <div className={styles.servicesContainer}>Complete appointment</div>
+      <div className={styles.completeStepContainer}>
+        <div className={styles.section}>
+          <p className={styles.title}>INFORMAÇÃO PESSOAL:</p>
+          <div className={styles.formInputs}>
+            <Input name={"name"} placeholder={"Seu Nome"} floatingMode />
+            <Input name={"phone"} placeholder={"Seu Contacto"} floatingMode />
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <p className={styles.title}>MEU AGENDAMENTO:</p>
+          <div className={styles.info}>
+            <div className={styles.infoItem}>
+              <p className={styles.itemName}>Serviço:</p>
+              <p className={styles.itemValue}>Corte de Cabelo</p>
+            </div>
+
+            <div className={styles.infoItem}>
+              <p className={styles.itemName}>Data:</p>
+              <p className={styles.itemValue}>10 de Agosto às 10PM</p>
+            </div>
+          </div>
+        </div>
+      </div>
     ),
   };
 
