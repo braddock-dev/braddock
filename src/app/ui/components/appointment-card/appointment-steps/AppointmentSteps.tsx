@@ -73,7 +73,10 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
     [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
-      <div className={styles.servicesContainer}>
+      <div
+        className={styles.servicesContainer}
+        key={APPOINTMENT_STEPS.SERVICES_SELECTION}
+      >
         <ButtonGroup
           buttonItems={barberServices}
           title={"SERVIÇOS"}
@@ -85,7 +88,10 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
     ),
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
       <>
-        <div className={styles.servicesContainer}>
+        <div
+          className={styles.servicesContainer}
+          key={APPOINTMENT_STEPS.DATE_SELECTION}
+        >
           <ButtonGroup
             buttonItems={dateSlots}
             title={"DATA"}
@@ -94,7 +100,10 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
           />
         </div>
 
-        <div className={styles.servicesContainer}>
+        <div
+          className={styles.servicesContainer}
+          key={APPOINTMENT_STEPS.DATE_SELECTION}
+        >
           <ButtonGroup
             buttonItems={timeSlots}
             title={"HORA"}
@@ -104,7 +113,9 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
         </div>
       </>
     ),
-    [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: <>Complete appointment</>,
+    [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (
+      <div className={styles.servicesContainer}>Complete appointment</div>
+    ),
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {

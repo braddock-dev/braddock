@@ -2,17 +2,17 @@
 @import "src/app/ui/styles/functions.scss";
 @import "src/app/ui/styles/breakpoints.scss";
 @import "src/app/ui/styles/mixins.scss";
+@import "src/app/ui/styles/animations.scss";
 
 .container {
-  @include defaultTransition;
   .servicesContainer{
     display: flex;
     flex-direction: column;
     gap: toRem(12);
     justify-content: flex-start;
-    overflow: clip;
+    overflow: hidden;
     @include disableSelection;
-    @include defaultTransition;
+    animation: fade-in 0.5s ease-in-out;
 
     .title {
       font-size: toRem(13);
