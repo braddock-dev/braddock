@@ -24,13 +24,15 @@
     max-width: $section-content-max-width;
     margin-left: auto;
     margin-right: auto;
-    padding: 0;
+    padding: toRem(20) 0;
 
-    @include max-custom-breakpoint($section-content-max-width) {
-      padding: $section-padding;
+    @include max-md {
+      padding: 0;
     }
 
-    padding: toRem(20) 0;
+    @include max-custom-breakpoint($section-content-max-width) {
+      padding: toRem(12) $section-padding;
+    }
 
     .logo {
       width: toRem(50);

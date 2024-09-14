@@ -22,8 +22,8 @@ $red02: #b91a1a;
 $green01: #4fc28c;
 
 //Measurements
-$section-content-max-width: 1200px;
-$section-padding: 16px;
+$section-content-max-width: toRem(1200);
+$section-padding: toRem(16);
 $border-radius: toRem(12);
 $input-border-radius: toRem(8);
 $border-radius-sm: toRem(8);
