@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./ui/styles/globals.scss";
 import QueryClientWrapper from "@/app/ui/components/QueryClientWrapper";
 import ResponsivenessProvider from "@/app/ui/components/responsiveness-provider/ResponsivenessProvider";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({
         <ResponsivenessProvider>
           <QueryClientWrapper>{children}</QueryClientWrapper>
         </ResponsivenessProvider>
+        <Toaster richColors />
       </body>
     </html>
   );

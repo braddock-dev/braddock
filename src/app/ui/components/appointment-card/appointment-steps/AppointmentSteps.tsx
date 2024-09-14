@@ -19,6 +19,7 @@ import DateSlot from "@/app/ui/components/appointment-card/date-slot/DateSlot";
 import React, { ReactElement, useState } from "react";
 import Input from "@/app/ui/components/input/Input";
 import AuthButtonWrapper from "@/app/ui/components/AuthButtonWrapper";
+import { toast } from "sonner";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -32,7 +33,7 @@ interface IAppointmentStepsProps {
 }
 function AppointmentSteps(props: IAppointmentStepsProps) {
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.DATE_SELECTION,
+    APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
 
   const barberServices = props.services.map((service): ISelectButton => {
@@ -73,7 +74,15 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
     alert("Start appointment");
   };
 
-  const handleStarAuth = () => {
+  const handleStarAuth = () => {};
+
+  const handleErrorAuth = () => {
+    toast.error("Erro ao autenticar");
+    handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION);
+  };
+
+  const handleSuccessAuth = () => {
+    toast.success("Autenticado com sucesso");
     handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
   };
 
@@ -130,12 +139,14 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
               name={"name"}
               placeholder={"Seu Nome"}
               floatingMode
+              autoComplete={"name"}
             />
 
             <Input
               type={"tel"}
               inputMode={"tel"}
               name={"phone"}
+              autoComplete={"tel"}
               placeholder={"Seu Contacto"}
               floatingMode
             />
@@ -187,7 +198,11 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
           </Button>
         </div>
 
-        <AuthButtonWrapper className={styles.fullWidth}>
+        <AuthButtonWrapper
+          className={styles.fullWidth}
+          onError={handleErrorAuth}
+          onSuccess={handleSuccessAuth}
+        >
           <Button
             fullWidth
             color={ButtonColors.WHITE}
