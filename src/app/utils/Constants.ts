@@ -1,5 +1,9 @@
 export const EXTERNAL_CONFIGS = {
   GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+  BUSINESS_REFERENCE: process.env.BUSINESS_REFERENCE || "",
+  BASE_URL: process.env.BASE_URL || "",
+  API_REQUEST_TIMEOUT: process.env.NEXT_PUBLIC_API_REQUEST_TIMEOUT || 30000,
+  API_ACCESS_TOKEN: process.env.API_ACCESS,
 };
 
 export const Constants = {
@@ -26,6 +30,10 @@ export const Constants = {
     DAY: "DD",
     WEEKDAY: "ddd",
     TIME: "HH:mm",
+  },
+  API_ROUTES: {
+    GET_TREATMENTS: (businessId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
   },
   ERRORS: {
     GENERIC: {

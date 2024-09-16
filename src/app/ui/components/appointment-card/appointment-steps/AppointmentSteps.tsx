@@ -5,10 +5,7 @@ import ButtonGroup, {
   DISPLAY_MODE,
 } from "@/app/ui/components/button-group/ButtonGroup";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import {
-  IDateSlot,
-  IService,
-} from "@/app/backend/appointments/AppointmentsData";
+import { IDateSlot } from "@/app/backend/appointments/AppointmentsData";
 import {
   ButtonType,
   ISelectButton,
@@ -16,10 +13,11 @@ import {
 import dayjs from "dayjs";
 import { Constants } from "@/app/utils/Constants";
 import DateSlot from "@/app/ui/components/appointment-card/date-slot/DateSlot";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useMemo, useState } from "react";
 import Input from "@/app/ui/components/input/Input";
 import AuthButtonWrapper from "@/app/ui/components/AuthButtonWrapper";
 import { toast } from "sonner";
+import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -28,7 +26,7 @@ enum APPOINTMENT_STEPS {
 }
 
 interface IAppointmentStepsProps {
-  services: IService[];
+  treatments: ITreatment[];
   dateSlots: IDateSlot[];
 }
 function AppointmentSteps(props: IAppointmentStepsProps) {
@@ -36,11 +34,11 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
     APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
 
-  const barberServices = props.services.map((service): ISelectButton => {
+  const barberServices = props.treatments.map((service): ISelectButton => {
     return {
       text: <span className={styles.buttonText}>{service.name}</span>,
       type: ButtonType.horizontal,
-      value: service.name,
+      value: service.id,
     };
   });
 
@@ -52,8 +50,12 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
     };
   });
 
-  const timeSlots = props.dateSlots[0].timeSlots.map(
-    (timeSlot): ISelectButton => {
+  const timeSlots = useMemo(() => {
+    if (!props.dateSlots[0]) {
+      return [];
+    }
+
+    return props.dateSlots[0].timeSlots.map((timeSlot): ISelectButton => {
       return {
         text: (
           <span className={styles.buttonText}>
@@ -63,8 +65,8 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
         type: ButtonType.horizontal,
         value: timeSlot,
       };
-    },
-  );
+    });
+  }, [props.dateSlots]);
 
   const handleChangeStep = (goTo: APPOINTMENT_STEPS) => {
     setCurrentStep(goTo);
@@ -95,8 +97,8 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
         <ButtonGroup
           buttonItems={barberServices}
           title={"SERVIÇOS"}
-          defaultSelected={barberServices[0].value}
-          isMultiple
+          defaultSelected={barberServices[0]?.value}
+          isMultiple={false}
           displayMode={DISPLAY_MODE.LIST}
         />
       </div>
@@ -110,7 +112,7 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
           <ButtonGroup
             buttonItems={dateSlots}
             title={"DATA"}
-            defaultSelected={dateSlots[0].value}
+            defaultSelected={dateSlots[0]?.value}
             displayMode={DISPLAY_MODE.SWIPER}
           />
         </div>
@@ -122,7 +124,7 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
           <ButtonGroup
             buttonItems={timeSlots}
             title={"HORA"}
-            defaultSelected={timeSlots[0].value}
+            defaultSelected={timeSlots[0]?.value}
             displayMode={DISPLAY_MODE.SWIPER}
           />
         </div>
