@@ -1,0 +1,127 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
+@import "src/app/ui/styles/mixins.scss";
+
+.container {
+  width: 100%;
+  display: block;
+  gap: toRem(5);
+  position: relative;
+  text-align: left;
+
+  &.disabled{
+    cursor: not-allowed;
+
+    .label{
+      background: $black !important;
+    }
+  }
+
+
+  .input{
+    width: 100%;
+    height: $base-input-height;
+    border-radius: $input-border-radius;
+    font-size: toRem(18);
+    border: 2px solid rgba($gray02, 0.1);
+    padding: 0 toRem(16);
+    transition: all 0.2s;
+    background: $black;
+    color: $white;
+
+    &:focus {
+      outline: none;
+      border: 2px solid $black;
+    }
+
+    &:disabled {
+      background-color: $gray03;
+      color: rgba($black02, 0.7);
+      cursor: not-allowed;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield !important;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none !important;
+    }
+
+    &::placeholder {
+      color: $gray02;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $black;
+    }
+
+    &.invalid {
+      border: 2px solid $red01;
+    }
+
+    &.valid {
+      border: 2px solid $green01;
+    }
+
+
+    &.floatingMode::placeholder {
+      opacity: 1;
+      transition: all 0.2s;
+      visibility: hidden;
+    }
+
+    &.floatingMode:placeholder-shown:not(:focus)::placeholder {
+      opacity: 0;
+    }
+
+    &.floatingMode:placeholder-shown:not(:focus) + label {
+      font-size: 100%;
+    }
+
+
+  }
+
+  .label{
+    position: absolute;
+    left: toRem(10);
+    cursor: text;
+    color: $gray02;
+    font-size: 75%;
+    opacity: 1;
+    transition: all 0.2s;
+    top: toRem(0);
+    z-index: 3;
+    height: 100%;
+    padding: toRem(4) toRem(6);
+    background-color: transparent;
+    border-radius: toRem(6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+
+    &.floatLabel {
+      background-color: $black;
+      height: auto;
+      top: toRem(-10);
+      white-space: nowrap;
+      @include ellipsis-multiline(1, hidden);
+    }
+
+    &.invalid {
+      color: $red01;
+    }
+  }
+
+  .errorMessage{
+    font-size: toRem(12);
+    font-weight: bold;
+    color: $red01;
+    margin-top: toRem(3);
+    margin-left: toRem(5);
+  }
+}

@@ -38,6 +38,20 @@
     position: relative;
   }
 
+  .listContainer{
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: toRem(90);
+    gap: toRem(12);
+    max-height: toRem(350);
+    overflow-y: scroll;
+    @include hide-scrollbar();
+
+    @include max-sm {
+      max-height: toRem(300);
+    }
+  }
+
   &:hover .nextButton, &:hover .prevButton {
     opacity: 1;
   }

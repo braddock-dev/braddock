@@ -14,7 +14,7 @@
   border-radius: toRem(32);
   padding: toRem(26) toRem(5) toRem(26) toRem(20);
   border: toRem(2) solid $white;
-  min-height: toRem(400);
+  min-height: toRem(380);
 
   .title{
     font-size: toRem(20);
@@ -26,75 +26,4 @@
       font-size: toRem(18);
     }
   }
-
-  .servicesContainer{
-    display: flex;
-    flex-direction: column;
-    gap: toRem(16);
-    overflow-y: auto;
-  }
-
-  .groupButtonsContainer{
-    display: flex;
-    flex-direction: column;
-    gap: toRem(24);
-  }
-
-  .buttonContainer{
-    width: 100%;
-    padding-right: 15px;
-    display: flex;
-    justify-content: center;
-
-    .button{
-      color: $brown;
-      font-size: toRem(16);
-
-        @include max-sm {
-            font-size: toRem(14);
-          height: 44px;
-        }
-    }
-  }
-}
-
-.dateSlot{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: toRem(8);
-  padding: toRem(3) 0;
-
-  .date{
-    font-size: toRem(12);
-    font-weight: 800;
-    color: $white;
-
-    @include max-sm {
-      font-size: toRem(12);
-    }
-  }
-
-  .weekday{
-    font-size: toRem(10);
-    font-weight: 500;
-    color: $white;
-
-    @include max-sm {
-      font-size: toRem(8);
-    }
-  }
-}
-
-.buttonText{
-  font-size: toRem(12);
-  font-weight: 700;
-  color: $white;
-  text-align: center;
-
-  @include max-sm {
-    font-size: toRem(12);
-  }
-
 }

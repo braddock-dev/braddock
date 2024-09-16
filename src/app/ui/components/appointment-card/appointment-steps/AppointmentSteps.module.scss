@@ -1,0 +1,122 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+@import "src/app/ui/styles/breakpoints.scss";
+@import "src/app/ui/styles/mixins.scss";
+@import "src/app/ui/styles/animations.scss";
+
+.container {
+  .servicesContainer{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(12);
+    justify-content: flex-start;
+    overflow: hidden;
+    @include disableSelection;
+    animation: fade-in 0.5s ease-in-out;
+  }
+
+  .completeStepContainer{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(18);
+    min-height: 325px;
+
+    .section{
+      display: flex;
+      flex-direction: column;
+      gap: toRem(16);
+      padding-right: toRem(12);
+
+      .title {
+        font-size: toRem(13);
+        font-weight: 700;
+        color: $white;
+        text-align: left;
+
+        @include max-sm {
+          font-size: toRem(12);
+        }
+      }
+
+      .formInputs{
+        display: flex;
+        gap: toRem(16);
+        flex-direction: column;
+      }
+
+      .info{
+        display: flex;
+        flex-direction: column;
+        gap: toRem(12);
+
+        .infoItem{
+          display: flex;
+          gap: toRem(8);
+          align-items: center;
+          justify-content: space-between;
+
+          .itemName{
+            font-size: toRem(14);
+            font-weight: bolder;
+            color: $white;
+            text-align: left;
+
+            @include max-sm {
+              font-size: toRem(12);
+            }
+          }
+
+          .itemValue{
+            font-size: toRem(14);
+            font-weight: 700;
+            color: $white;
+            text-align: left;
+
+            @include max-sm {
+              font-size: toRem(12);
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  .groupButtonsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(24);
+  }
+
+  .buttonContainer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    gap: toRem(16);
+    justify-content: center;
+    padding: toRem(20) toRem(16);
+    background: rgba($black01, 0.8);
+
+    .button{
+      font-size: toRem(16);
+
+      @include max-sm {
+        font-size: toRem(14);
+        height: 44px;
+      }
+    }
+  }
+}
+
+.buttonText{
+  font-size: toRem(12);
+  font-weight: 700;
+  color: $white;
+  text-align: center;
+
+  @include max-sm {
+    font-size: toRem(12);
+  }
+}

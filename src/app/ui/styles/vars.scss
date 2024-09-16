@@ -1,3 +1,5 @@
+@import "./functions";
+
 //Colors
 $brown: #734434;
 $brown01: #b47866;
@@ -7,11 +9,22 @@ $light-brown01: #ECE1CD;
 $light-brown02: #49403B;
 $dark-brown: #222522;
 $black01: #000000;
+$black02: #1b1b1b;
 $black: #313131;
 $white: #ffffff;
 $gray: #606060;
 $gray01: #595959;
+$gray02: #B0B0B0;
+$gray03: #fafafa;
+$gray04: #777777;
+$red01: #f63e3e;
+$red02: #b91a1a;
+$green01: #4fc28c;
 
 //Measurements
-$section-content-max-width: 1200px;
-$section-padding: 16px;
+$section-content-max-width: toRem(1200);
+$section-padding: toRem(16);
+$border-radius: toRem(12);
+$input-border-radius: toRem(8);
+$border-radius-sm: toRem(8);
+$base-input-height: toRem(50);

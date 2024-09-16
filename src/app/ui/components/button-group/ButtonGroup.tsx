@@ -2,7 +2,7 @@
 import SelectButton, {
   ISelectButton,
 } from "@/app/ui/components/select-button/SelectButton";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { ReactElement, useCallback, useMemo, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -18,12 +18,18 @@ import styles from "./ButtonGroup.module.scss";
 import ArrowIcon from "@/app/ui/vectors/chevron-right.svg";
 import { v4 as uuid } from "uuid";
 
+export enum DISPLAY_MODE {
+  SWIPER = "SWIPER",
+  LIST = "LIST",
+}
+
 interface IButtonGroupProps {
   buttonItems: ISelectButton[];
   title: string;
   defaultSelected?: string;
   isMultiple?: boolean;
   showCounter?: boolean;
+  displayMode: DISPLAY_MODE;
 }
 export default function ButtonGroup(props: IButtonGroupProps) {
   const [hidden, setHidden] = useState<boolean>(true);
@@ -72,14 +78,20 @@ export default function ButtonGroup(props: IButtonGroupProps) {
     }
   };
 
-  return (
-    <div className={styles.container}>
-      <p className={styles.title}>
-        {props.title}{" "}
-        <span className={styles.counter}>
-          {selectedButtons.length > 1 ? `(${selectedButtons.length})` : ""}
-        </span>
-      </p>
+  const displayMode: Record<DISPLAY_MODE, ReactElement> = {
+    [DISPLAY_MODE.LIST]: (
+      <div className={styles.listContainer}>
+        {props.buttonItems.map((buttonItem, index) => (
+          <SelectButton
+            key={index}
+            selectButton={buttonItem}
+            isSelected={isButtonSelected(buttonItem.value)}
+            onClick={toggleSelectedButton}
+          />
+        ))}
+      </div>
+    ),
+    [DISPLAY_MODE.SWIPER]: (
       <div className={styles.groupContainer}>
         <Swiper
           spaceBetween={10}
@@ -123,6 +135,19 @@ export default function ButtonGroup(props: IButtonGroupProps) {
           <ArrowIcon className={styles.icon} />
         </div>
       </div>
+    ),
+  };
+
+  return (
+    <div className={styles.container}>
+      <p className={styles.title}>
+        {props.title}{" "}
+        <span className={styles.counter}>
+          {selectedButtons.length > 1 ? `(${selectedButtons.length})` : ""}
+        </span>
+      </p>
+
+      {displayMode[props.displayMode]}
     </div>
   );
 }

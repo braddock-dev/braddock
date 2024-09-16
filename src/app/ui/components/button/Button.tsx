@@ -13,6 +13,7 @@ interface IButtonColorsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: ButtonColors;
   children: ReactElement | string;
   fullWidth?: boolean;
+  outline?: boolean;
   href?: string;
   target?: "_blank" | "_self";
 }
@@ -21,6 +22,8 @@ export default function Button({
   color,
   href,
   target,
+  fullWidth,
+  outline,
   ...defaultButtonProps
 }: IButtonColorsProps) {
   return (
@@ -28,7 +31,8 @@ export default function Button({
       {...defaultButtonProps}
       className={`${styles.container} ${defaultButtonProps.className}`}
       data-button-color={color}
-      data-full-width={defaultButtonProps.fullWidth}
+      data-full-width={fullWidth}
+      data-outline={outline}
     >
       {href ? (
         <Link className={styles.link} href={href} target={target}>

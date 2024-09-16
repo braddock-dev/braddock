@@ -33,6 +33,12 @@
       color: $white;
     }
 
+  &[data-outline="true"] {
+    background-color: transparent;
+    border: toRem(1) solid $white;
+    color: $white;
+  }
+
   &[data-full-width="true"] {
     width: 100%;
   }
