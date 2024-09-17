@@ -1,7 +1,8 @@
-@import "src/app/ui/styles/vars.scss";
-@import "src/app/ui/styles/functions.scss";
-@import "src/app/ui/styles/breakpoints.scss";
-@import "src/app/ui/styles/mixins.scss";
+@import "src/app/ui/styles/vars";
+@import "src/app/ui/styles/functions";
+@import "src/app/ui/styles/breakpoints";
+@import "src/app/ui/styles/mixins";
+@import "src/app/ui/styles/animations";
 
 
 .container{
@@ -9,6 +10,7 @@
   flex-direction: column;
   gap: toRem(18);
   min-height: 325px;
+  animation: fade-in 0.5s ease-in-out;
 
   .section{
     display: flex;

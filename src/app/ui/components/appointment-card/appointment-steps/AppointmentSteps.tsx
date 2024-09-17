@@ -3,7 +3,6 @@
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import React, { ReactElement, useState } from "react";
-import AuthButtonWrapper from "@/app/ui/components/AuthButtonWrapper";
 import { toast } from "sonner";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
@@ -28,7 +27,9 @@ function AppointmentSteps() {
     alert("Start appointment");
   };
 
-  const handleStarAuth = () => {};
+  const handleStarAuth = () => {
+    handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
+  };
 
   const handleErrorAuth = () => {
     toast.error("Erro ao autenticar");
@@ -77,20 +78,14 @@ function AppointmentSteps() {
           </Button>
         </div>
 
-        <AuthButtonWrapper
-          className={styles.fullWidth}
-          onError={handleErrorAuth}
-          onSuccess={handleSuccessAuth}
+        <Button
+          fullWidth
+          color={ButtonColors.WHITE}
+          className={styles.button}
+          onClick={handleStarAuth}
         >
-          <Button
-            fullWidth
-            color={ButtonColors.WHITE}
-            className={styles.button}
-            onClick={handleStarAuth}
-          >
-            CONTINUAR
-          </Button>
-        </AuthButtonWrapper>
+          CONTINUAR
+        </Button>
       </>
     ),
     [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (

@@ -45,7 +45,6 @@ export default function SecondStep(props: ITimeSlot) {
   const {
     data: treatmentTimeslots,
     isLoading,
-    refetch,
     isError,
     error,
   } = useQuery({
