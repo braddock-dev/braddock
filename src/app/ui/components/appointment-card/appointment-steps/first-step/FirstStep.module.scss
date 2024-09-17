@@ -14,6 +14,8 @@
   animation: fade-in 0.5s ease-in-out;
 
   &[data-error-state="true"]{
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,7 +24,7 @@
       width: 85%;
       font-size: toRem(16);
       font-weight: 400;
-      color: $white;
+      color: $red02;
       text-align: center;
     }
   }

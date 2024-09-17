@@ -58,7 +58,7 @@ export default function FirstStep() {
     toast.error("Erro ao carregar os Serviços");
     return (
       <div className={styles.container} data-error-state={true}>
-        <p className={styles.errorMessage}>Erro ao carregar os tratamentos</p>
+        <p className={styles.errorMessage}>Erro ao carregar os Serviços</p>
         <Button color={ButtonColors.WHITE} onClick={() => refetch()}>
           Tentar novamente
         </Button>
