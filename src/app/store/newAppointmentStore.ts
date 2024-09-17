@@ -1,13 +1,17 @@
 import { create } from "zustand";
-import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import {
+  IDaySlot,
+  ITimeSlot,
+  ITreatment,
+} from "@/app/backend/business/treatments/data/TreatmentsData";
 
 export interface INewAppointmentStore {
   treatments: ITreatment[];
   selectedTreatments: ITreatment[];
-  selectedDaySlot?: number;
-  selectedTimeSlot?: number;
-  setSelectedDaySlot: (daySlot?: number) => void;
-  setSelectedTimeSlot: (timeSlot?: number) => void;
+  selectedDaySlot?: IDaySlot;
+  selectedTimeSlot?: ITimeSlot;
+  setSelectedDaySlot: (daySlot?: IDaySlot) => void;
+  setSelectedTimeSlot: (timeSlot?: ITimeSlot) => void;
   setSelectedTreatment: (treatment?: ITreatment[]) => void;
   setTreatments: (treatments: ITreatment[]) => void;
 }
@@ -23,8 +27,8 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       selectedDaySlot: undefined,
       selectedTimeSlot: undefined,
     }),
-  setSelectedDaySlot: (daySlot?: number) => set({ selectedDaySlot: daySlot }),
-  setSelectedTimeSlot: (timeSlot?: number) =>
+  setSelectedDaySlot: (daySlot?: IDaySlot) => set({ selectedDaySlot: daySlot }),
+  setSelectedTimeSlot: (timeSlot?: ITimeSlot) =>
     set({ selectedTimeSlot: timeSlot }),
   setTreatments: (treatments: ITreatment[]) => set({ treatments }),
 }));

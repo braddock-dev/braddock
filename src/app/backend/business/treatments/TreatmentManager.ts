@@ -36,7 +36,7 @@ class TreatmentManager {
     }
   }
 
-  public async getTreatmentTimeslots(treatmentId?: string): Promise<any[]> {
+  public async getTreatmentTimeslots(treatmentId: string[]): Promise<any[]> {
     Logger.debug(this.LOG_TAG, "Start getting treatment timeslots", [
       treatmentId,
     ]);
@@ -46,8 +46,9 @@ class TreatmentManager {
         return [];
       }
 
+      const firstTreatmentId = treatmentId[0]; //TODO: change this when multiple treatments are supported
       const timeslotsResponse =
-        await TreatmentsService.getTreatmentTimeslots(treatmentId);
+        await TreatmentsService.getTreatmentTimeslots(firstTreatmentId);
 
       Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [
         timeslotsResponse,

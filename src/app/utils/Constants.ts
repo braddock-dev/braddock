@@ -30,6 +30,7 @@ export const Constants = {
     DAY: "DD",
     WEEKDAY: "ddd",
     TIME: "HH:mm",
+    CUSTOM_FULL_DATE_TIME: "DD [de] MMMM [às] HH:mm",
   },
   API_ROUTES: {
     GET_TREATMENTS: (businessId: string) =>

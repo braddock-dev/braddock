@@ -24,8 +24,8 @@ interface ITimeSlot {
   onError: () => void;
 }
 export default function SecondStep(props: ITimeSlot) {
-  const selectedTreatment = useNewAppointmentStore(
-    newAppointmentSelectors.selectedTreatments,
+  const selectedTreatmentIds = useNewAppointmentStore(
+    newAppointmentSelectors.selectedTreatmentsIds,
   );
 
   const selectedDaySlot = useNewAppointmentStore(
@@ -48,8 +48,8 @@ export default function SecondStep(props: ITimeSlot) {
     isError,
     error,
   } = useQuery({
-    queryKey: ["getTreatmentTimeslots", selectedTreatment],
-    queryFn: () => getTreatmentTimeslots(selectedTreatment),
+    queryKey: ["getTreatmentTimeslots", selectedTreatmentIds.join()],
+    queryFn: () => getTreatmentTimeslots(selectedTreatmentIds),
   });
 
   const dateSlots = useMemo(() => {
@@ -62,6 +62,7 @@ export default function SecondStep(props: ITimeSlot) {
         text: <DateSlot key={index} dateSlot={dateSlot} />,
         type: ButtonType.vertical,
         value: dateSlot.dayInMillis,
+        data: dateSlot,
       };
     });
   }, [treatmentTimeslots]);
@@ -82,6 +83,7 @@ export default function SecondStep(props: ITimeSlot) {
         ),
         type: ButtonType.horizontal,
         value: timeSlot.timeInMillis,
+        data: timeSlot,
       };
     });
   }, [treatmentTimeslots]);
@@ -106,10 +108,10 @@ export default function SecondStep(props: ITimeSlot) {
         <ButtonGroup
           buttonItems={dateSlots}
           title={"DATA"}
-          defaultSelectedKey={selectedDaySlot}
+          defaultSelectedKey={selectedDaySlot?.dayInMillis}
           displayMode={DISPLAY_MODE.SWIPER}
-          onSelectedButtonsChange={([selectedDaySlot]) =>
-            setSelectedDaySlot(selectedDaySlot as number)
+          onSelectedButtonsChange={(_, [daySlot]) =>
+            setSelectedDaySlot(daySlot)
           }
         />
       </div>
@@ -118,10 +120,10 @@ export default function SecondStep(props: ITimeSlot) {
         <ButtonGroup
           buttonItems={timeSlots}
           title={"HORA"}
-          defaultSelectedKey={selectedTimeSlot}
+          defaultSelectedKey={selectedTimeSlot?.timeInMillis}
           displayMode={DISPLAY_MODE.SWIPER}
-          onSelectedButtonsChange={([selectedTimeSlot]) =>
-            setSelectedTimeSlot(selectedTimeSlot as number)
+          onSelectedButtonsChange={(_, [timeSlot]) =>
+            setSelectedTimeSlot(timeSlot)
           }
         />
       </div>

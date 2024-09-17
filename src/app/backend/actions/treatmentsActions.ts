@@ -11,7 +11,7 @@ export async function getTreatmentsList(): Promise<ITreatment[]> {
 }
 
 export async function getTreatmentTimeslots(
-  treatmentId?: string,
+  treatmentId: string[],
 ): Promise<IDaySlot[]> {
   return TreatmentManager.getTreatmentTimeslots(treatmentId);
 }
