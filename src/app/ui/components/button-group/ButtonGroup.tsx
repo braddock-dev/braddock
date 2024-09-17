@@ -37,7 +37,7 @@ interface IButtonGroupProps {
   isMultiple?: boolean;
   showCounter?: boolean;
   displayMode: DISPLAY_MODE;
-  onSelectedButtonsChange: (selectedButtons: (string | number)[]) => void;
+  onSelectedButtonsChange: (selectedButtons: any[]) => void;
 }
 export default function ButtonGroup(props: IButtonGroupProps) {
   const [hidden, setHidden] = useState<boolean>(true);

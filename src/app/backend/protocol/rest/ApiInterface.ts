@@ -3,7 +3,7 @@ import { Constants } from "@/app/utils/Constants";
 
 class ApiInterface extends HttpInterface {
   constructor() {
-    super(Constants.EXTERNAL_CONFIGS.API_REQUEST_TIMEOUT);
+    super(Number(Constants.EXTERNAL_CONFIGS.API_REQUEST_TIMEOUT));
     this.setAuthorizationValue(Constants.EXTERNAL_CONFIGS.API_ACCESS_TOKEN);
   }
 }

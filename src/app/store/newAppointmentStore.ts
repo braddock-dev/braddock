@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 
 export interface INewAppointmentStore {
-  treatments: [];
+  treatments: ITreatment[];
   selectedTreatment?: string;
   selectedDaySlot?: number;
   selectedTimeSlot?: number;
