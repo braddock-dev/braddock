@@ -2,25 +2,26 @@ import styles from "./FirstStep.module.scss";
 import ButtonGroup, {
   DISPLAY_MODE,
 } from "@/app/ui/components/button-group/ButtonGroup";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getTreatmentsList } from "@/app/backend/actions/treatmentsActions";
 import { toast } from "sonner";
 import AppointmentCardLoadingState from "@/app/ui/components/appointment-card/appointment-card-loading-state/AppointmentCardLoadingState";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import {
-  ButtonType,
-  ISelectButton,
-} from "@/app/ui/components/select-button/SelectButton";
-import {
   newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
+import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import {
+  ButtonType,
+  ISelectButton,
+} from "@/app/ui/components/select-button/SelectButton";
 
 export default function FirstStep() {
-  const selectedTreatment = useNewAppointmentStore(
-    newAppointmentSelectors.selectedTreatment,
+  const selectedTreatmentsIds = useNewAppointmentStore(
+    newAppointmentSelectors.selectedTreatmentsIds,
   );
   const setTreatments = useNewAppointmentStore(
     newAppointmentActions.setTreatments,
@@ -45,6 +46,27 @@ export default function FirstStep() {
       setTreatments(treatments);
     }
   }, [treatments]);
+
+  const treatmentButtons = useMemo(() => {
+    if (!treatments || !treatments.length) {
+      return [];
+    }
+
+    return treatments.map((treatment): ISelectButton => {
+      return {
+        text: <span className={styles.buttonText}>{treatment.name}</span>,
+        type: ButtonType.horizontal,
+        value: treatment.id,
+        data: treatment,
+      };
+    });
+  }, [treatments]);
+
+  useEffect(() => {
+    if (!selectedTreatmentsIds.length && treatments?.length) {
+      setSelectedTreatment(treatments.slice(0, 1));
+    }
+  }, [treatments, selectedTreatmentsIds]);
 
   if (isLoading) {
     return (
@@ -77,27 +99,22 @@ export default function FirstStep() {
     );
   }
 
-  const daySlotButtons = treatments.map((service): ISelectButton => {
-    return {
-      text: <span className={styles.buttonText}>{service.name}</span>,
-      type: ButtonType.horizontal,
-      value: service.id,
-    };
-  });
-
-  const handleSelectedButtonsChange = (selectedTreatmentId: string[]) => {
-    if (selectedTreatmentId && selectedTreatmentId[0]) {
-      setSelectedTreatment(selectedTreatmentId[0]);
+  const handleSelectedButtonsChange = (
+    _: string[],
+    selectedTreatments: ITreatment[],
+  ) => {
+    if (selectedTreatments) {
+      setSelectedTreatment(selectedTreatments);
     }
   };
 
   return (
     <div className={styles.container} key={"SERVICES_SELECTION"}>
       <ButtonGroup
-        buttonItems={daySlotButtons}
+        buttonItems={treatmentButtons}
         title={"SERVIÇOS"}
-        defaultSelected={selectedTreatment || daySlotButtons[0]?.value}
-        isMultiple={false}
+        defaultSelectedKey={selectedTreatmentsIds}
+        isMultiple
         displayMode={DISPLAY_MODE.LIST}
         onSelectedButtonsChange={handleSelectedButtonsChange}
       />

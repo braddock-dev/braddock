@@ -3,23 +3,23 @@ import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsDat
 
 export interface INewAppointmentStore {
   treatments: ITreatment[];
-  selectedTreatment?: string;
+  selectedTreatments: ITreatment[];
   selectedDaySlot?: number;
   selectedTimeSlot?: number;
   setSelectedDaySlot: (daySlot?: number) => void;
   setSelectedTimeSlot: (timeSlot?: number) => void;
-  setSelectedTreatment: (treatment?: string) => void;
+  setSelectedTreatment: (treatment?: ITreatment[]) => void;
   setTreatments: (treatments: ITreatment[]) => void;
 }
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   treatments: [],
-  selectedTreatment: undefined,
+  selectedTreatments: [],
   selectedDaySlot: undefined,
   selectedTimeSlot: undefined,
-  setSelectedTreatment: (treatment?: string) =>
+  setSelectedTreatment: (treatment?: ITreatment[]) =>
     set({
-      selectedTreatment: treatment,
+      selectedTreatments: treatment,
       selectedDaySlot: undefined,
       selectedTimeSlot: undefined,
     }),
@@ -31,7 +31,9 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
 
 export const newAppointmentSelectors = {
   treatments: (state: INewAppointmentStore) => state.treatments,
-  selectedTreatment: (state: INewAppointmentStore) => state.selectedTreatment,
+  selectedTreatments: (state: INewAppointmentStore) => state.selectedTreatments,
+  selectedTreatmentsIds: (state: INewAppointmentStore) =>
+    state.selectedTreatments.map((treatment) => treatment.id),
   selectedDaySlot: (state: INewAppointmentStore) => state.selectedDaySlot,
   selectedTimeSlot: (state: INewAppointmentStore) => state.selectedTimeSlot,
 };

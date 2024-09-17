@@ -25,7 +25,7 @@ interface ITimeSlot {
 }
 export default function SecondStep(props: ITimeSlot) {
   const selectedTreatment = useNewAppointmentStore(
-    newAppointmentSelectors.selectedTreatment,
+    newAppointmentSelectors.selectedTreatments,
   );
 
   const selectedDaySlot = useNewAppointmentStore(
@@ -106,7 +106,7 @@ export default function SecondStep(props: ITimeSlot) {
         <ButtonGroup
           buttonItems={dateSlots}
           title={"DATA"}
-          defaultSelected={selectedDaySlot}
+          defaultSelectedKey={selectedDaySlot}
           displayMode={DISPLAY_MODE.SWIPER}
           onSelectedButtonsChange={([selectedDaySlot]) =>
             setSelectedDaySlot(selectedDaySlot as number)
@@ -118,7 +118,7 @@ export default function SecondStep(props: ITimeSlot) {
         <ButtonGroup
           buttonItems={timeSlots}
           title={"HORA"}
-          defaultSelected={selectedTimeSlot}
+          defaultSelectedKey={selectedTimeSlot}
           displayMode={DISPLAY_MODE.SWIPER}
           onSelectedButtonsChange={([selectedTimeSlot]) =>
             setSelectedTimeSlot(selectedTimeSlot as number)
