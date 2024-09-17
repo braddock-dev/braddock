@@ -1,0 +1,48 @@
+@import "@/app/ui/styles/vars";
+@import "@/app/ui/styles/functions";
+@import "@/app/ui/styles/breakpoints";
+@import "@/app/ui/styles/animations";
+@import "@/app/ui/styles/mixins";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: toRem(12);
+  justify-content: flex-start;
+  overflow: hidden;
+  @include disableSelection;
+  animation: fade-in 0.5s ease-in-out;
+
+  &[data-error-state="true"]{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .errorMessage{
+      width: 85%;
+      font-size: toRem(16);
+      font-weight: 400;
+      color: $white;
+      text-align: center;
+    }
+  }
+
+  .emptyState{
+    width: 85%;
+    font-size: toRem(16);
+    font-weight: 400;
+    color: $white;
+    text-align: center;
+  }
+}
+
+.buttonText{
+  font-size: toRem(12);
+  font-weight: 700;
+  color: $white;
+  text-align: center;
+
+  @include max-sm {
+    font-size: toRem(12);
+  }
+}

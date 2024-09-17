@@ -35,6 +35,37 @@ class TreatmentManager {
       throw error;
     }
   }
+
+  public async getTreatmentTimeslots(treatmentId?: string): Promise<any[]> {
+    Logger.debug(this.LOG_TAG, "Start getting treatment timeslots", [
+      treatmentId,
+    ]);
+
+    try {
+      if (!treatmentId) {
+        return [];
+      }
+
+      const timeslotsResponse =
+        await TreatmentsService.getTreatmentTimeslots(treatmentId);
+
+      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [
+        timeslotsResponse,
+      ]);
+
+      const timeslots =
+        TreatmentsDataAdapter.convertDataToDaySlots(timeslotsResponse);
+
+      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [
+        timeslots,
+      ]);
+
+      return timeslots;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error getting treatment timeslots", error);
+      throw error;
+    }
+  }
 }
 
 export default new TreatmentManager();

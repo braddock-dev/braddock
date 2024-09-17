@@ -39,6 +39,35 @@ class TreatmentsService {
       return Promise.reject(error);
     }
   }
+
+  public async getTreatmentTimeslots(treatmentId: string): Promise<any[]> {
+    Logger.log(this.LOG_TAG, "Start getting treatment timeslots", [
+      treatmentId,
+    ]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.GET_TIMESLOTS(
+          Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
+          treatmentId,
+        ),
+        httpMethod: HttpMethods.GET,
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.log(this.LOG_TAG, "Get treatment timeslots response success");
+
+      if (!response || response.status !== HttpStatus.OK) {
+        return Promise.reject("Failed to get treatment timeslots");
+      }
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error getting treatment timeslots", error);
+      return Promise.reject(error);
+    }
+  }
 }
 
 export default new TreatmentsService();

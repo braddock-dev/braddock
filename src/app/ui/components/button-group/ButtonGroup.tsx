@@ -2,7 +2,14 @@
 import SelectButton, {
   ISelectButton,
 } from "@/app/ui/components/select-button/SelectButton";
-import { ReactElement, useCallback, useMemo, useRef, useState } from "react";
+import {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -26,10 +33,11 @@ export enum DISPLAY_MODE {
 interface IButtonGroupProps {
   buttonItems: ISelectButton[];
   title: string;
-  defaultSelected?: string;
+  defaultSelected?: any;
   isMultiple?: boolean;
   showCounter?: boolean;
   displayMode: DISPLAY_MODE;
+  onSelectedButtonsChange: (selectedButtons: (string | number)[]) => void;
 }
 export default function ButtonGroup(props: IButtonGroupProps) {
   const [hidden, setHidden] = useState<boolean>(true);
@@ -77,6 +85,10 @@ export default function ButtonGroup(props: IButtonGroupProps) {
       setSelectedButtons([selectButton.value]);
     }
   };
+
+  useEffect(() => {
+    props.onSelectedButtonsChange(selectedButtons);
+  }, [props.onSelectedButtonsChange, selectedButtons]);
 
   const displayMode: Record<DISPLAY_MODE, ReactElement> = {
     [DISPLAY_MODE.LIST]: (

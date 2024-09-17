@@ -6,3 +6,14 @@ export interface ITreatment {
   type: string;
   createdAt: number;
 }
+
+export interface ITimeSlot {
+  timeInMillis: number;
+  time: string;
+}
+
+export interface IDaySlot {
+  dayInMillis: number;
+  day: string;
+  timeslots: ITimeSlot[];
+}

@@ -34,6 +34,8 @@ export const Constants = {
   API_ROUTES: {
     GET_TREATMENTS: (businessId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
+    GET_TIMESLOTS: (businessId: string, treatmentId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments/${treatmentId}/timeslots`,
   },
   ERRORS: {
     GENERIC: {

@@ -28,20 +28,4 @@
       font-size: toRem(18);
     }
   }
-
-  &[data-error-state="true"]{
-    border-color: $red01;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .errorMessage{
-      width: 85%;
-      font-size: toRem(16);
-      font-weight: 400;
-      color: $white;
-      text-align: center;
-    }
-  }
-
 }

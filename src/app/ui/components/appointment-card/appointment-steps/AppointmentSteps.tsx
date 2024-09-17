@@ -1,23 +1,13 @@
 "use client";
 
 import styles from "./AppointmentSteps.module.scss";
-import ButtonGroup, {
-  DISPLAY_MODE,
-} from "@/app/ui/components/button-group/ButtonGroup";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import { IDateSlot } from "@/app/backend/appointments/AppointmentsData";
-import {
-  ButtonType,
-  ISelectButton,
-} from "@/app/ui/components/select-button/SelectButton";
-import dayjs from "dayjs";
-import { Constants } from "@/app/utils/Constants";
-import DateSlot from "@/app/ui/components/appointment-card/date-slot/DateSlot";
-import React, { ReactElement, useMemo, useState } from "react";
-import Input from "@/app/ui/components/input/Input";
+import React, { ReactElement, useState } from "react";
 import AuthButtonWrapper from "@/app/ui/components/AuthButtonWrapper";
 import { toast } from "sonner";
-import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
+import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
+import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -25,48 +15,10 @@ enum APPOINTMENT_STEPS {
   COMPLETE_APPOINTMENT = "COMPLETE_APPOINTMENT",
 }
 
-interface IAppointmentStepsProps {
-  treatments: ITreatment[];
-  dateSlots: IDateSlot[];
-}
-function AppointmentSteps(props: IAppointmentStepsProps) {
+function AppointmentSteps() {
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
     APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
-
-  const barberServices = props.treatments.map((service): ISelectButton => {
-    return {
-      text: <span className={styles.buttonText}>{service.name}</span>,
-      type: ButtonType.horizontal,
-      value: service.id,
-    };
-  });
-
-  const dateSlots = props.dateSlots.map((dateSlot, index): ISelectButton => {
-    return {
-      text: <DateSlot key={index} dateSlot={dateSlot} />,
-      type: ButtonType.vertical,
-      value: dateSlot.date,
-    };
-  });
-
-  const timeSlots = useMemo(() => {
-    if (!props.dateSlots[0]) {
-      return [];
-    }
-
-    return props.dateSlots[0].timeSlots.map((timeSlot): ISelectButton => {
-      return {
-        text: (
-          <span className={styles.buttonText}>
-            {dayjs(timeSlot.time).format(Constants.DATE_FORMAT.TIME)}
-          </span>
-        ),
-        type: ButtonType.horizontal,
-        value: timeSlot,
-      };
-    });
-  }, [props.dateSlots]);
 
   const handleChangeStep = (goTo: APPOINTMENT_STEPS) => {
     setCurrentStep(goTo);
@@ -89,88 +41,13 @@ function AppointmentSteps(props: IAppointmentStepsProps) {
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
-    [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
-      <div
-        className={styles.servicesContainer}
-        key={APPOINTMENT_STEPS.SERVICES_SELECTION}
-      >
-        <ButtonGroup
-          buttonItems={barberServices}
-          title={"SERVIÇOS"}
-          defaultSelected={barberServices[0]?.value}
-          isMultiple={false}
-          displayMode={DISPLAY_MODE.LIST}
-        />
-      </div>
-    ),
+    [APPOINTMENT_STEPS.SERVICES_SELECTION]: <FirstStep />,
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
-      <>
-        <div
-          className={styles.servicesContainer}
-          key={APPOINTMENT_STEPS.DATE_SELECTION}
-        >
-          <ButtonGroup
-            buttonItems={dateSlots}
-            title={"DATA"}
-            defaultSelected={dateSlots[0]?.value}
-            displayMode={DISPLAY_MODE.SWIPER}
-          />
-        </div>
-
-        <div
-          className={styles.servicesContainer}
-          key={APPOINTMENT_STEPS.DATE_SELECTION}
-        >
-          <ButtonGroup
-            buttonItems={timeSlots}
-            title={"HORA"}
-            defaultSelected={timeSlots[0]?.value}
-            displayMode={DISPLAY_MODE.SWIPER}
-          />
-        </div>
-      </>
+      <SecondStep
+        onError={() => handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)}
+      />
     ),
-    [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (
-      <div className={styles.completeStepContainer}>
-        <div className={styles.section}>
-          <p className={styles.title}>INFORMAÇÃO PESSOAL:</p>
-          <div className={styles.formInputs}>
-            <Input
-              type={"text"}
-              inputMode={"text"}
-              name={"name"}
-              placeholder={"Seu Nome"}
-              floatingMode
-              autoComplete={"name"}
-            />
-
-            <Input
-              type={"tel"}
-              inputMode={"tel"}
-              name={"phone"}
-              autoComplete={"tel"}
-              placeholder={"Seu Contacto"}
-              floatingMode
-            />
-          </div>
-        </div>
-
-        <div className={styles.section}>
-          <p className={styles.title}>MEU AGENDAMENTO:</p>
-          <div className={styles.info}>
-            <div className={styles.infoItem}>
-              <p className={styles.itemName}>Serviço:</p>
-              <p className={styles.itemValue}>Corte de Cabelo</p>
-            </div>
-
-            <div className={styles.infoItem}>
-              <p className={styles.itemName}>Data:</p>
-              <p className={styles.itemValue}>10 de Agosto às 10PM</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    ),
+    [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: <ThirdStep />,
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {

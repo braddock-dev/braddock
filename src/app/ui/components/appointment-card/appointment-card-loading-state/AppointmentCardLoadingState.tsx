@@ -1,7 +1,12 @@
 import styles from "./AppointmentCardLoadingState.module.scss";
 import SkeletonLoader from "@/app/ui/components/skeleton-loader/SkeletonLoader";
 
-export default function AppointmentCardLoadingState() {
+interface IAppointmentCardLoadingStateProps {
+  itemsCount: number;
+}
+export default function AppointmentCardLoadingState(
+  props: IAppointmentCardLoadingStateProps,
+) {
   return (
     <div className={styles.container}>
       <div className={styles.mainTitle}>
@@ -9,7 +14,7 @@ export default function AppointmentCardLoadingState() {
       </div>
 
       <div className={styles.items}>
-        {Array.from({ length: 12 }).map((_, key) => (
+        {Array.from({ length: props.itemsCount }).map((_, key) => (
           <div key={key} className={styles.item}>
             <SkeletonLoader />
           </div>
