@@ -1,5 +1,8 @@
 import Logger from "@/app/utils/Logger";
-import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import {
+  IBaseNewAppointmentInfo,
+  ITreatment,
+} from "@/app/backend/business/treatments/data/TreatmentsData";
 import TreatmentsService from "@/app/backend/services/TreatmentsService";
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
 
@@ -64,6 +67,32 @@ class TreatmentManager {
       return timeslots;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error getting treatment timeslots", error);
+      throw error;
+    }
+  }
+
+  public async scheduleAppointment(
+    appointment: IBaseNewAppointmentInfo,
+  ): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start scheduling appointment", [appointment]);
+
+    try {
+      const appointmentRequestData =
+        TreatmentsDataAdapter.convertAppointmentDataToRequestData(appointment);
+
+      Logger.debug(this.LOG_TAG, "Appointment request data", [
+        appointmentRequestData,
+      ]);
+
+      const response = await TreatmentsService.scheduleAppointment(
+        appointmentRequestData,
+      );
+
+      Logger.debug(this.LOG_TAG, "Schedule appointment response", [response]);
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error scheduling appointment", error);
       throw error;
     }
   }

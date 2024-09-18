@@ -37,6 +37,12 @@ export const Constants = {
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
     GET_TIMESLOTS: (businessId: string, treatmentId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments/${treatmentId}/timeslots`,
+    SCHEDULE_APPOINTMENT: (
+      businessId: string,
+      treatmentsId: string,
+      timeSlotId: string,
+    ) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments/${treatmentsId}/timeslots/${timeSlotId}/schedule`,
   },
   ERRORS: {
     GENERIC: {

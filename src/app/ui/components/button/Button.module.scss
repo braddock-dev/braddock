@@ -20,6 +20,11 @@
     cursor: not-allowed;
   }
 
+  .spinner {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
 
   &[data-button-color="white"] {
     background-color: $white;

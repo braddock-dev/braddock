@@ -1,6 +1,7 @@
 import styles from "./Button.module.scss";
 import { ButtonHTMLAttributes, ReactElement } from "react";
 import Link from "next/link";
+import Spinner, { SpinnerColor } from "@/app/ui/components/spinner/Spinner";
 
 export enum ButtonColors {
   WHITE = "white",
@@ -16,6 +17,7 @@ interface IButtonColorsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   outline?: boolean;
   href?: string;
   target?: "_blank" | "_self";
+  isLoading?: boolean;
 }
 
 export default function Button({
@@ -24,6 +26,7 @@ export default function Button({
   target,
   fullWidth,
   outline,
+  isLoading,
   ...defaultButtonProps
 }: IButtonColorsProps) {
   return (
@@ -34,12 +37,18 @@ export default function Button({
       data-full-width={fullWidth}
       data-outline={outline}
     >
-      {href ? (
-        <Link className={styles.link} href={href} target={target}>
-          {defaultButtonProps.children}
-        </Link>
+      {isLoading ? (
+        <Spinner className={styles.spinner} color={SpinnerColor.WHITE} />
       ) : (
-        defaultButtonProps.children
+        <>
+          {href ? (
+            <Link className={styles.link} href={href} target={target}>
+              {defaultButtonProps.children}
+            </Link>
+          ) : (
+            defaultButtonProps.children
+          )}
+        </>
       )}
     </button>
   );

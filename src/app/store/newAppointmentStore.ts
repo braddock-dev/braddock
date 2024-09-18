@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  IBaseNewAppointmentInfo,
   IDaySlot,
   ITimeSlot,
   ITreatment,
@@ -50,6 +51,14 @@ export const newAppointmentSelectors = {
   selectedTimeSlot: (state: INewAppointmentStore) => state.selectedTimeSlot,
   customerName: (state: INewAppointmentStore) => state.customerName,
   phoneNumber: (state: INewAppointmentStore) => state.phoneNumber,
+  appointmentStore: (state: INewAppointmentStore): IBaseNewAppointmentInfo => ({
+    treatments: state.treatments,
+    selectedTreatments: state.selectedTreatments,
+    selectedDaySlot: state.selectedDaySlot,
+    selectedTimeSlot: state.selectedTimeSlot,
+    phoneNumber: state.phoneNumber,
+    customerName: state.customerName,
+  }),
 };
 
 export const newAppointmentActions = {

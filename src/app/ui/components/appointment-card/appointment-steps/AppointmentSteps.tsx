@@ -7,6 +7,13 @@ import { toast } from "sonner";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
+import { useMutation } from "@tanstack/react-query";
+import { scheduleAppointment } from "@/app/backend/actions/treatmentsActions";
+import {
+  newAppointmentSelectors,
+  useNewAppointmentStore,
+} from "@/app/store/newAppointmentStore";
+import { IBaseNewAppointmentInfo } from "@/app/backend/business/treatments/data/TreatmentsData";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -27,8 +34,25 @@ const defaultAvailableSteps: IAvailableStepsMap = {
 };
 
 function AppointmentSteps() {
+  const appointmentStore = useNewAppointmentStore(
+    newAppointmentSelectors.appointmentStore,
+  );
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["newAppointment"],
+    mutationFn: (newAppointmentData: IBaseNewAppointmentInfo) => {
+      return scheduleAppointment(newAppointmentData);
+    },
+    onError: () => {
+      toast.error("Erro ao agendar, tente novamente");
+    },
+    onSuccess: () => {
+      toast.success("Agendamento realizado com sucesso");
+    },
+  });
+
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.COMPLETE_APPOINTMENT,
+    APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
 
   const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
@@ -40,7 +64,7 @@ function AppointmentSteps() {
   };
 
   const handleStartAppointment = () => {
-    alert("Start appointment");
+    mutate(appointmentStore);
   };
 
   const handleStarAuth = () => {
@@ -148,7 +172,8 @@ function AppointmentSteps() {
           className={styles.button}
           onClick={handleStartAppointment}
           disabled={
-            !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid
+            !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
+            isPending
           }
         >
           AGENDAR AGORA
