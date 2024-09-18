@@ -2,7 +2,7 @@
 
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useCallback, useState } from "react";
 import { toast } from "sonner";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
@@ -14,9 +14,25 @@ enum APPOINTMENT_STEPS {
   COMPLETE_APPOINTMENT = "COMPLETE_APPOINTMENT",
 }
 
+interface IAvailableSteps {
+  isValid: boolean;
+}
+
+type IAvailableStepsMap = Record<APPOINTMENT_STEPS, IAvailableSteps>;
+
+const defaultAvailableSteps: IAvailableStepsMap = {
+  [APPOINTMENT_STEPS.SERVICES_SELECTION]: { isValid: false },
+  [APPOINTMENT_STEPS.DATE_SELECTION]: { isValid: false },
+  [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: { isValid: false },
+};
+
 function AppointmentSteps() {
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.SERVICES_SELECTION,
+    APPOINTMENT_STEPS.COMPLETE_APPOINTMENT,
+  );
+
+  const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
+    defaultAvailableSteps,
   );
 
   const handleChangeStep = (goTo: APPOINTMENT_STEPS) => {
@@ -41,14 +57,39 @@ function AppointmentSteps() {
     handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
   };
 
+  const changeStepValidState = useCallback(
+    (step: APPOINTMENT_STEPS, isValid: boolean) => {
+      setAvailableSteps((prev) => ({
+        ...prev,
+        [step]: { isValid },
+      }));
+    },
+    [],
+  );
+
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
-    [APPOINTMENT_STEPS.SERVICES_SELECTION]: <FirstStep />,
+    [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
+      <FirstStep
+        isValidChange={(isValid) =>
+          changeStepValidState(APPOINTMENT_STEPS.SERVICES_SELECTION, isValid)
+        }
+      />
+    ),
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
       <SecondStep
+        isValidChange={(isValid) => {
+          changeStepValidState(APPOINTMENT_STEPS.DATE_SELECTION, isValid);
+        }}
         onError={() => handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)}
       />
     ),
-    [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: <ThirdStep />,
+    [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (
+      <ThirdStep
+        isValidChange={(isValid) =>
+          changeStepValidState(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT, isValid)
+        }
+      />
+    ),
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -57,6 +98,7 @@ function AppointmentSteps() {
         fullWidth
         color={ButtonColors.WHITE}
         className={styles.button}
+        disabled={!availableSteps[APPOINTMENT_STEPS.SERVICES_SELECTION].isValid}
         onClick={() => handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION)}
       >
         CONTINUAR
@@ -82,6 +124,7 @@ function AppointmentSteps() {
           fullWidth
           color={ButtonColors.WHITE}
           className={styles.button}
+          disabled={!availableSteps[APPOINTMENT_STEPS.DATE_SELECTION].isValid}
           onClick={handleStarAuth}
         >
           CONTINUAR
@@ -104,6 +147,9 @@ function AppointmentSteps() {
           color={ButtonColors.WHITE}
           className={styles.button}
           onClick={handleStartAppointment}
+          disabled={
+            !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid
+          }
         >
           AGENDAR AGORA
         </Button>

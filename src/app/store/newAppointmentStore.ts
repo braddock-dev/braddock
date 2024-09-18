@@ -10,10 +10,14 @@ export interface INewAppointmentStore {
   selectedTreatments: ITreatment[];
   selectedDaySlot?: IDaySlot;
   selectedTimeSlot?: ITimeSlot;
+  phoneNumber: string;
+  customerName: string;
   setSelectedDaySlot: (daySlot?: IDaySlot) => void;
   setSelectedTimeSlot: (timeSlot?: ITimeSlot) => void;
   setSelectedTreatment: (treatment?: ITreatment[]) => void;
   setTreatments: (treatments: ITreatment[]) => void;
+  setPhoneNumber: (phone: string) => void;
+  setCustomerName: (name: string) => void;
 }
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
@@ -21,6 +25,10 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   selectedTreatments: [],
   selectedDaySlot: undefined,
   selectedTimeSlot: undefined,
+  phoneNumber: "",
+  customerName: "",
+  setPhoneNumber: (phone: string) => set({ phoneNumber: phone }),
+  setCustomerName: (name: string) => set({ customerName: name }),
   setSelectedTreatment: (treatment?: ITreatment[]) =>
     set({
       selectedTreatments: treatment,
@@ -40,6 +48,8 @@ export const newAppointmentSelectors = {
     state.selectedTreatments.map((treatment) => treatment.id),
   selectedDaySlot: (state: INewAppointmentStore) => state.selectedDaySlot,
   selectedTimeSlot: (state: INewAppointmentStore) => state.selectedTimeSlot,
+  customerName: (state: INewAppointmentStore) => state.customerName,
+  phoneNumber: (state: INewAppointmentStore) => state.phoneNumber,
 };
 
 export const newAppointmentActions = {
@@ -49,4 +59,6 @@ export const newAppointmentActions = {
   setSelectedDaySlot: (state: INewAppointmentStore) => state.setSelectedDaySlot,
   setSelectedTimeSlot: (state: INewAppointmentStore) =>
     state.setSelectedTimeSlot,
+  setPhoneNumber: (state: INewAppointmentStore) => state.setPhoneNumber,
+  setCustomerName: (state: INewAppointmentStore) => state.setCustomerName,
 };

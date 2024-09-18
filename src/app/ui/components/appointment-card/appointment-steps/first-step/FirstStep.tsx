@@ -19,7 +19,10 @@ import {
   ISelectButton,
 } from "@/app/ui/components/select-button/SelectButton";
 
-export default function FirstStep() {
+interface IFirstStepProps {
+  isValidChange: (isValid: boolean) => void;
+}
+export default function FirstStep(props: IFirstStepProps) {
   const selectedTreatmentsIds = useNewAppointmentStore(
     newAppointmentSelectors.selectedTreatmentsIds,
   );
@@ -67,6 +70,10 @@ export default function FirstStep() {
       setSelectedTreatment(treatments.slice(0, 1));
     }
   }, [treatments, selectedTreatmentsIds]);
+
+  useEffect(() => {
+    props.isValidChange(!!treatments?.length);
+  }, [treatments]);
 
   if (isLoading) {
     return (

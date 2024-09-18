@@ -2,7 +2,7 @@ import styles from "./SecondStep.module.scss";
 import ButtonGroup, {
   DISPLAY_MODE,
 } from "@/app/ui/components/button-group/ButtonGroup";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   ButtonType,
   ISelectButton,
@@ -22,6 +22,7 @@ import { toast } from "sonner";
 
 interface ITimeSlot {
   onError: () => void;
+  isValidChange: (isValid: boolean) => void;
 }
 export default function SecondStep(props: ITimeSlot) {
   const selectedTreatmentIds = useNewAppointmentStore(
@@ -41,6 +42,10 @@ export default function SecondStep(props: ITimeSlot) {
   const setSelectedTimeSlot = useNewAppointmentStore(
     newAppointmentActions.setSelectedTimeSlot,
   );
+
+  useEffect(() => {
+    props.isValidChange(!!selectedDaySlot && !!selectedTimeSlot);
+  }, [selectedDaySlot, selectedTimeSlot]);
 
   const {
     data: treatmentTimeslots,
@@ -104,7 +109,7 @@ export default function SecondStep(props: ITimeSlot) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.item} key={"DATE_SELECTION"}>
+      <div className={styles.item} key={"DAY_SELECTION"}>
         <ButtonGroup
           buttonItems={dateSlots}
           title={"DATA"}
@@ -116,7 +121,7 @@ export default function SecondStep(props: ITimeSlot) {
         />
       </div>
 
-      <div className={styles.item} key={"DATE_SELECTION"}>
+      <div className={styles.item} key={"TIME_SELECTION"}>
         <ButtonGroup
           buttonItems={timeSlots}
           title={"HORA"}

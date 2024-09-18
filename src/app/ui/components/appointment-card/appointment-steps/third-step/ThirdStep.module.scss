@@ -15,7 +15,7 @@
   .section{
     display: flex;
     flex-direction: column;
-    gap: toRem(16);
+    gap: toRem(18);
     padding-right: toRem(12);
 
     .title {
@@ -31,7 +31,7 @@
 
     .formInputs{
       display: flex;
-      gap: toRem(16);
+      gap: toRem(20);
       flex-direction: column;
     }
 

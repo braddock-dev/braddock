@@ -59,4 +59,7 @@ export const Constants = {
       SESSION_EXPIRED: "LOGIN_SESSION_EXPIRED",
     },
   },
+  REGEX_PATTERS: {
+    PHONE_NUMBER: /^(9[1236]\d{7}|2\d{8})$/,
+  },
 };

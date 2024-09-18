@@ -1,6 +1,7 @@
 @import "src/app/ui/styles/vars.scss";
 @import "src/app/ui/styles/functions.scss";
 @import "src/app/ui/styles/breakpoints.scss";
+@import "src/app/ui/styles/mixins.scss";
 
 .container{
   all: unset;
@@ -12,6 +13,13 @@
   justify-content: center;
   display: flex;
   align-items: center;
+  @include defaultTransition();
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
 
   &[data-button-color="white"] {
     background-color: $white;

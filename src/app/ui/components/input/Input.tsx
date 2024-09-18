@@ -1,10 +1,15 @@
-'use client';
-import styles from './Input.module.scss';
-import React, { forwardRef, JSXElementConstructor, useMemo, useState } from 'react';
+"use client";
+import styles from "./Input.module.scss";
+import React, {
+  forwardRef,
+  JSXElementConstructor,
+  useMemo,
+  useState,
+} from "react";
 
-interface IInputProps extends React.ComponentPropsWithoutRef<'input'> {
+interface IInputProps extends React.ComponentPropsWithoutRef<"input"> {
   Icon?: JSXElementConstructor<any>;
-  position?: 'LEFT' | 'RIGHT';
+  position?: "LEFT" | "RIGHT";
   clickIcon?: () => void;
   dirty?: boolean;
   touched?: boolean;
@@ -12,22 +17,42 @@ interface IInputProps extends React.ComponentPropsWithoutRef<'input'> {
   floatingMode?: boolean;
   withBorder?: boolean;
   classNameContainer?: string;
+  isValid;
+  hasValue: boolean;
 }
-function Input({ Icon, errorMessage, floatingMode, touched, classNameContainer, ...rest }: IInputProps, ref?: React.Ref<HTMLInputElement>) {
+function Input(
+  {
+    Icon,
+    errorMessage,
+    floatingMode,
+    touched,
+    classNameContainer,
+    isValid,
+    hasValue,
+    ...rest
+  }: IInputProps,
+  ref?: React.Ref<HTMLInputElement>,
+) {
   const [inputFocus, setInputFocus] = useState<boolean>(false);
-  const [localValue, setLocalValue] = useState<any>(rest.value || '');
+  const [localValue, setLocalValue] = useState<any>(rest.value || "");
 
   const getValidationClass = useMemo(() => {
-    return touched && errorMessage ? styles.invalid : '';
+    if (touched && errorMessage) {
+      return styles.invalid;
+    }
+
+    if (touched && !errorMessage) {
+      return styles.valid;
+    }
   }, [touched, errorMessage]);
 
   const getFloatModeClass = useMemo(() => {
-    return floatingMode ? styles.floatingMode : '';
+    return floatingMode ? styles.floatingMode : "";
   }, [floatingMode]);
 
   const isFloating = useMemo(() => {
-    return inputFocus || rest.value || localValue;
-  }, [inputFocus, rest.value]);
+    return inputFocus || hasValue || localValue;
+  }, [inputFocus, hasValue, localValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalValue(e.target.value);
@@ -36,19 +61,30 @@ function Input({ Icon, errorMessage, floatingMode, touched, classNameContainer, 
 
   return (
     <div
-      className={`${styles.container} ${rest.disabled ? styles.disabled : ''} ${classNameContainer || ''}`}
+      className={`${styles.container} ${rest.disabled ? styles.disabled : ""} ${classNameContainer || ""}`}
       onFocus={() => setInputFocus(true)}
       onBlur={() => setInputFocus(false)}
+      data-is-valid={isValid}
     >
-      <input ref={ref} className={`${styles.input} ${getValidationClass} ${getFloatModeClass}`} onChange={handleChange} {...rest} />
+      <input
+        ref={ref}
+        className={`${styles.input} ${getValidationClass} ${getFloatModeClass}`}
+        onChange={handleChange}
+        {...rest}
+      />
 
       {floatingMode && (
-        <label className={`${styles.label} ${isFloating ? styles.floatLabel : ''}`} htmlFor={rest.name}>
+        <label
+          className={`${styles.label} ${isFloating ? styles.floatLabel : ""}`}
+          htmlFor={rest.name}
+        >
           {rest.placeholder}
         </label>
       )}
       {!!Icon && <Icon onClick={() => rest.clickIcon && rest.clickIcon()} />}
-      {!!touched && errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
+      {!!touched && errorMessage && (
+        <div className={styles.errorMessage}>{errorMessage}</div>
+      )}
     </div>
   );
 }
