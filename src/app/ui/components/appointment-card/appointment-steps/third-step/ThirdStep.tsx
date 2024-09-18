@@ -78,28 +78,26 @@ export default function ThirdStep(props: IThirdStepProps) {
           <Input
             type={"text"}
             inputMode={"text"}
-            name={"name"}
             placeholder={"Seu Nome"}
             floatingMode
             autoComplete={"name"}
             {...register("name")}
             errorMessage={errors.name?.message}
             touched={touchedFields.name}
-            isValid={!errors.name && getValues().name}
+            isValid={!errors.name && !!getValues().name}
             hasValue={!!getValues().name}
           />
 
           <Input
             type={"tel"}
             inputMode={"tel"}
-            name={"phoneNumber"}
             autoComplete={"tel"}
             placeholder={"Seu Contacto"}
             floatingMode
             {...register("phoneNumber", { required: true, min: 10 })}
             touched={touchedFields.phoneNumber}
             errorMessage={errors.phoneNumber?.message}
-            isValid={!errors.phoneNumber && getValues().phoneNumber}
+            isValid={!errors.phoneNumber && !!getValues().phoneNumber}
             hasValue={!!getValues().phoneNumber}
           />
         </form>

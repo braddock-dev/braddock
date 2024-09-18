@@ -17,7 +17,7 @@ interface IInputProps extends React.ComponentPropsWithoutRef<"input"> {
   floatingMode?: boolean;
   withBorder?: boolean;
   classNameContainer?: string;
-  isValid;
+  isValid?: boolean;
   hasValue: boolean;
 }
 function Input(
