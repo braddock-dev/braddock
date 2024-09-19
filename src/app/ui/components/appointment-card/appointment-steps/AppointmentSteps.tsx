@@ -10,6 +10,7 @@ import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/th
 import { useMutation } from "@tanstack/react-query";
 import { scheduleAppointment } from "@/app/backend/actions/treatmentsActions";
 import {
+  newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
@@ -38,6 +39,7 @@ const defaultAvailableSteps: IAvailableStepsMap = {
 };
 
 function AppointmentSteps() {
+  const resetState = useNewAppointmentStore(newAppointmentActions.resetState);
   const appointmentStore = useNewAppointmentStore(
     newAppointmentSelectors.appointmentStore,
   );
@@ -97,6 +99,10 @@ function AppointmentSteps() {
     },
     [],
   );
+
+  const handleCompleteAppointment = () => {
+    resetState();
+  };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
     [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
@@ -195,7 +201,28 @@ function AppointmentSteps() {
         </Button>
       </>
     ),
-    [APPOINTMENT_STEPS.SUCCESS_STEP]: <></>,
+    [APPOINTMENT_STEPS.SUCCESS_STEP]: (
+      <>
+        <Button
+          fullWidth
+          color={ButtonColors.BLACK}
+          className={styles.button}
+          outline
+          onClick={handleCompleteAppointment}
+        >
+          FAZER OUTRO
+        </Button>
+
+        <Button
+          fullWidth
+          color={ButtonColors.WHITE}
+          className={styles.button}
+          onClick={handleCompleteAppointment}
+        >
+          TERMINAR
+        </Button>
+      </>
+    ),
   };
 
   return (
@@ -204,11 +231,7 @@ function AppointmentSteps() {
         {renderStep[currentStep]}
       </div>
 
-      {currentStep != APPOINTMENT_STEPS.SUCCESS_STEP && (
-        <div className={styles.buttonContainer}>
-          {renderButtons[currentStep]}
-        </div>
-      )}
+      <div className={styles.buttonContainer}>{renderButtons[currentStep]}</div>
     </div>
   );
 }

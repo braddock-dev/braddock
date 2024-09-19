@@ -21,15 +21,4 @@
     text-align: left;
     color: $green01;
   }
-
-  .appointmentButtons{
-    display: flex;
-    justify-content: space-between;
-    gap: toRem(10);
-    margin-top: toRem(20);
-
-    .button{
-      width: 48%;
-    }
-  }
 }
