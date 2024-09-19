@@ -57,6 +57,16 @@ export default function SecondStep(props: ITimeSlot) {
     queryFn: () => getTreatmentTimeslots(selectedTreatmentIds),
   });
 
+  useEffect(() => {
+    if (
+      treatmentTimeslots &&
+      treatmentTimeslots.length > 0 &&
+      !selectedDaySlot
+    ) {
+      setSelectedDaySlot(treatmentTimeslots[0]);
+    }
+  }, [treatmentTimeslots, selectedDaySlot]);
+
   const dateSlots = useMemo(() => {
     if (!treatmentTimeslots) {
       return [];
@@ -73,13 +83,11 @@ export default function SecondStep(props: ITimeSlot) {
   }, [treatmentTimeslots]);
 
   const timeSlots = useMemo(() => {
-    const firstDaySlot = treatmentTimeslots?.[0];
-
-    if (!firstDaySlot || !firstDaySlot?.timeslots) {
+    if (!selectedDaySlot || !selectedDaySlot?.timeslots) {
       return [];
     }
 
-    return firstDaySlot.timeslots.map((timeSlot): ISelectButton => {
+    return selectedDaySlot.timeslots.map((timeSlot): ISelectButton => {
       return {
         text: (
           <span className={styles.buttonText}>
@@ -91,7 +99,7 @@ export default function SecondStep(props: ITimeSlot) {
         data: timeSlot,
       };
     });
-  }, [treatmentTimeslots]);
+  }, [treatmentTimeslots, selectedDaySlot]);
 
   if (isLoading) {
     return (

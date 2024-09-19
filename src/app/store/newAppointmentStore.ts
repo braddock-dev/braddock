@@ -37,7 +37,18 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       selectedDaySlot: undefined,
       selectedTimeSlot: undefined,
     }),
-  setSelectedDaySlot: (daySlot?: IDaySlot) => set({ selectedDaySlot: daySlot }),
+  setSelectedDaySlot: (daySlot?: IDaySlot) => {
+    set((state) => {
+      if (daySlot?.dayInMillis === state.selectedDaySlot?.dayInMillis) {
+        return {};
+      }
+
+      return {
+        selectedDaySlot: daySlot,
+        selectedTimeSlot: undefined,
+      };
+    });
+  },
   setSelectedTimeSlot: (timeSlot?: ITimeSlot) =>
     set({ selectedTimeSlot: timeSlot }),
   setTreatments: (treatments: ITreatment[]) => set({ treatments }),
