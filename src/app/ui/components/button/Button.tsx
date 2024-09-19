@@ -38,7 +38,14 @@ export default function Button({
       data-outline={outline}
     >
       {isLoading ? (
-        <Spinner className={styles.spinner} color={SpinnerColor.WHITE} />
+        <Spinner
+          className={styles.spinner}
+          color={
+            color === ButtonColors.WHITE
+              ? SpinnerColor.BLACK
+              : SpinnerColor.WHITE
+          }
+        />
       ) : (
         <>
           {href ? (

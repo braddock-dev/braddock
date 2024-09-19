@@ -6,14 +6,13 @@ import {
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
-import { Constants } from "@/app/utils/Constants";
-import dayjs from "@/app/utils/dayjs";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   UserInfoForm,
   userInfoFormSchema,
 } from "@/app/ui/components/appointment-card/appointment-steps/third-step/FormSchema";
+import AppointmentInfo from "@/app/ui/components/appointment-card/appointment-info/AppointmentInfo";
 
 interface IThirdStepProps {
   isValidChange: (isValid: boolean) => void;
@@ -22,9 +21,7 @@ export default function ThirdStep(props: IThirdStepProps) {
   const selectedTreatments = useNewAppointmentStore(
     newAppointmentSelectors.selectedTreatments,
   );
-  const selectedDaySlot = useNewAppointmentStore(
-    newAppointmentSelectors.selectedDaySlot,
-  );
+
   const selectedTimeSlot = useNewAppointmentStore(
     newAppointmentSelectors.selectedTimeSlot,
   );
@@ -91,7 +88,7 @@ export default function ThirdStep(props: IThirdStepProps) {
           <Input
             type={"tel"}
             inputMode={"tel"}
-            autoComplete={"tel"}
+            autoComplete={"none"}
             placeholder={"Seu Contacto"}
             floatingMode
             {...register("phoneNumber", { required: true, min: 10 })}
@@ -105,23 +102,10 @@ export default function ThirdStep(props: IThirdStepProps) {
 
       <div className={styles.section}>
         <p className={styles.title}>MEU AGENDAMENTO:</p>
-        <div className={styles.info}>
-          <div className={styles.infoItem}>
-            <p className={styles.itemName}>Serviço:</p>
-            <p className={styles.itemValue}>
-              {selectedTreatments.map((treatment) => treatment.name).join(", ")}
-            </p>
-          </div>
-
-          <div className={styles.infoItem}>
-            <p className={styles.itemName}>Data:</p>
-            <p className={styles.itemValue}>
-              {dayjs(selectedTimeSlot?.timeInMillis).format(
-                Constants.DATE_FORMAT.CUSTOM_FULL_DATE_TIME,
-              )}
-            </p>
-          </div>
-        </div>
+        <AppointmentInfo
+          selectedTreatments={selectedTreatments}
+          selectedTimeSlot={selectedTimeSlot}
+        />
       </div>
     </div>
   );

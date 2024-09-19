@@ -14,11 +14,14 @@ import {
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
 import { IBaseNewAppointmentInfo } from "@/app/backend/business/treatments/data/TreatmentsData";
+import JSConfetti from "js-confetti";
+import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/fourth-step/FourthStep";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
   DATE_SELECTION = "DATE_SELECTION",
   COMPLETE_APPOINTMENT = "COMPLETE_APPOINTMENT",
+  SUCCESS_STEP = "SUCCESS_STEP",
 }
 
 interface IAvailableSteps {
@@ -31,6 +34,7 @@ const defaultAvailableSteps: IAvailableStepsMap = {
   [APPOINTMENT_STEPS.SERVICES_SELECTION]: { isValid: false },
   [APPOINTMENT_STEPS.DATE_SELECTION]: { isValid: false },
   [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: { isValid: false },
+  [APPOINTMENT_STEPS.SUCCESS_STEP]: { isValid: false },
 };
 
 function AppointmentSteps() {
@@ -48,6 +52,9 @@ function AppointmentSteps() {
     },
     onSuccess: () => {
       toast.success("Agendamento realizado com sucesso");
+      const jsConfetti = new JSConfetti();
+      jsConfetti.addConfetti();
+      handleChangeStep(APPOINTMENT_STEPS.SUCCESS_STEP);
     },
   });
 
@@ -114,6 +121,13 @@ function AppointmentSteps() {
         }
       />
     ),
+    [APPOINTMENT_STEPS.SUCCESS_STEP]: (
+      <FourthStep
+        onComplete={() => {
+          handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
+        }}
+      />
+    ),
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -171,6 +185,7 @@ function AppointmentSteps() {
           color={ButtonColors.WHITE}
           className={styles.button}
           onClick={handleStartAppointment}
+          isLoading={isPending}
           disabled={
             !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
             isPending
@@ -180,6 +195,7 @@ function AppointmentSteps() {
         </Button>
       </>
     ),
+    [APPOINTMENT_STEPS.SUCCESS_STEP]: <></>,
   };
 
   return (
@@ -188,7 +204,11 @@ function AppointmentSteps() {
         {renderStep[currentStep]}
       </div>
 
-      <div className={styles.buttonContainer}>{renderButtons[currentStep]}</div>
+      {currentStep != APPOINTMENT_STEPS.SUCCESS_STEP && (
+        <div className={styles.buttonContainer}>
+          {renderButtons[currentStep]}
+        </div>
+      )}
     </div>
   );
 }

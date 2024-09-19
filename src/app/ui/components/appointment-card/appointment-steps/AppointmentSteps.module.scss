@@ -5,7 +5,10 @@
 @import "src/app/ui/styles/animations.scss";
 
 .container {
+  height: 100%;
+
   .groupButtonsContainer{
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: toRem(24);

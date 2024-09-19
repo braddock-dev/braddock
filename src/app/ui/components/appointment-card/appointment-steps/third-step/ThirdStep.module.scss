@@ -34,42 +34,5 @@
       gap: toRem(20);
       flex-direction: column;
     }
-
-    .info{
-      display: flex;
-      flex-direction: column;
-      gap: toRem(12);
-
-      .infoItem{
-        display: flex;
-        gap: toRem(10);
-        align-items: center;
-        justify-content: space-between;
-
-        .itemName{
-          font-size: toRem(14);
-          font-weight: bolder;
-          color: $white;
-          text-align: left;
-
-          @include max-sm {
-            font-size: toRem(12);
-          }
-        }
-
-        .itemValue{
-          font-size: toRem(14);
-          font-weight: 700;
-          color: rgba($white, 0.7);
-          text-align: right;
-          @include ellipsis-multiline(2, hidden);
-
-          @include max-sm {
-            font-size: toRem(12);
-          }
-        }
-
-      }
-    }
   }
 }
