@@ -102,6 +102,7 @@ function AppointmentSteps() {
 
   const handleCompleteAppointment = () => {
     resetState();
+    setCurrentStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
