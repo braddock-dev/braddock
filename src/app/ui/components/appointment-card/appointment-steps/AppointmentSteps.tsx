@@ -127,13 +127,7 @@ function AppointmentSteps() {
         }
       />
     ),
-    [APPOINTMENT_STEPS.SUCCESS_STEP]: (
-      <FourthStep
-        onComplete={() => {
-          handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
-        }}
-      />
-    ),
+    [APPOINTMENT_STEPS.SUCCESS_STEP]: <FourthStep />,
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {
