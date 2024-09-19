@@ -41,7 +41,7 @@ export default function ThirdStep(props: IThirdStepProps) {
   } = useForm<UserInfoForm>({
     resolver: zodResolver(userInfoFormSchema),
     reValidateMode: "onChange",
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       name: "",
       phoneNumber: "",
