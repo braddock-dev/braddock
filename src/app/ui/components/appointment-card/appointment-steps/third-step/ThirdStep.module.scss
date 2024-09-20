@@ -8,14 +8,13 @@
 .container{
   display: flex;
   flex-direction: column;
-  gap: toRem(18);
-  min-height: 325px;
+  gap: toRem(24);
   animation: fade-in 0.5s ease-in-out;
 
   .section{
     display: flex;
     flex-direction: column;
-    gap: toRem(18);
+    gap: toRem(10);
     padding-right: toRem(12);
 
     .title {

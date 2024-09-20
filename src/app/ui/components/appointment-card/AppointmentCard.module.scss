@@ -8,14 +8,14 @@
   overflow: hidden;
   width: 100%;
   max-width: toRem(400);
+  max-height: toRem(500);
   height: auto;
   display: flex;
   flex-direction: column;
   gap: toRem(24);
   border-radius: toRem(32);
-  padding: toRem(26) toRem(5) toRem(26) toRem(20);
+  padding: toRem(26) toRem(5) toRem(120) toRem(20);
   border: toRem(2) solid $white;
-  min-height: toRem(380);
   animation: fade-in 0.5s ease-in-out;
 
   .title{

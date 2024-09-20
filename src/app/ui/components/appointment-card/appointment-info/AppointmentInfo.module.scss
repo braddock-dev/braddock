@@ -13,9 +13,11 @@
     gap: toRem(10);
     align-items: center;
     justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba($white, 0.3);
 
     .itemName{
-      font-size: toRem(16);
+      font-size: toRem(14);
       font-weight: bolder;
       color: $white;
       text-align: left;
@@ -26,9 +28,9 @@
     }
 
     .itemValue{
-      font-size: toRem(16);
+      font-size: toRem(14);
       font-weight: 700;
-      color: rgba($white, 0.7);
+      color: rgba($white, 0.5);
       text-align: right;
       @include ellipsis-multiline(2, hidden);
 

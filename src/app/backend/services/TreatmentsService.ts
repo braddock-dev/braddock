@@ -84,7 +84,7 @@ class TreatmentsService {
         ),
         httpMethod: HttpMethods.POST,
         data: {
-          clientName: "Postman",
+          clientName: appointmentData.customerName,
         },
       };
 
