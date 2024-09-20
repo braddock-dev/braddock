@@ -1,6 +1,9 @@
 import dayjs from "dayjs";
-import "dayjs/locale/pt-br";
+import utc from "dayjs/plugin/utc";
+import "dayjs/locale/pt";
 
-dayjs.locale("pt-br");
-
-export default dayjs;
+dayjs.locale("pt");
+dayjs.extend(utc);
+export default function dayJsWrapper(date: any) {
+  return dayjs(date).utc();
+}

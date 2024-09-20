@@ -8,7 +8,7 @@ import {
   ISelectButton,
 } from "@/app/ui/components/select-button/SelectButton";
 import DateSlot from "@/app/ui/components/appointment-card/date-slot/DateSlot";
-import dayjs from "dayjs";
+import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import {
   newAppointmentActions,

@@ -1,5 +1,5 @@
 import styles from "./DateSlot.module.scss";
-import dayjs from "dayjs";
+import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import { IDaySlot } from "@/app/backend/business/treatments/data/TreatmentsData";
 
