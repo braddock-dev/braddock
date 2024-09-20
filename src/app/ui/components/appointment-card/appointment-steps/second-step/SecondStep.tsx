@@ -99,7 +99,7 @@ export default function SecondStep(props: ITimeSlot) {
         data: timeSlot,
       };
     });
-  }, [treatmentTimeslots, selectedDaySlot]);
+  }, [selectedDaySlot]);
 
   if (isLoading) {
     return (

@@ -69,7 +69,7 @@ export default function ButtonGroup(props: IButtonGroupProps) {
 
   const hiddenNextButtonClass = useMemo(() => {
     return currentSlide === props.buttonItems.length - 1 ? styles.hidden : "";
-  }, [currentSlide]);
+  }, [currentSlide, props.buttonItems]);
 
   const uniqueId = uuid();
   const nextButtonId = `nextButton-${uniqueId}`;
@@ -90,12 +90,13 @@ export default function ButtonGroup(props: IButtonGroupProps) {
 
       props.onSelectedButtonsChange(selectedKeys, selectedButtonData);
     },
-    [props.buttonItems, selectedKeys],
+    [props.buttonItems],
   );
 
   const toggleSelectedButton = useCallback(
     (selectButton: ISelectButton) => {
-      let resultOptions = selectedKeys;
+      let resultOptions;
+
       if (props.isMultiple) {
         if (isButtonSelected(selectButton.value)) {
           resultOptions = selectedKeys.filter(
@@ -111,7 +112,12 @@ export default function ButtonGroup(props: IButtonGroupProps) {
       setSelectedKeys(resultOptions);
       triggerSelectedButtonsChange(resultOptions);
     },
-    [props.isMultiple, isButtonSelected, selectedKeys],
+    [
+      props.isMultiple,
+      isButtonSelected,
+      selectedKeys,
+      triggerSelectedButtonsChange,
+    ],
   );
 
   const displayMode: Record<DISPLAY_MODE, ReactElement> = {
