@@ -52,8 +52,16 @@
     }
   }
 
-  &:hover .nextButton, &:hover .prevButton {
-    opacity: 1;
+  @include desktop-hover-state() {
+    &:hover .nextButton, &:hover .prevButton {
+      opacity: 1;
+    }
+  }
+
+  @include mobile-active-state() {
+    .nextButton, .prevButton {
+      opacity: 1;
+    }
   }
 
 }

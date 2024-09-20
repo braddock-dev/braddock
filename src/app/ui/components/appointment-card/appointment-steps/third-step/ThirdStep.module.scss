@@ -1,0 +1,38 @@
+@import "src/app/ui/styles/vars";
+@import "src/app/ui/styles/functions";
+@import "src/app/ui/styles/breakpoints";
+@import "src/app/ui/styles/mixins";
+@import "src/app/ui/styles/animations";
+
+
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: toRem(18);
+  min-height: 325px;
+  animation: fade-in 0.5s ease-in-out;
+
+  .section{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(18);
+    padding-right: toRem(12);
+
+    .title {
+      font-size: toRem(13);
+      font-weight: 700;
+      color: $white;
+      text-align: left;
+
+      @include max-sm {
+        font-size: toRem(12);
+      }
+    }
+
+    .formInputs{
+      display: flex;
+      gap: toRem(20);
+      flex-direction: column;
+    }
+  }
+}

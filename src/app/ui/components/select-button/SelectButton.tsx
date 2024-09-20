@@ -10,6 +10,7 @@ export interface ISelectButton {
   text: ReactElement | string;
   type: ButtonType;
   value: any;
+  data: any;
 }
 
 interface ISelectButtonProps {

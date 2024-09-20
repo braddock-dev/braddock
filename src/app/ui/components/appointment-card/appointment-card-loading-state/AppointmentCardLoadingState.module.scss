@@ -1,0 +1,31 @@
+@import "@/app/ui/styles/vars";
+@import "@/app/ui/styles/functions";
+@import "@/app/ui/styles/mixins";
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: toRem(20);
+
+  .mainTitle{
+    @include loadingContainer();
+    width: 40%;
+    height: toRem(24);
+  }
+
+
+  .items{
+    display: flex;
+    flex-wrap: wrap;
+    gap: toRem(16);
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .item{
+      @include loadingContainer();
+      width: 30%;
+      height: toRem(35);
+    }
+  }
+}

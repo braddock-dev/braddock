@@ -1,0 +1,32 @@
+@import "@/app/ui/styles/vars";
+@import "@/app/ui/styles/functions";
+@import "@/app/ui/styles/mixins";
+@import "@/app/ui/styles/breakpoints";
+@import "@/app/ui/styles/animations";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: toRem(16);
+
+  .item{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(12);
+    justify-content: flex-start;
+    overflow: hidden;
+    @include disableSelection;
+    animation: fade-in 0.5s ease-in-out;
+  }
+}
+
+.buttonText{
+  font-size: toRem(12);
+  font-weight: 700;
+  color: $white;
+  text-align: center;
+
+  @include max-sm {
+    font-size: toRem(12);
+  }
+}

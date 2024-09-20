@@ -30,6 +30,13 @@
     background: $black;
     color: $white;
 
+
+      &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px $black inset !important; /* Change 'white' to your desired background color */
+      box-shadow: 0 0 0 30px $black inset !important; /* For other browsers */
+      -webkit-text-fill-color: $white !important; /* Ensure text remains visible */
+    }
+
     &:focus {
       outline: none;
       border: 2px solid $black;
@@ -64,7 +71,7 @@
     }
 
     &.valid {
-      border: 2px solid $green01;
+      border: 2px solid rgba($green01, 0.7);
     }
 
 

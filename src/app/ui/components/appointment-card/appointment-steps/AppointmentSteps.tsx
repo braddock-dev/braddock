@@ -1,67 +1,71 @@
 "use client";
 
 import styles from "./AppointmentSteps.module.scss";
-import ButtonGroup, {
-  DISPLAY_MODE,
-} from "@/app/ui/components/button-group/ButtonGroup";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
+import React, { ReactElement, useCallback, useState } from "react";
+import { toast } from "sonner";
+import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
+import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
+import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
+import { useMutation } from "@tanstack/react-query";
+import { scheduleAppointment } from "@/app/backend/actions/treatmentsActions";
 import {
-  IDateSlot,
-  IService,
-} from "@/app/backend/appointments/AppointmentsData";
-import {
-  ButtonType,
-  ISelectButton,
-} from "@/app/ui/components/select-button/SelectButton";
-import dayjs from "dayjs";
-import { Constants } from "@/app/utils/Constants";
-import DateSlot from "@/app/ui/components/appointment-card/date-slot/DateSlot";
-import { ReactElement, useState } from "react";
-import Input from "@/app/ui/components/input/Input";
+  newAppointmentActions,
+  newAppointmentSelectors,
+  useNewAppointmentStore,
+} from "@/app/store/newAppointmentStore";
+import { IBaseNewAppointmentInfo } from "@/app/backend/business/treatments/data/TreatmentsData";
+import JSConfetti from "js-confetti";
+import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/fourth-step/FourthStep";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
   DATE_SELECTION = "DATE_SELECTION",
   COMPLETE_APPOINTMENT = "COMPLETE_APPOINTMENT",
+  SUCCESS_STEP = "SUCCESS_STEP",
 }
 
-interface IAppointmentStepsProps {
-  services: IService[];
-  dateSlots: IDateSlot[];
+interface IAvailableSteps {
+  isValid: boolean;
 }
-export default function AppointmentSteps(props: IAppointmentStepsProps) {
+
+type IAvailableStepsMap = Record<APPOINTMENT_STEPS, IAvailableSteps>;
+
+const defaultAvailableSteps: IAvailableStepsMap = {
+  [APPOINTMENT_STEPS.SERVICES_SELECTION]: { isValid: false },
+  [APPOINTMENT_STEPS.DATE_SELECTION]: { isValid: false },
+  [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: { isValid: false },
+  [APPOINTMENT_STEPS.SUCCESS_STEP]: { isValid: false },
+};
+
+function AppointmentSteps() {
+  const resetState = useNewAppointmentStore(newAppointmentActions.resetState);
+  const appointmentStore = useNewAppointmentStore(
+    newAppointmentSelectors.appointmentStore,
+  );
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["newAppointment"],
+    mutationFn: (newAppointmentData: IBaseNewAppointmentInfo) => {
+      return scheduleAppointment(newAppointmentData);
+    },
+    onError: () => {
+      toast.error("Erro ao agendar, tente novamente");
+    },
+    onSuccess: () => {
+      toast.success("Agendamento realizado com sucesso");
+      const jsConfetti = new JSConfetti();
+      jsConfetti.addConfetti();
+      handleChangeStep(APPOINTMENT_STEPS.SUCCESS_STEP);
+    },
+  });
+
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
     APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
 
-  const barberServices = props.services.map((service): ISelectButton => {
-    return {
-      text: <span className={styles.buttonText}>{service.name}</span>,
-      type: ButtonType.horizontal,
-      value: service.name,
-    };
-  });
-
-  const dateSlots = props.dateSlots.map((dateSlot, index): ISelectButton => {
-    return {
-      text: <DateSlot key={index} dateSlot={dateSlot} />,
-      type: ButtonType.vertical,
-      value: dateSlot.date,
-    };
-  });
-
-  const timeSlots = props.dateSlots[0].timeSlots.map(
-    (timeSlot): ISelectButton => {
-      return {
-        text: (
-          <span className={styles.buttonText}>
-            {dayjs(timeSlot.time).format(Constants.DATE_FORMAT.TIME)}
-          </span>
-        ),
-        type: ButtonType.horizontal,
-        value: timeSlot,
-      };
-    },
+  const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
+    defaultAvailableSteps,
   );
 
   const handleChangeStep = (goTo: APPOINTMENT_STEPS) => {
@@ -69,90 +73,62 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
   };
 
   const handleStartAppointment = () => {
-    alert("Start appointment");
+    mutate(appointmentStore);
+  };
+
+  const handleStarAuth = () => {
+    handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
+  };
+
+  const handleErrorAuth = () => {
+    toast.error("Erro ao autenticar");
+    handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION);
+  };
+
+  const handleSuccessAuth = () => {
+    toast.success("Autenticado com sucesso");
+    handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
+  };
+
+  const changeStepValidState = useCallback(
+    (step: APPOINTMENT_STEPS, isValid: boolean) => {
+      setAvailableSteps((prev) => ({
+        ...prev,
+        [step]: { isValid },
+      }));
+    },
+    [],
+  );
+
+  const handleCompleteAppointment = () => {
+    resetState();
+    setCurrentStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
     [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
-      <div
-        className={styles.servicesContainer}
-        key={APPOINTMENT_STEPS.SERVICES_SELECTION}
-      >
-        <ButtonGroup
-          buttonItems={barberServices}
-          title={"SERVIÇOS"}
-          defaultSelected={barberServices[0].value}
-          isMultiple
-          displayMode={DISPLAY_MODE.LIST}
-        />
-      </div>
+      <FirstStep
+        isValidChange={(isValid) =>
+          changeStepValidState(APPOINTMENT_STEPS.SERVICES_SELECTION, isValid)
+        }
+      />
     ),
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
-      <>
-        <div
-          className={styles.servicesContainer}
-          key={APPOINTMENT_STEPS.DATE_SELECTION}
-        >
-          <ButtonGroup
-            buttonItems={dateSlots}
-            title={"DATA"}
-            defaultSelected={dateSlots[0].value}
-            displayMode={DISPLAY_MODE.SWIPER}
-          />
-        </div>
-
-        <div
-          className={styles.servicesContainer}
-          key={APPOINTMENT_STEPS.DATE_SELECTION}
-        >
-          <ButtonGroup
-            buttonItems={timeSlots}
-            title={"HORA"}
-            defaultSelected={timeSlots[0].value}
-            displayMode={DISPLAY_MODE.SWIPER}
-          />
-        </div>
-      </>
+      <SecondStep
+        isValidChange={(isValid) => {
+          changeStepValidState(APPOINTMENT_STEPS.DATE_SELECTION, isValid);
+        }}
+        onError={() => handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)}
+      />
     ),
     [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (
-      <div className={styles.completeStepContainer}>
-        <div className={styles.section}>
-          <p className={styles.title}>INFORMAÇÃO PESSOAL:</p>
-          <div className={styles.formInputs}>
-            <Input
-              type={"text"}
-              inputMode={"text"}
-              name={"name"}
-              placeholder={"Seu Nome"}
-              floatingMode
-            />
-
-            <Input
-              type={"tel"}
-              inputMode={"tel"}
-              name={"phone"}
-              placeholder={"Seu Contacto"}
-              floatingMode
-            />
-          </div>
-        </div>
-
-        <div className={styles.section}>
-          <p className={styles.title}>MEU AGENDAMENTO:</p>
-          <div className={styles.info}>
-            <div className={styles.infoItem}>
-              <p className={styles.itemName}>Serviço:</p>
-              <p className={styles.itemValue}>Corte de Cabelo</p>
-            </div>
-
-            <div className={styles.infoItem}>
-              <p className={styles.itemName}>Data:</p>
-              <p className={styles.itemValue}>10 de Agosto às 10PM</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ThirdStep
+        isValidChange={(isValid) =>
+          changeStepValidState(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT, isValid)
+        }
+      />
     ),
+    [APPOINTMENT_STEPS.SUCCESS_STEP]: <FourthStep />,
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -161,6 +137,7 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
         fullWidth
         color={ButtonColors.WHITE}
         className={styles.button}
+        disabled={!availableSteps[APPOINTMENT_STEPS.SERVICES_SELECTION].isValid}
         onClick={() => handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION)}
       >
         CONTINUAR
@@ -168,22 +145,26 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
     ),
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
       <>
+        <div className={styles.fullWidth}>
+          <Button
+            fullWidth
+            color={ButtonColors.WHITE}
+            outline
+            className={styles.button}
+            onClick={() =>
+              handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)
+            }
+          >
+            VOLTAR
+          </Button>
+        </div>
+
         <Button
           fullWidth
           color={ButtonColors.WHITE}
-          outline
           className={styles.button}
-          onClick={() => handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)}
-        >
-          VOLTAR
-        </Button>
-        <Button
-          fullWidth
-          color={ButtonColors.WHITE}
-          className={styles.button}
-          onClick={() =>
-            handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT)
-          }
+          disabled={!availableSteps[APPOINTMENT_STEPS.DATE_SELECTION].isValid}
+          onClick={handleStarAuth}
         >
           CONTINUAR
         </Button>
@@ -205,8 +186,35 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
           color={ButtonColors.WHITE}
           className={styles.button}
           onClick={handleStartAppointment}
+          isLoading={isPending}
+          disabled={
+            !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
+            isPending
+          }
         >
           AGENDAR AGORA
+        </Button>
+      </>
+    ),
+    [APPOINTMENT_STEPS.SUCCESS_STEP]: (
+      <>
+        <Button
+          fullWidth
+          color={ButtonColors.BLACK}
+          className={styles.button}
+          outline
+          onClick={handleCompleteAppointment}
+        >
+          FAZER OUTRO
+        </Button>
+
+        <Button
+          fullWidth
+          color={ButtonColors.WHITE}
+          className={styles.button}
+          onClick={handleCompleteAppointment}
+        >
+          TERMINAR
         </Button>
       </>
     ),
@@ -222,3 +230,5 @@ export default function AppointmentSteps(props: IAppointmentStepsProps) {
     </div>
   );
 }
+
+export default React.memo(AppointmentSteps);

@@ -2,7 +2,14 @@
 import SelectButton, {
   ISelectButton,
 } from "@/app/ui/components/select-button/SelectButton";
-import { ReactElement, useCallback, useMemo, useRef, useState } from "react";
+import {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -18,6 +25,14 @@ import styles from "./ButtonGroup.module.scss";
 import ArrowIcon from "@/app/ui/vectors/chevron-right.svg";
 import { v4 as uuid } from "uuid";
 
+type SelectionKey = string | number | (string | number)[];
+
+const getDefaultSelection = (defaultSelected?: SelectionKey) => {
+  if (!defaultSelected) return [];
+  if (Array.isArray(defaultSelected)) return defaultSelected;
+  return [defaultSelected];
+};
+
 export enum DISPLAY_MODE {
   SWIPER = "SWIPER",
   LIST = "LIST",
@@ -26,19 +41,22 @@ export enum DISPLAY_MODE {
 interface IButtonGroupProps {
   buttonItems: ISelectButton[];
   title: string;
-  defaultSelected?: string;
+  defaultSelectedKey?: SelectionKey;
   isMultiple?: boolean;
   showCounter?: boolean;
   displayMode: DISPLAY_MODE;
+  onSelectedButtonsChange: (buttonValues: any[], buttonData: any[]) => void;
 }
 export default function ButtonGroup(props: IButtonGroupProps) {
   const [hidden, setHidden] = useState<boolean>(true);
   const swiperRef = useRef<SwiperRef | null>(null);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
-  const [selectedButtons, setSelectedButtons] = useState<string[]>(
-    props.defaultSelected ? [props.defaultSelected] : [],
-  );
+  const [selectedKeys, setSelectedKeys] = useState<(string | number)[]>([]);
+
+  useEffect(() => {
+    setSelectedKeys(getDefaultSelection(props.defaultSelectedKey));
+  }, [props.defaultSelectedKey]);
 
   const hiddenSliderClass = useMemo(
     () => (hidden ? styles.hidden : ""),
@@ -59,24 +77,42 @@ export default function ButtonGroup(props: IButtonGroupProps) {
 
   const isButtonSelected = useCallback(
     (buttonValue: string) => {
-      return selectedButtons.includes(buttonValue);
+      return selectedKeys.includes(buttonValue);
     },
-    [selectedButtons],
+    [selectedKeys],
   );
 
-  const toggleSelectedButton = (selectButton: ISelectButton) => {
-    if (props.isMultiple) {
-      if (isButtonSelected(selectButton.value)) {
-        setSelectedButtons(
-          selectedButtons.filter((value) => value !== selectButton.value),
-        );
+  const triggerSelectedButtonsChange = useCallback(
+    (selectedKeys: (string | number)[]) => {
+      const selectedButtonData = props.buttonItems
+        .filter((buttonItem) => selectedKeys.includes(buttonItem.value))
+        .map((buttonItem) => buttonItem.data);
+
+      props.onSelectedButtonsChange(selectedKeys, selectedButtonData);
+    },
+    [props.buttonItems, selectedKeys],
+  );
+
+  const toggleSelectedButton = useCallback(
+    (selectButton: ISelectButton) => {
+      let resultOptions = selectedKeys;
+      if (props.isMultiple) {
+        if (isButtonSelected(selectButton.value)) {
+          resultOptions = selectedKeys.filter(
+            (value) => value !== selectButton.value,
+          );
+        } else {
+          resultOptions = [...selectedKeys, selectButton.value];
+        }
       } else {
-        setSelectedButtons([...selectedButtons, selectButton.value]);
+        resultOptions = [selectButton.value];
       }
-    } else {
-      setSelectedButtons([selectButton.value]);
-    }
-  };
+
+      setSelectedKeys(resultOptions);
+      triggerSelectedButtonsChange(resultOptions);
+    },
+    [props.isMultiple, isButtonSelected, selectedKeys],
+  );
 
   const displayMode: Record<DISPLAY_MODE, ReactElement> = {
     [DISPLAY_MODE.LIST]: (
@@ -143,7 +179,7 @@ export default function ButtonGroup(props: IButtonGroupProps) {
       <p className={styles.title}>
         {props.title}{" "}
         <span className={styles.counter}>
-          {selectedButtons.length > 1 ? `(${selectedButtons.length})` : ""}
+          {selectedKeys.length > 1 ? `(${selectedKeys.length})` : ""}
         </span>
       </p>
 

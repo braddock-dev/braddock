@@ -5,84 +5,10 @@
 @import "src/app/ui/styles/animations.scss";
 
 .container {
-  .servicesContainer{
-    display: flex;
-    flex-direction: column;
-    gap: toRem(12);
-    justify-content: flex-start;
-    overflow: hidden;
-    @include disableSelection;
-    animation: fade-in 0.5s ease-in-out;
-  }
-
-  .completeStepContainer{
-    display: flex;
-    flex-direction: column;
-    gap: toRem(18);
-    min-height: 325px;
-
-    .section{
-      display: flex;
-      flex-direction: column;
-      gap: toRem(16);
-      padding-right: toRem(12);
-
-      .title {
-        font-size: toRem(13);
-        font-weight: 700;
-        color: $white;
-        text-align: left;
-
-        @include max-sm {
-          font-size: toRem(12);
-        }
-      }
-
-      .formInputs{
-        display: flex;
-        gap: toRem(16);
-        flex-direction: column;
-      }
-
-      .info{
-        display: flex;
-        flex-direction: column;
-        gap: toRem(12);
-
-        .infoItem{
-          display: flex;
-          gap: toRem(8);
-          align-items: center;
-          justify-content: space-between;
-
-          .itemName{
-            font-size: toRem(14);
-            font-weight: bolder;
-            color: $white;
-            text-align: left;
-
-            @include max-sm {
-              font-size: toRem(12);
-            }
-          }
-
-          .itemValue{
-            font-size: toRem(14);
-            font-weight: 700;
-            color: $white;
-            text-align: left;
-
-            @include max-sm {
-              font-size: toRem(12);
-            }
-          }
-
-        }
-      }
-    }
-  }
+  height: 100%;
 
   .groupButtonsContainer{
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: toRem(24);
@@ -119,4 +45,9 @@
   @include max-sm {
     font-size: toRem(12);
   }
+}
+
+.fullWidth {
+  width: 100%;
+  display: flex;
 }

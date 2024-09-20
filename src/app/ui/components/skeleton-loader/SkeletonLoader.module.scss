@@ -1,0 +1,46 @@
+@import '@/app/ui/styles/vars';
+
+$shineGradientColor1: #f1f1f1;
+$shineGradientColor2: #d6d6d6;
+
+.skeletonContainer {
+  width: 100%;
+  height: 100%;
+
+  &.pulse {
+    background: $lightGray;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  &.shine {
+    background: linear-gradient(90deg, $shineGradientColor1 0%, $shineGradientColor2 50%, $shineGradientColor1 100%);
+    animation: shine 1.2s ease-in-out infinite;
+    background-size: 200% 200%;
+  }
+
+  &.circle {
+    border-radius: 100%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes shine {
+  from {
+    background-position-x: 0;
+  }
+
+  to {
+    background-position-x: -200%;
+  }
+}
