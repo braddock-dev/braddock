@@ -78,7 +78,7 @@ export default function FirstStep(props: IFirstStepProps) {
   if (isLoading) {
     return (
       <div className={styles.container} data-loading-state={true}>
-        <AppointmentCardLoadingState itemsCount={7} />
+        <AppointmentCardLoadingState itemsCount={16} />
       </div>
     );
   }
