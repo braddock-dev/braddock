@@ -4,6 +4,7 @@ import "./ui/styles/globals.scss";
 import QueryClientWrapper from "@/app/ui/components/QueryClientWrapper";
 import ResponsivenessProvider from "@/app/ui/components/responsiveness-provider/ResponsivenessProvider";
 import { Toaster } from "sonner";
+import PrelineScript from "@/app/ui/components/preline-script/PrelineScript";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,6 +39,8 @@ export default function RootLayout({
         </ResponsivenessProvider>
         <Toaster richColors />
       </body>
+
+      <PrelineScript />
     </html>
   );
 }
