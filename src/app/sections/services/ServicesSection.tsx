@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "./ServicesSection.module.scss";
+import "swiper/css";
 import BaseSection from "@/app/ui/components/base-section/BaseSection";
 import ArrowRight from "@/app/ui/vectors/arrow-right.svg";
 import { Autoplay, Mousewheel, Navigation } from "swiper/modules";
