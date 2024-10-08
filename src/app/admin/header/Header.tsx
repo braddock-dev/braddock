@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 lg:ps-[260px] dark:bg-neutral-800 dark:border-neutral-700">
+    <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-brown border-b text-sm py-2.5 lg:ps-[260px]">
       <nav className="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
         <div className="me-5 lg:me-0 lg:hidden">
           <a

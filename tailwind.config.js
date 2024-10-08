@@ -5,7 +5,14 @@ module.exports = {
     "./node_modules/preline/preline.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        brown: "#734434",
+        brown01: "#b47866",
+        brown02: "#735f5f",
+        lightBrown01: "#ECE1CD",
+      },
+    },
   },
   plugins: [require("preline/plugin")],
 };
