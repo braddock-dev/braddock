@@ -59,7 +59,7 @@ class TreatmentsService {
 
       const response = await ApiInterface.send(request);
 
-      Logger.log(this.LOG_TAG, "Get treatment timeslots response success");
+      Logger.log(this.LOG_TAG, "Get treatments timeslots response success");
 
       if (!response || response.status !== HttpStatus.OK) {
         return Promise.reject("Failed to get treatment timeslots");
