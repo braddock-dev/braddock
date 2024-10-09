@@ -40,6 +40,11 @@ export const Constants = {
     SCHEDULE_APPOINTMENT: (businessId: string, timeSlotId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots/${timeSlotId}/schedule`,
   },
+  APP_ROUTES: {
+    HOME: "/",
+    ADMIN: "/admin",
+    APPOINTMENTS: "/admin/appointments",
+  },
   ERRORS: {
     GENERIC: {
       UNKNOWN: "GN_UNKNOWN",
