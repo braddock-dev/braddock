@@ -4,6 +4,7 @@ export const EXTERNAL_CONFIGS = {
   BASE_URL: process.env.BASE_URL || "",
   API_REQUEST_TIMEOUT: process.env.NEXT_PUBLIC_API_REQUEST_TIMEOUT || 30000,
   API_ACCESS_TOKEN: process.env.API_ACCESS,
+  API_BUSINESS_TOKEN: process.env.API_BUSINESS_TOKEN,
 };
 
 export const Constants = {
@@ -39,6 +40,7 @@ export const Constants = {
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots`,
     SCHEDULE_APPOINTMENT: (businessId: string, timeSlotId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots/${timeSlotId}/schedule`,
+    GET_APPOINTMENTS: () => `${EXTERNAL_CONFIGS.BASE_URL}/appointments`,
   },
   APP_ROUTES: {
     HOME: "/",

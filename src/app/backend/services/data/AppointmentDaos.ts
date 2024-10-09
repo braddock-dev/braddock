@@ -5,3 +5,15 @@ export interface INewAppointmentRequest {
   customerPhone: string;
   customerEmail?: string;
 }
+
+export interface IQueryAppointmentRequest {
+  businessId: string;
+  startDate: number;
+  endDate: number;
+}
+
+export interface IAppointmentsResponse {
+  day: string;
+  dayInMillis: number;
+  appointments: any[];
+}

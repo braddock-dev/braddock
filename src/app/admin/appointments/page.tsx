@@ -4,8 +4,24 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/interaction";
+import { useMutation } from "@tanstack/react-query";
+import { getAppointments } from "@/app/backend/actions/appointmentActions";
+import { useEffect } from "react";
+import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
 
 export default function Page() {
+  const { isPending, data, error, mutate } = useMutation({
+    mutationKey: ["appointments"],
+    mutationFn: (data: IAppointmentQueryData) => getAppointments(data),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+
+  useEffect(() => {
+    mutate({});
+  }, []);
+
   return (
     <div>
       <FullCalendar
