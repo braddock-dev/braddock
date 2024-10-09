@@ -56,8 +56,12 @@ class TreatmentsDataAdapter {
       throw new Error("No time slot selected");
     }
 
+    const treatmentsId = newAppointment.selectedTreatments.map(
+      (treatment) => treatment.id,
+    );
+
     return {
-      treatmentId: newAppointment.selectedTreatments[0].id,
+      treatmentsId: treatmentsId,
       timeSlotId: newAppointment.selectedTimeSlot.timeInMillis,
       customerName: newAppointment.customerName,
       customerPhone: newAppointment.phoneNumber,

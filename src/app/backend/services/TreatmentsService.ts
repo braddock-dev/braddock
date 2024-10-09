@@ -41,18 +41,20 @@ class TreatmentsService {
     }
   }
 
-  public async getTreatmentTimeslots(treatmentId: string): Promise<any[]> {
+  public async getTreatmentTimeslots(treatmentsId: string[]): Promise<any[]> {
     Logger.log(this.LOG_TAG, "Start getting treatment timeslots", [
-      treatmentId,
+      treatmentsId,
     ]);
 
     try {
       const request: IHttpRequestConfig = {
         url: Constants.API_ROUTES.GET_TIMESLOTS(
           Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
-          treatmentId,
         ),
         httpMethod: HttpMethods.GET,
+        data: {
+          treatmentsIds: treatmentsId,
+        },
       };
 
       const response = await ApiInterface.send(request);
@@ -79,12 +81,12 @@ class TreatmentsService {
       const request: IHttpRequestConfig = {
         url: Constants.API_ROUTES.SCHEDULE_APPOINTMENT(
           Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
-          appointmentData.treatmentId,
           appointmentData.timeSlotId.toString(),
         ),
         httpMethod: HttpMethods.POST,
         data: {
           clientName: appointmentData.customerName,
+          treatmentsIds: appointmentData.treatmentsId,
         },
       };
 

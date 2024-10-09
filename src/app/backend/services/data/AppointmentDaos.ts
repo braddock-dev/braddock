@@ -1,5 +1,5 @@
 export interface INewAppointmentRequest {
-  treatmentId: string;
+  treatmentsId: string[];
   timeSlotId: number;
   customerName: string;
   customerPhone: string;
