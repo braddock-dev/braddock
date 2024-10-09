@@ -14,7 +14,7 @@ export default function SideMenu() {
   border-e border-gray-200 bg-brown
   lg:block lg:translate-x-0 lg:end-auto lg:bottom-0"
         role="dialog"
-        tabIndex="-1"
+        tabIndex={-1}
         aria-label="Sidebar"
       >
         <div className="relative flex flex-col h-full max-h-full">
