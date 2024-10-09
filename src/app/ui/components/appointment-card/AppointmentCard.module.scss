@@ -8,8 +8,7 @@
   overflow: hidden;
   width: 100%;
   max-width: toRem(400);
-  max-height: toRem(500);
-  height: auto;
+  height: toRem(500);
   display: flex;
   flex-direction: column;
   gap: toRem(24);
