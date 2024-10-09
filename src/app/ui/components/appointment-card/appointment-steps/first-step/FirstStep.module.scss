@@ -5,6 +5,7 @@
 @import "@/app/ui/styles/mixins";
 
 .container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: toRem(12);

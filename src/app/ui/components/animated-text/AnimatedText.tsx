@@ -25,7 +25,7 @@ export default function AnimatedText({
   ...props
 }: IAnimatedTextProps) {
   const textRef = useRef(null);
-  const isInViewport = useInView(textRef, { once: props.once, amount: 0.5 });
+  const isInViewport = useInView(textRef, { once: props.once, amount: 1 });
 
   return (
     <WrapperElement className={className}>

@@ -16,15 +16,12 @@
 
 
   .items{
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: toRem(16);
-    justify-content: space-between;
-    align-items: flex-start;
+    grid-template-columns: repeat(auto-fill, minmax(29%, 1fr));
 
     .item{
       @include loadingContainer();
-      width: 30%;
       height: toRem(35);
     }
   }

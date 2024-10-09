@@ -20,15 +20,16 @@ export default function HeroSection() {
 
       <div className={styles.container}>
         <Header />
+        <div className={styles.content}>
+          <AnimatedText
+            text={["EXPERIÊNCIAS ÚNICAS", "EM CUIDADOS COM A", "AUTOESTIMA"]}
+            element={"h1"}
+            className={styles.title}
+            once
+          />
 
-        <AnimatedText
-          text={["EXPERIÊNCIAS ÚNICAS", "EM CUIDADOS COM A", "AUTOESTIMA"]}
-          element={"h1"}
-          className={styles.title}
-          once
-        />
-
-        <AppointmentCard className={styles.appointmentCard} />
+          <AppointmentCard className={styles.appointmentCard} />
+        </div>
       </div>
     </BaseSection>
   );

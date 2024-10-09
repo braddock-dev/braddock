@@ -20,6 +20,29 @@
     padding-top: toRem(90);
   }
 
+  @include max-sm{
+    padding-bottom: toRem(30);
+    padding-top: toRem(70);
+  }
+
+  .content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: toRem(20);
+
+    @include max-md {
+      align-items: center;
+    }
+
+    @include max-sm {
+      align-items: center;
+      flex-direction: column-reverse;
+    }
+  }
+
   .title{
     position: absolute;
     bottom: toRem(80);
