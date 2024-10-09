@@ -25,6 +25,7 @@
   font-weight: 700;
   color: $white;
   text-align: center;
+  padding: toRem(14) toRem(8);
 
   @include max-sm {
     font-size: toRem(12);

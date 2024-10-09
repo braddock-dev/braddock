@@ -9,25 +9,25 @@
   justify-content: center;
   align-items: center;
   gap: toRem(8);
-  padding: toRem(3) 0;
+  padding: toRem(3) toRem(8);
 
   .date{
-    font-size: toRem(12);
+    font-size: toRem(16);
     font-weight: 800;
     color: $white;
 
     @include max-sm {
-      font-size: toRem(12);
+      font-size: toRem(16);
     }
   }
 
   .weekday{
-    font-size: toRem(10);
+    font-size: toRem(12);
     font-weight: 500;
     color: $white;
 
     @include max-sm {
-      font-size: toRem(8);
+      font-size: toRem(12);
     }
   }
 }

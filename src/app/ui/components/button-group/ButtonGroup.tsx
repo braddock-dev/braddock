@@ -150,6 +150,7 @@ export default function ButtonGroup(props: IButtonGroupProps) {
             nextEl: `#${nextButtonId}`,
             prevEl: `#${prevButtonId}`,
           }}
+          slidesOffsetAfter={30}
         >
           {props.buttonItems.map((buttonItem, index) => (
             <SwiperSlide key={index} style={{ width: "auto" }}>
