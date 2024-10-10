@@ -51,7 +51,7 @@ class TreatmentsService {
         url: Constants.API_ROUTES.GET_TIMESLOTS(
           Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
         ),
-        httpMethod: HttpMethods.GET,
+        httpMethod: HttpMethods.POST,
         data: {
           treatmentsIds: treatmentsId,
         },
