@@ -15,3 +15,16 @@ export interface IAppointmentQueryData {
   startDate?: number;
   endDate?: number;
 }
+
+export interface IEvent {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  interactive: boolean;
+  className?: string;
+  editable: boolean;
+  overlap: boolean;
+  backgroundColor?: string;
+  borderColor?: string;
+}
