@@ -10,11 +10,13 @@ import { useMemo, useState } from "react";
 import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
 import AppointmentDataAdapter from "@/app/backend/business/treatments/AppointmentDataAdapter";
 import ptLocale from "@fullcalendar/core/locales/pt";
+import Button, { ButtonColors } from "@/app/ui/components/button/Button";
+import { toast } from "sonner";
 
 export default function Page() {
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
 
-  const { isPending, data, error } = useQuery({
+  const { data, error, refetch, isLoading, isPending } = useQuery({
     queryKey: ["appointments", filter],
     queryFn: () => getAppointments(filter),
   });
@@ -24,6 +26,25 @@ export default function Page() {
 
     return AppointmentDataAdapter.convertAppointmentsToEvents(data);
   }, [data]);
+
+  if (error) {
+    toast.error("Erro ao carregar os agendamentos");
+
+    return (
+      <div
+        className={
+          "flex flex-col w-full justify-center items-center h-[80vh] gap-5"
+        }
+      >
+        <h2 className={"text-xl font-bold text-brown"}>
+          Erro ao carregar os agendamentos
+        </h2>
+        <Button color={ButtonColors.BLACK} onClick={() => refetch()}>
+          Tentar Novamente
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div>
