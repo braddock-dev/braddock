@@ -6,14 +6,16 @@ import timeGridPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointments } from "@/app/backend/actions/appointmentActions";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
 import AppointmentDataAdapter from "@/app/backend/business/treatments/AppointmentDataAdapter";
 import ptLocale from "@fullcalendar/core/locales/pt";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { toast } from "sonner";
+import AppointmentDetails from "@/app/ui/components/appointment-details/AppointmentDetails";
 
 export default function Page() {
+  const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
 
   const { data, error, refetch, isLoading, isPending } = useQuery({
@@ -46,6 +48,17 @@ export default function Page() {
     );
   }
 
+  function openOverlay() {
+    if (overlayButtonRef.current?.click) {
+      overlayButtonRef.current?.click();
+    }
+  }
+
+  const handleClickEvent = (event) => {
+    console.log("event", event);
+    openOverlay();
+  };
+
   return (
     <div>
       <FullCalendar
@@ -61,7 +74,22 @@ export default function Page() {
         eventInteractive={false}
         events={events}
         locale={ptLocale}
+        eventClick={handleClickEvent}
       />
+
+      <button
+        type="button"
+        className="hidden"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="hs-offcanvas-custom-backdrop-color"
+        data-hs-overlay="#hs-offcanvas-custom-backdrop-color"
+        ref={overlayButtonRef}
+      >
+        Open offcanvas
+      </button>
+
+      <AppointmentDetails />
     </div>
   );
 }
