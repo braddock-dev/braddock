@@ -13,6 +13,7 @@ import ptLocale from "@fullcalendar/core/locales/pt";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { toast } from "sonner";
 import AppointmentDetails from "@/app/ui/components/appointment-details/AppointmentDetails";
+import { EventClickArg } from "@fullcalendar/core";
 
 export default function Page() {
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -54,7 +55,7 @@ export default function Page() {
     }
   }
 
-  const handleClickEvent = (event) => {
+  const handleClickEvent = (event: EventClickArg) => {
     console.log("event", event);
     openOverlay();
   };

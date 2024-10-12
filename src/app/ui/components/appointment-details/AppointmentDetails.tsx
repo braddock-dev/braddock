@@ -3,20 +3,21 @@ import AvatarUser from "@/app/ui/images/avatarFallback.png";
 import Image from "next/image";
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
 import ServiceItem from "@/app/ui/components/appointment-details/ServiceItem";
+import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 
 export default function AppointmentDetails() {
   return (
     <div
       id="hs-offcanvas-custom-backdrop-color"
-      class="hs-overlay hs-overlay-open:translate-x-0 hs-overlay-backdrop-open:bg-amber-900/85 hidden -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-md w-full z-[80] bg-white border-e"
+      className="hs-overlay hs-overlay-open:translate-x-0 hs-overlay-backdrop-open:bg-amber-900/85 hidden -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-md w-full z-[80] bg-white border-e"
       role="dialog"
-      tabIndex="-1"
+      tabIndex={-1}
       aria-labelledby="hs-offcanvas-custom-backdrop-color-label"
     >
-      <div class="flex justify-between items-center py-3 px-4 border-b">
+      <div className="flex justify-between items-center py-3 px-4 border-b">
         <h3
           id="hs-offcanvas-custom-backdrop-color-label"
-          class="font-bold text-gray-800"
+          className="font-bold text-gray-800"
         >
           Detalhes to Agendamento
         </h3>
@@ -26,7 +27,7 @@ export default function AppointmentDetails() {
           aria-label="Close"
           data-hs-overlay="#hs-offcanvas-custom-backdrop-color"
         >
-          <span class="sr-only">Close</span>
+          <span className="sr-only">Close</span>
           <svg
             className="shrink-0 size-4"
             xmlns="http://www.w3.org/2000/svg"
@@ -44,13 +45,13 @@ export default function AppointmentDetails() {
           </svg>
         </button>
       </div>
-      <div class="p-4 flex flex-col gap-4">
+      <div className="p-4 flex flex-col gap-6">
         <SectionInfo title={"Quando?"}>
           <div className={"text-neutral-500"}>
             <p>Sexta feira, 10 de Setembro</p>
             <p>
-              Das <span className={"font-bold"}>14:00 às 15:00</span>, com
-              duração de 1 hora
+              Das <span className={"font-bold text-brown"}>14:00 às 15:00</span>
+              , com duração de 1 hora
             </p>
           </div>
         </SectionInfo>
@@ -83,6 +84,15 @@ export default function AppointmentDetails() {
                 +351 915 071 158
               </span>
             </div>
+          </div>
+        </SectionInfo>
+
+        <hr className={"border-neutral-200"} />
+
+        <SectionInfo title={"Acções"}>
+          <div className={"grid grid-cols-2 gap-3"}>
+            <Button color={ButtonColors.BLACK}>CANCELAR</Button>
+            <Button color={ButtonColors.BROWN}>EDITAR</Button>
           </div>
         </SectionInfo>
       </div>
