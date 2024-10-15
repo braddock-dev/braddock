@@ -96,10 +96,9 @@ export default function AppointmentDetails({
           <SectionInfo title={"Que Serviços?"}>
             <div className={"flex flex-col gap-2"}>
               <div className={"flex flex-row gap-2 flex-wrap"}>
-                <ServiceItem title={"Corte de Cabelo"} />
-                <ServiceItem title={"Corte e Barbaterapia"} />
-                <ServiceItem title={"Sombracelhas e Barba"} />
-                <ServiceItem title={"Barboterapia"} />
+                {appointment.treatments.map((treatment) => (
+                  <ServiceItem key={treatment.id} title={treatment.name} />
+                ))}
               </div>
             </div>
           </SectionInfo>
@@ -114,7 +113,9 @@ export default function AppointmentDetails({
                 alt="Avatar"
               />
               <div className={"flex flex-col"}>
-                <p className={"text-neutral-700 text-sm"}>Herquilóide Hele</p>
+                <p className={"text-neutral-700 text-sm"}>
+                  {appointment.clientName}
+                </p>
                 <span className={"text-neutral-500 text-sm"}>
                   +351 915 071 158
                 </span>
