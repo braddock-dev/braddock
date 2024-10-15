@@ -11,6 +11,7 @@ import {
 import dayjs from "dayjs";
 import dayJsWrapper from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
+import { addMinutesToDate, minutesToHour } from "@/app/utils/functions";
 
 class AppointmentDataAdapter {
   private static DEFAULT_DATE_INTERVAL = {
@@ -26,6 +27,11 @@ class AppointmentDataAdapter {
       startTimeInMillis: data.startTimeInMillis,
       createdAt: data.createdAt,
       durationInMinutes: data.durationInMinutes,
+      durationInHours: minutesToHour(data.durationInMinutes),
+      endTimeInMillis: addMinutesToDate(
+        data.startTimeInMillis,
+        data.durationInMinutes,
+      ).valueOf(),
       startTime: data.startTime,
       treatments: TreatmentsDataAdapter.convertDataToTreatments(
         data.treatments || [],
@@ -65,9 +71,10 @@ class AppointmentDataAdapter {
       id: appointment.id,
       title: `Corte de cabelo com ${appointment.clientName}`,
       start: dayJsWrapper(appointment.startTimeInMillis).format(),
-      end: dayJsWrapper(appointment.startTimeInMillis)
-        .add(appointment.durationInMinutes, "minutes")
-        .format(),
+      end: addMinutesToDate(
+        appointment.startTimeInMillis,
+        appointment.durationInMinutes,
+      ).format(),
       interactive: true,
       editable: true,
       overlap: false,

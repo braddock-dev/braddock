@@ -7,7 +7,10 @@ import listPlugin from "@fullcalendar/list";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointments } from "@/app/backend/actions/appointmentActions";
 import { useMemo, useRef, useState } from "react";
-import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
+import {
+  IAppointment,
+  IAppointmentQueryData,
+} from "@/app/backend/business/treatments/data/AppointmentData";
 import AppointmentDataAdapter from "@/app/backend/business/treatments/AppointmentDataAdapter";
 import ptLocale from "@fullcalendar/core/locales/pt";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
@@ -18,6 +21,8 @@ import { EventClickArg } from "@fullcalendar/core";
 export default function Page() {
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<IAppointment>();
 
   const { data, error, refetch, isLoading, isPending } = useQuery({
     queryKey: ["appointments", filter],
@@ -49,15 +54,25 @@ export default function Page() {
     );
   }
 
-  function openOverlay() {
-    if (overlayButtonRef.current?.click) {
+  function openOverlay(appointmentId: string) {
+    if (overlayButtonRef.current?.click && data) {
+      const appointment = data.find(
+        (appointment) => appointment.id === appointmentId,
+      );
+
+      if (!appointment) {
+        toast.error("Erro ao carregar os detalhes do agendamento");
+        return;
+      }
+
+      setSelectedAppointment(appointment);
       overlayButtonRef.current?.click();
     }
   }
 
   const handleClickEvent = (event: EventClickArg) => {
     console.log("event", event);
-    openOverlay();
+    openOverlay(event.event.id);
   };
 
   return (
@@ -90,7 +105,12 @@ export default function Page() {
         Open offcanvas
       </button>
 
-      <AppointmentDetails />
+      <AppointmentDetails
+        appointment={selectedAppointment}
+        onClose={() => {
+          setSelectedAppointment(undefined);
+        }}
+      />
     </div>
   );
 }

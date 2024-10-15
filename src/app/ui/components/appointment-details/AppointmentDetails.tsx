@@ -4,8 +4,19 @@ import Image from "next/image";
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
 import ServiceItem from "@/app/ui/components/appointment-details/ServiceItem";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
+import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
+import dayjs from "@/app/utils/dayjs";
+import { Constants } from "@/app/utils/Constants";
+import { getFormattedHourDuration } from "@/app/utils/functions";
 
-export default function AppointmentDetails() {
+interface IAppointmentDetailsProps {
+  appointment?: IAppointment;
+  onClose: () => void;
+}
+export default function AppointmentDetails({
+  appointment,
+  ...props
+}: IAppointmentDetailsProps) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -28,6 +39,7 @@ export default function AppointmentDetails() {
           className="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
           aria-label="Close"
           data-hs-overlay="#hs-offcanvas-custom-backdrop-color"
+          onClick={props.onClose}
         >
           <span className="sr-only">Close</span>
           <svg
@@ -38,73 +50,95 @@ export default function AppointmentDetails() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
             <path d="M18 6 6 18"></path>
             <path d="m6 6 12 12"></path>
           </svg>
         </button>
       </div>
-      <div className="p-4 flex flex-col gap-6">
-        <SectionInfo title={"Quando?"}>
-          <div className={"text-neutral-500"}>
-            <p>Sexta feira, 10 de Setembro</p>
-            <p>
-              Das <span className={"font-bold text-brown"}>14:00 às 15:00</span>
-              , com duração de 1 hora
-            </p>
-          </div>
-        </SectionInfo>
-
-        <hr className={"border-neutral-200"} />
-
-        <SectionInfo title={"Que Serviços?"}>
-          <div className={"flex flex-col gap-2"}>
-            <div className={"flex flex-row gap-2 flex-wrap"}>
-              <ServiceItem title={"Corte de Cabelo"} />
-              <ServiceItem title={"Corte e Barbaterapia"} />
-              <ServiceItem title={"Sombracelhas e Barba"} />
-              <ServiceItem title={"Barboterapia"} />
+      {appointment && (
+        <div className="p-4 flex flex-col gap-6">
+          <SectionInfo title={"Quando?"}>
+            <div className={"text-neutral-500"}>
+              <p className={"capitalize"}>
+                {dayjs(appointment.startTimeInMillis).format(
+                  Constants.DATE_FORMAT.CUSTOM_DATE,
+                )}
+              </p>
+              <p className={"flex gap-1 items-center"}>
+                <span>Das</span>
+                <span className={"font-bold text-brown"}>
+                  {dayjs(appointment.startTimeInMillis).format(
+                    Constants.DATE_FORMAT.TIME,
+                  )}
+                </span>
+                <span>às</span>
+                <span>
+                  {dayjs(appointment.endTimeInMillis).format(
+                    Constants.DATE_FORMAT.TIME,
+                  )}
+                </span>
+                <span>
+                  , com duração de{" "}
+                  <span className={"text-brown font-bold"}>
+                    {getFormattedHourDuration(appointment.durationInHours)}
+                  </span>
+                </span>
+              </p>
             </div>
-          </div>
-        </SectionInfo>
+          </SectionInfo>
 
-        <hr className={"border-neutral-200"} />
+          <hr className={"border-neutral-200"} />
 
-        <SectionInfo title={"Com Quem?"}>
-          <div className={"flex gap-2 items-center"}>
-            <Image
-              className="shrink-0 size-[40px] rounded-full"
-              src={AvatarUser}
-              alt="Avatar"
-            />
-            <div className={"flex flex-col"}>
-              <p className={"text-neutral-700 text-sm"}>Herquilóide Hele</p>
-              <span className={"text-neutral-500 text-sm"}>
-                +351 915 071 158
-              </span>
+          <SectionInfo title={"Que Serviços?"}>
+            <div className={"flex flex-col gap-2"}>
+              <div className={"flex flex-row gap-2 flex-wrap"}>
+                <ServiceItem title={"Corte de Cabelo"} />
+                <ServiceItem title={"Corte e Barbaterapia"} />
+                <ServiceItem title={"Sombracelhas e Barba"} />
+                <ServiceItem title={"Barboterapia"} />
+              </div>
             </div>
-          </div>
-        </SectionInfo>
+          </SectionInfo>
 
-        <hr className={"border-neutral-200"} />
+          <hr className={"border-neutral-200"} />
 
-        <SectionInfo title={"Acções"}>
-          <div className={"grid grid-cols-2 gap-3"}>
-            <Button
-              color={ButtonColors.BLACK}
-              onClick={() => {
-                setShowModal(true);
-              }}
-            >
-              ELIMINAR
-            </Button>
-            <Button color={ButtonColors.BROWN}>EDITAR</Button>
-          </div>
-        </SectionInfo>
-      </div>
+          <SectionInfo title={"Com Quem?"}>
+            <div className={"flex gap-2 items-center"}>
+              <Image
+                className="shrink-0 size-[40px] rounded-full"
+                src={AvatarUser}
+                alt="Avatar"
+              />
+              <div className={"flex flex-col"}>
+                <p className={"text-neutral-700 text-sm"}>Herquilóide Hele</p>
+                <span className={"text-neutral-500 text-sm"}>
+                  +351 915 071 158
+                </span>
+              </div>
+            </div>
+          </SectionInfo>
+
+          <hr className={"border-neutral-200"} />
+
+          <SectionInfo title={"Acções"}>
+            <div className={"grid grid-cols-2 gap-3"}>
+              <Button
+                color={ButtonColors.BLACK}
+                onClick={() => {
+                  setShowModal(true);
+                }}
+              >
+                ELIMINAR
+              </Button>
+              <Button color={ButtonColors.BROWN}>EDITAR</Button>
+            </div>
+          </SectionInfo>
+        </div>
+      )}
     </div>
   );
 }

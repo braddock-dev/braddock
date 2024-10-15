@@ -5,8 +5,10 @@ export interface IAppointment {
   id: string;
   clientName: string;
   startTimeInMillis: number;
+  endTimeInMillis: number;
   createdAt: number;
   durationInMinutes: number;
+  durationInHours: number;
   startTime: string;
   treatments: ITreatment[];
 }
