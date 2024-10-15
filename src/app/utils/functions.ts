@@ -35,6 +35,6 @@ export function getFormattedHourDuration(hours: number) {
   }
 }
 
-function isFraction(num) {
+function isFraction(num: number) {
   return num !== Math.trunc(num);
 }
