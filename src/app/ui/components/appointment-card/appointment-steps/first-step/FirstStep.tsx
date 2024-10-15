@@ -66,14 +66,8 @@ export default function FirstStep(props: IFirstStepProps) {
   }, [treatments]);
 
   useEffect(() => {
-    if (!selectedTreatmentsIds.length && treatments?.length) {
-      setSelectedTreatment(treatments.slice(0, 1));
-    }
+    props.isValidChange(!!treatments?.length && !!selectedTreatmentsIds.length);
   }, [treatments, selectedTreatmentsIds]);
-
-  useEffect(() => {
-    props.isValidChange(!!treatments?.length);
-  }, [treatments]);
 
   if (isLoading) {
     return (

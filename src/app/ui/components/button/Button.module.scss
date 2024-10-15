@@ -14,6 +14,7 @@
   display: flex;
   align-items: center;
   @include defaultTransition();
+  cursor: pointer;
 
   &:disabled {
     opacity: 0.6;

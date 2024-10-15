@@ -47,3 +47,9 @@ input {
 .fc-v-event {
   @apply border bg-brown02;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem
+  }
+}

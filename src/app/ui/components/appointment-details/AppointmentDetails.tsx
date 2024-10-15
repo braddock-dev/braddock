@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AvatarUser from "@/app/ui/images/avatarFallback.png";
 import Image from "next/image";
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
@@ -6,6 +6,8 @@ import ServiceItem from "@/app/ui/components/appointment-details/ServiceItem";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 
 export default function AppointmentDetails() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div
       id="hs-offcanvas-custom-backdrop-color"
@@ -91,7 +93,14 @@ export default function AppointmentDetails() {
 
         <SectionInfo title={"Acções"}>
           <div className={"grid grid-cols-2 gap-3"}>
-            <Button color={ButtonColors.BLACK}>CANCELAR</Button>
+            <Button
+              color={ButtonColors.BLACK}
+              onClick={() => {
+                setShowModal(true);
+              }}
+            >
+              ELIMINAR
+            </Button>
             <Button color={ButtonColors.BROWN}>EDITAR</Button>
           </div>
         </SectionInfo>
