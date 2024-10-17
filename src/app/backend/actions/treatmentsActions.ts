@@ -2,8 +2,8 @@
 
 import TreatmentManager from "@/app/backend/business/treatments/TreatmentManager";
 import {
-  IBaseNewAppointmentInfo,
   IDaySlot,
+  INewAppointmentRequestData,
   ITreatment,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 
@@ -18,7 +18,7 @@ export async function getTreatmentTimeslots(
 }
 
 export async function scheduleAppointment(
-  appointmentData: IBaseNewAppointmentInfo,
+  appointmentData: INewAppointmentRequestData,
 ): Promise<void> {
   return TreatmentManager.scheduleAppointment(appointmentData);
 }

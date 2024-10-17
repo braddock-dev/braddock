@@ -26,3 +26,10 @@ export interface IBaseNewAppointmentInfo {
   phoneNumber: string;
   customerName: string;
 }
+
+export interface INewAppointmentRequestData {
+  selectedTreatments: ITreatment[];
+  selectedTimeSlot?: ITimeSlot;
+  phoneNumber: string;
+  customerName: string;
+}

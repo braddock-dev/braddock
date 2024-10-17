@@ -1,6 +1,6 @@
 import Logger from "@/app/utils/Logger";
 import {
-  IBaseNewAppointmentInfo,
+  INewAppointmentRequestData,
   ITreatment,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 import TreatmentsService from "@/app/backend/services/TreatmentsService";
@@ -71,7 +71,7 @@ class TreatmentManager {
   }
 
   public async scheduleAppointment(
-    appointment: IBaseNewAppointmentInfo,
+    appointment: INewAppointmentRequestData,
   ): Promise<void> {
     Logger.debug(this.LOG_TAG, "Start scheduling appointment", [appointment]);
 

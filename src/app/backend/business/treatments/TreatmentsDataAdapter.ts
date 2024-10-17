@@ -1,6 +1,6 @@
 import {
-  IBaseNewAppointmentInfo,
   IDaySlot,
+  INewAppointmentRequestData,
   ITimeSlot,
   ITreatment,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
@@ -46,7 +46,7 @@ class TreatmentsDataAdapter {
   }
 
   public convertAppointmentDataToRequestData(
-    newAppointment: IBaseNewAppointmentInfo,
+    newAppointment: INewAppointmentRequestData,
   ): INewAppointmentRequest {
     if (!newAppointment.selectedTreatments.length) {
       throw new Error("No treatments selected");

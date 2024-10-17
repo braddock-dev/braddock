@@ -47,7 +47,12 @@ function AppointmentSteps() {
   const { mutate, isPending } = useMutation({
     mutationKey: ["newAppointment"],
     mutationFn: (newAppointmentData: IBaseNewAppointmentInfo) => {
-      return scheduleAppointment(newAppointmentData);
+      return scheduleAppointment({
+        selectedTreatments: newAppointmentData.selectedTreatments,
+        customerName: newAppointmentData.customerName,
+        phoneNumber: newAppointmentData.phoneNumber,
+        selectedTimeSlot: newAppointmentData.selectedTimeSlot,
+      });
     },
     onError: () => {
       toast.error("Erro ao agendar, tente novamente");
