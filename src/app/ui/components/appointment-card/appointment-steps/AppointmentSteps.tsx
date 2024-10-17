@@ -178,6 +178,7 @@ function AppointmentSteps() {
           className={styles.button}
           outline
           onClick={() => handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION)}
+          disabled={isPending}
         >
           VOLTAR
         </Button>

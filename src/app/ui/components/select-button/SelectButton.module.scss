@@ -15,6 +15,7 @@
   cursor: pointer;
   @include defaultTransition;
   text-transform: uppercase;
+  text-align: center;
 
   &[data-is-selected="true"]{
     background-color: $brown;

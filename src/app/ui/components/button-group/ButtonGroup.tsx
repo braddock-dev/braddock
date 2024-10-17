@@ -36,6 +36,7 @@ const getDefaultSelection = (defaultSelected?: SelectionKey) => {
 export enum DISPLAY_MODE {
   SWIPER = "SWIPER",
   LIST = "LIST",
+  EVEN_LIST = "EVEN_LIST",
 }
 
 interface IButtonGroupProps {
@@ -123,6 +124,18 @@ export default function ButtonGroup(props: IButtonGroupProps) {
   const displayMode: Record<DISPLAY_MODE, ReactElement> = {
     [DISPLAY_MODE.LIST]: (
       <div className={styles.listContainer}>
+        {props.buttonItems.map((buttonItem, index) => (
+          <SelectButton
+            key={index}
+            selectButton={buttonItem}
+            isSelected={isButtonSelected(buttonItem.value)}
+            onClick={toggleSelectedButton}
+          />
+        ))}
+      </div>
+    ),
+    [DISPLAY_MODE.EVEN_LIST]: (
+      <div className={`${styles.listContainer} ${styles.evenList}`}>
         {props.buttonItems.map((buttonItem, index) => (
           <SelectButton
             key={index}

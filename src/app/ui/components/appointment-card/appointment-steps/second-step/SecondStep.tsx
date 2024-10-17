@@ -57,16 +57,6 @@ export default function SecondStep(props: ITimeSlot) {
     queryFn: () => getTreatmentTimeslots(selectedTreatmentIds),
   });
 
-  useEffect(() => {
-    if (
-      treatmentTimeslots &&
-      treatmentTimeslots.length > 0 &&
-      !selectedDaySlot
-    ) {
-      setSelectedDaySlot(treatmentTimeslots[0]);
-    }
-  }, [treatmentTimeslots, selectedDaySlot]);
-
   const dateSlots = useMemo(() => {
     if (!treatmentTimeslots) {
       return [];
@@ -129,17 +119,19 @@ export default function SecondStep(props: ITimeSlot) {
         />
       </div>
 
-      <div className={styles.item} key={"TIME_SELECTION"}>
-        <ButtonGroup
-          buttonItems={timeSlots}
-          title={"HORA"}
-          defaultSelectedKey={selectedTimeSlot?.timeInMillis}
-          displayMode={DISPLAY_MODE.SWIPER}
-          onSelectedButtonsChange={(_, [timeSlot]) =>
-            setSelectedTimeSlot(timeSlot)
-          }
-        />
-      </div>
+      {!!selectedDaySlot && (
+        <div className={styles.item} key={"TIME_SELECTION"}>
+          <ButtonGroup
+            buttonItems={timeSlots}
+            title={"HORA"}
+            defaultSelectedKey={selectedTimeSlot?.timeInMillis}
+            displayMode={DISPLAY_MODE.EVEN_LIST}
+            onSelectedButtonsChange={(_, [timeSlot]) =>
+              setSelectedTimeSlot(timeSlot)
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }
