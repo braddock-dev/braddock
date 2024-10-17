@@ -1,0 +1,177 @@
+@import "@/app/ui/styles/vars";
+@import "@/app/ui/styles/breakpoints";
+@import "@/app/ui/styles/functions";
+@import "@/app/ui/styles/mixins";
+
+
+$inactiveColor: $gray02;
+$activeColor: $black;
+
+.container{
+  height: 54px;
+  width: 100%;
+  position: relative;
+
+  .selectTrigger{
+    position: relative;
+    height: 100%;
+
+    label{
+      font-size: toRem(16);
+      color: $inactiveColor;
+    }
+
+    .optionsViewButton:focus + .selectButton,
+    .optionsViewButton:checked + .selectedValue{
+      border: 2px solid $activeColor;
+    }
+
+    &.hasValue .selectedValue{
+      color: $activeColor;
+    }
+
+    &:has(.optionsViewButton:checked) label,
+    .optionsViewButton:checked + .selectButton .arrowIcon{
+      color: $activeColor;
+    }
+
+    .optionsViewButton:checked + .selectButton .chevronDown{
+      display: none;
+    }
+
+    .optionsViewButton:checked + .selectButton .chevronUp{
+      display: block;
+    }
+
+    .optionsViewButton{
+      all: unset;
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      z-index: 3;
+    }
+
+
+    .selectButton{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 toRem(16);
+      border-radius: $border-radius-sm;
+      background-color: $white;
+      color: $inactiveColor;
+      border: 2px solid $gray02;
+      height: 100%;
+
+      .selectedValue{
+        font-size: toRem(16);
+      }
+
+      .chevronDown, .chevronUp{
+        width: toRem(16);
+        height: toRem(16);
+        @include defaultTransition;
+      }
+
+      .chevronUp{
+        display: none;
+      }
+    }
+
+
+
+  }
+
+  .options{
+    z-index: 999;
+    position: absolute;
+    margin-top: toRem(5);
+    border-radius: $border-radius;
+    background-color: $white;
+    width: 100%;
+    box-shadow: 0 4px 30px rgba($black, 0.4);
+    max-height: toRem(250);
+    overflow: scroll;
+    @include hide-scrollbar;
+
+    &[data-items-placement="TOP"]{
+      transform: translateY(-100%);
+      margin-top: 0;
+      top: toRem(-10);
+    }
+
+    .option{
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: toRem(5);
+      padding: toRem(14);
+      width: 100%;
+      border-bottom: 1px solid $lightGray02;
+      cursor: pointer;
+      @include defaultTransition;
+
+      .optionLabel{
+        font-size: toRem(15);
+        color: $black;
+        @include ellipsis-multiline(1, hidden);
+      }
+
+      .checkIcon{
+        width: toRem(20);
+        height: toRem(20);
+        margin-left: auto;
+      }
+
+      &:hover,
+      &[data-selected="true"] {
+        background-color: $lightGray02;
+      }
+
+      .checkIcon{
+        display: none;
+      }
+
+      &[data-selected="true"] .checkIcon {
+        display: block;
+      }
+
+      input[type="radio"]{
+        all: unset;
+        position: absolute;
+        cursor: pointer;
+        outline: 1px solid $lightGray02;
+        inset: 0;
+      }
+
+      &[data-item-type="ADD_NEW"]{
+
+        background-color: rgba($brown, 0.1);
+
+        .optionLabel{
+          color: $brown;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          gap: toRem(5);
+
+          .addIcon {
+            width: toRem(20);
+            height: toRem(20);
+            margin-left: auto;
+          }
+
+        }
+      }
+
+    }
+  }
+
+  &:has(.option input:checked) .selectTrigger label{
+    color: $activeColor;
+  }
+
+  &:has(.option input:checked) .selectTrigger{
+    color: $activeColor;
+  }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { getPageScrollPosition } from "@/app/utils/functions";
 
 /**
@@ -68,4 +68,29 @@ export const useScrollPosition = () => {
   }, []);
 
   return scrollPosition;
+};
+
+export const useOutsideClick = (
+  ref: RefObject<HTMLElement>,
+  callback: (e: MouseEvent) => void,
+  exceptElement?: React.RefObject<HTMLElement>,
+) => {
+  function handleClickOutside(event: any) {
+    if (
+      ref &&
+      ref.current &&
+      !ref.current.contains(event.target) &&
+      !exceptElement?.current?.contains(event.target || null)
+    ) {
+      callback(event);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside, {
+      passive: true,
+    });
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  });
 };
