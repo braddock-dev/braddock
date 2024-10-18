@@ -1,0 +1,9 @@
+@import "src/app/ui/styles/vars";
+@import "src/app/ui/styles/functions";
+
+
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: toRem(24);
+}

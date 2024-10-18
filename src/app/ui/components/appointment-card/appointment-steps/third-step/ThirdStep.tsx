@@ -26,11 +26,8 @@ export default function ThirdStep(props: IThirdStepProps) {
     newAppointmentSelectors.selectedTimeSlot,
   );
 
-  const setCustomerName = useNewAppointmentStore(
-    newAppointmentActions.setCustomerName,
-  );
-  const setPhoneNumber = useNewAppointmentStore(
-    newAppointmentActions.setPhoneNumber,
+  const setCustomerInfo = useNewAppointmentStore(
+    newAppointmentActions.setCustomerInfo,
   );
 
   const {
@@ -44,28 +41,24 @@ export default function ThirdStep(props: IThirdStepProps) {
     mode: "onChange",
     defaultValues: {
       name: "",
+      email: "",
       phoneNumber: "",
     },
   });
 
   const customerName = watch("name");
   const phoneNumber = watch("phoneNumber");
+  const email = watch("phoneNumber");
 
   useEffect(() => {
     props.isValidChange(isValid);
   }, [isValid]);
 
   useEffect(() => {
-    if (!errors.phoneNumber) {
-      setPhoneNumber(phoneNumber);
+    if (isValid) {
+      setCustomerInfo(customerName, phoneNumber, email);
     }
-  }, [phoneNumber, errors.phoneNumber]);
-
-  useEffect(() => {
-    if (!errors.name) {
-      setCustomerName(customerName);
-    }
-  }, [customerName, errors.name]);
+  }, [customerName, email, isValid, phoneNumber]);
 
   return (
     <div className={styles.container}>
@@ -83,6 +76,19 @@ export default function ThirdStep(props: IThirdStepProps) {
             touched={touchedFields.name}
             isValid={!errors.name && !!getValues().name}
             hasValue={!!getValues().name}
+          />
+
+          <Input
+            type={"email"}
+            inputMode={"email"}
+            placeholder={"Seu Email"}
+            floatingMode
+            autoComplete={"email"}
+            {...register("email")}
+            errorMessage={errors.email?.message}
+            touched={touchedFields.email}
+            isValid={!errors.email && !!getValues().email}
+            hasValue={!!getValues().email}
           />
 
           <Input

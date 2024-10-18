@@ -17,11 +17,13 @@ import {
 import { IBaseNewAppointmentInfo } from "@/app/backend/business/treatments/data/TreatmentsData";
 import JSConfetti from "js-confetti";
 import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/fourth-step/FourthStep";
+import OTPStep from "@/app/ui/components/appointment-card/appointment-steps/otp-step/OTPStep";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
   DATE_SELECTION = "DATE_SELECTION",
   COMPLETE_APPOINTMENT = "COMPLETE_APPOINTMENT",
+  OTP_STEP = "OTP_STEP",
   SUCCESS_STEP = "SUCCESS_STEP",
 }
 
@@ -35,6 +37,7 @@ const defaultAvailableSteps: IAvailableStepsMap = {
   [APPOINTMENT_STEPS.SERVICES_SELECTION]: { isValid: false },
   [APPOINTMENT_STEPS.DATE_SELECTION]: { isValid: false },
   [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: { isValid: false },
+  [APPOINTMENT_STEPS.OTP_STEP]: { isValid: false },
   [APPOINTMENT_STEPS.SUCCESS_STEP]: { isValid: false },
 };
 
@@ -66,7 +69,7 @@ function AppointmentSteps() {
   });
 
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.SERVICES_SELECTION,
+    APPOINTMENT_STEPS.OTP_STEP,
   );
 
   const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
@@ -85,16 +88,6 @@ function AppointmentSteps() {
     handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
   };
 
-  const handleErrorAuth = () => {
-    toast.error("Erro ao autenticar");
-    handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION);
-  };
-
-  const handleSuccessAuth = () => {
-    toast.success("Autenticado com sucesso");
-    handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
-  };
-
   const changeStepValidState = useCallback(
     (step: APPOINTMENT_STEPS, isValid: boolean) => {
       setAvailableSteps((prev) => ({
@@ -108,6 +101,10 @@ function AppointmentSteps() {
   const handleCompleteAppointment = () => {
     resetState();
     setCurrentStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
+  };
+
+  const handleAccountCreation = () => {
+    handleChangeStep(APPOINTMENT_STEPS.OTP_STEP);
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -134,6 +131,9 @@ function AppointmentSteps() {
       />
     ),
     [APPOINTMENT_STEPS.SUCCESS_STEP]: <FourthStep />,
+    [APPOINTMENT_STEPS.OTP_STEP]: (
+      <OTPStep isValidChange={handleCompleteAppointment} />
+    ),
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -191,14 +191,42 @@ function AppointmentSteps() {
           fullWidth
           color={ButtonColors.WHITE}
           className={styles.button}
-          onClick={handleStartAppointment}
+          onClick={handleAccountCreation}
           isLoading={isPending}
           disabled={
             !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
             isPending
           }
         >
-          AGENDAR AGORA
+          Continuar
+        </Button>
+      </>
+    ),
+    [APPOINTMENT_STEPS.OTP_STEP]: (
+      <>
+        <Button
+          fullWidth
+          color={ButtonColors.LIGHT_BROWN}
+          className={styles.button}
+          outline
+          onClick={() =>
+            handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT)
+          }
+          disabled={isPending}
+        >
+          VOLTAR
+        </Button>
+        <Button
+          fullWidth
+          color={ButtonColors.WHITE}
+          className={styles.button}
+          onClick={handleStartAppointment}
+          isLoading={isPending}
+          disabled={
+            !availableSteps[APPOINTMENT_STEPS.SUCCESS_STEP].isValid || isPending
+          }
+        >
+          FINALIZAR
         </Button>
       </>
     ),

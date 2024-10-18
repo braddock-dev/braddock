@@ -17,8 +17,7 @@ export interface INewAppointmentStore {
   setSelectedTimeSlot: (timeSlot?: ITimeSlot) => void;
   setSelectedTreatment: (treatment?: ITreatment[]) => void;
   setTreatments: (treatments: ITreatment[]) => void;
-  setPhoneNumber: (phone: string) => void;
-  setCustomerName: (name: string) => void;
+  setCustomerInfo: (name: string, phone: string, email: string) => void;
   resetState: () => void;
 }
 
@@ -29,8 +28,8 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   selectedTimeSlot: undefined,
   phoneNumber: "",
   customerName: "",
-  setPhoneNumber: (phone: string) => set({ phoneNumber: phone }),
-  setCustomerName: (name: string) => set({ customerName: name }),
+  setCustomerInfo: (name: string, phone: string, email: string) =>
+    set({ customerName: name, phoneNumber: phone }),
   setSelectedTreatment: (treatment?: ITreatment[]) =>
     set({
       selectedTreatments: treatment,
@@ -88,7 +87,6 @@ export const newAppointmentActions = {
   setSelectedDaySlot: (state: INewAppointmentStore) => state.setSelectedDaySlot,
   setSelectedTimeSlot: (state: INewAppointmentStore) =>
     state.setSelectedTimeSlot,
-  setPhoneNumber: (state: INewAppointmentStore) => state.setPhoneNumber,
-  setCustomerName: (state: INewAppointmentStore) => state.setCustomerName,
   resetState: (state: INewAppointmentStore) => state.resetState,
+  setCustomerInfo: (state: INewAppointmentStore) => state.setCustomerInfo,
 };

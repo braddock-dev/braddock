@@ -1,6 +1,5 @@
 import Header from "@/app/admin/header/Header";
 import { ReactNode } from "react";
-import "./admin-global.scss";
 import SideMenu from "@/app/ui/components/side-menu/SideMenu";
 
 interface LayoutProps {
