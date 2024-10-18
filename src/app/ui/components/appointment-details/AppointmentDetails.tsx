@@ -60,6 +60,7 @@ export default function AppointmentDetails({
             <AppointmentInfoForm
               appointment={appointment}
               onCancel={() => setEditMode(false)}
+              onSave={() => setEditMode(false)}
             />
           ) : (
             <AppointmentInfo
