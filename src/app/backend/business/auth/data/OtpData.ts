@@ -1,6 +1,6 @@
 export interface IAuthTokenInfo {
   token: string;
-  expiration: number;
+  expiration: string;
 }
 
 export interface IOtpRequestData {

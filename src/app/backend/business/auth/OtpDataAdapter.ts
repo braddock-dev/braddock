@@ -4,7 +4,7 @@ class OtpDataAdapter {
   public convertDataToAuthToken(data: any): IAuthTokenInfo {
     return {
       token: data.token,
-      expiration: data.expiration,
+      expiration: String(data.expiration),
     };
   }
 }

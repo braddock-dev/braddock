@@ -6,6 +6,7 @@ import { Constants } from "@/app/utils/Constants";
 export interface UserInfoForm {
   name: string;
   phoneNumber: string;
+  email: string;
 }
 
 export const userInfoFormSchema = z.object({
@@ -13,4 +14,5 @@ export const userInfoFormSchema = z.object({
   phoneNumber: z
     .string()
     .regex(Constants.REGEX_PATTERS.PHONE_NUMBER, "Número de telefone inválido"),
+  email: z.string().email("Email inválido"),
 });

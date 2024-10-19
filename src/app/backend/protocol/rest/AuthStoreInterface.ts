@@ -3,8 +3,8 @@ import Logger from "@/app/utils/Logger";
 import { IAuthTokenInfo } from "@/app/backend/business/auth/data/OtpData";
 
 class AuthStoreInterface {
-  private readonly COOKIE_NAME = "userAuthToken";
-  private readonly COOKIE_EXPIRATION = "authTokenExpiration";
+  private COOKIE_NAME = "userAuthToken";
+  private COOKIE_EXPIRATION = "authTokenExpiration";
 
   private readonly LOG_TAG = "AuthStoreInterface";
 
@@ -34,7 +34,11 @@ class AuthStoreInterface {
   }
 
   public isSessionValid(): boolean {
-    const { token, expiration } = this.getAuthToken();
+    const tokenInfo = this.getAuthToken();
+
+    if (!tokenInfo) return false;
+
+    const { token, expiration } = tokenInfo;
 
     Logger.debug(this.LOG_TAG, "Checking if user is authenticated", [
       token,

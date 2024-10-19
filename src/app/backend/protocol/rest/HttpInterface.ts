@@ -163,15 +163,16 @@ class HttpInterface implements IHttpInterface {
   }
 
   private applyUserAuthHeader(): void {
-    const { token } = AuthStoreInterface.getAuthToken();
+    const tokenInfo = AuthStoreInterface.getAuthToken();
 
     if (
       this.axios.defaults &&
       this.axios.defaults.headers &&
-      this.axios.defaults.headers.common
+      this.axios.defaults.headers.common &&
+      AuthStoreInterface.isSessionValid()
     ) {
-      if (token) {
-        this.axios.defaults.headers.common["Token"] = token;
+      if (tokenInfo?.token) {
+        this.axios.defaults.headers.common["Token"] = tokenInfo.token;
         Logger.debug(this.LOG_TAG, "User token set", [
           this.axios.defaults.headers.common,
         ]);
