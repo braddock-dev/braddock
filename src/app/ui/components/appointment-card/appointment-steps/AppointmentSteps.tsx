@@ -231,7 +231,7 @@ function AppointmentSteps() {
           onClick={handleStartAppointment}
           isLoading={isPending}
           disabled={
-            !availableSteps[APPOINTMENT_STEPS.SUCCESS_STEP].isValid || isPending
+            !availableSteps[APPOINTMENT_STEPS.OTP_STEP].isValid || isPending
           }
         >
           FINALIZAR
