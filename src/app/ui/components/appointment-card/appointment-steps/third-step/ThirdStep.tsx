@@ -12,20 +12,11 @@ import {
   UserInfoForm,
   userInfoFormSchema,
 } from "@/app/ui/components/appointment-card/appointment-steps/third-step/FormSchema";
-import AppointmentInfo from "@/app/ui/components/appointment-card/appointment-info/AppointmentInfo";
 
 interface IThirdStepProps {
   isValidChange: (isValid: boolean) => void;
 }
 export default function ThirdStep(props: IThirdStepProps) {
-  const selectedTreatments = useNewAppointmentStore(
-    newAppointmentSelectors.selectedTreatments,
-  );
-
-  const selectedTimeSlot = useNewAppointmentStore(
-    newAppointmentSelectors.selectedTimeSlot,
-  );
-
   const setCustomerInfo = useNewAppointmentStore(
     newAppointmentActions.setCustomerInfo,
   );
@@ -108,14 +99,6 @@ export default function ThirdStep(props: IThirdStepProps) {
             hasValue={!!getValues().phoneNumber}
           />
         </form>
-      </div>
-
-      <div className={styles.section}>
-        <p className={styles.title}>MEU AGENDAMENTO:</p>
-        <AppointmentInfo
-          selectedTreatments={selectedTreatments}
-          selectedTimeSlot={selectedTimeSlot}
-        />
       </div>
     </div>
   );
