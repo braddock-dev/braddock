@@ -7,7 +7,7 @@ class CustomerDataAdapter {
   ): UpdateCustomerRequest {
     return {
       name: customer.customerName,
-      // email: customer.customerEmail,
+      email: customer.customerEmail,
     };
   }
 }

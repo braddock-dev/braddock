@@ -24,10 +24,6 @@ class AppointmentsService {
       const request: IHttpRequestConfig = {
         url: Constants.API_ROUTES.GET_APPOINTMENTS(),
         httpMethod: HttpMethods.GET,
-        headers: {
-          BusinessToken: Constants.EXTERNAL_CONFIGS.API_BUSINESS_TOKEN,
-          BusinessId: data.businessId,
-        },
       };
 
       const response = await ApiInterface.send(request);

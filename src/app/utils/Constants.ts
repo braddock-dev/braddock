@@ -4,7 +4,6 @@ export const EXTERNAL_CONFIGS = {
   BASE_URL: process.env.BASE_URL || "",
   API_REQUEST_TIMEOUT: process.env.NEXT_PUBLIC_API_REQUEST_TIMEOUT || 30000,
   API_ACCESS_TOKEN: process.env.API_ACCESS,
-  API_BUSINESS_TOKEN: process.env.API_BUSINESS_TOKEN,
 };
 
 export const Constants = {
