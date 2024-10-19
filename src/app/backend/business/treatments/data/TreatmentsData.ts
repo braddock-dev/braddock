@@ -25,6 +25,7 @@ export interface IBaseNewAppointmentInfo {
   selectedTimeSlot?: ITimeSlot;
   phoneNumber: string;
   customerName: string;
+  customerEmail: string;
 }
 
 export interface INewAppointmentRequestData {

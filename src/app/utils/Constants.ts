@@ -42,6 +42,8 @@ export const Constants = {
     SCHEDULE_APPOINTMENT: (businessId: string, timeSlotId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots/${timeSlotId}/schedule`,
     GET_APPOINTMENTS: () => `${EXTERNAL_CONFIGS.BASE_URL}/appointments`,
+    SEND_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/sendVerificationCode`,
+    VERIFY_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/checkVerificationCode`,
   },
   APP_ROUTES: {
     HOME: "/",
@@ -67,6 +69,7 @@ export const Constants = {
       SOCIAL_LOGIN_FAILED: "LOGIN_SOCIAL_LOGIN_FAILED",
       NO_SESSION_DATA: "LOGIN_NO_SESSION_DATA",
       SESSION_EXPIRED: "LOGIN_SESSION_EXPIRED",
+      INVALID_OTP: "LOGIN_INVALID_OTP",
     },
   },
   REGEX_PATTERS: {

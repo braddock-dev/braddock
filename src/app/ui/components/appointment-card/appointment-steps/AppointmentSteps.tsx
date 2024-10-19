@@ -18,6 +18,7 @@ import { IBaseNewAppointmentInfo } from "@/app/backend/business/treatments/data/
 import JSConfetti from "js-confetti";
 import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/fourth-step/FourthStep";
 import OTPStep from "@/app/ui/components/appointment-card/appointment-steps/otp-step/OTPStep";
+import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -68,8 +69,10 @@ function AppointmentSteps() {
     },
   });
 
+  const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
+
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.OTP_STEP,
+    APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
 
   const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
@@ -82,10 +85,6 @@ function AppointmentSteps() {
 
   const handleStartAppointment = () => {
     mutate(appointmentStore);
-  };
-
-  const handleStarAuth = () => {
-    handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
   };
 
   const changeStepValidState = useCallback(
@@ -103,8 +102,10 @@ function AppointmentSteps() {
     setCurrentStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
   };
 
-  const handleAccountCreation = () => {
-    handleChangeStep(APPOINTMENT_STEPS.OTP_STEP);
+  const handleSendOTP = () => {
+    mutateSendOtp(appointmentStore.phoneNumber).then(() => {
+      handleChangeStep(APPOINTMENT_STEPS.OTP_STEP);
+    });
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -132,7 +133,11 @@ function AppointmentSteps() {
     ),
     [APPOINTMENT_STEPS.SUCCESS_STEP]: <FourthStep />,
     [APPOINTMENT_STEPS.OTP_STEP]: (
-      <OTPStep isValidChange={handleCompleteAppointment} />
+      <OTPStep
+        isValidChange={() => {
+          handleStartAppointment();
+        }}
+      />
     ),
   };
 
@@ -169,7 +174,9 @@ function AppointmentSteps() {
           color={ButtonColors.WHITE}
           className={styles.button}
           disabled={!availableSteps[APPOINTMENT_STEPS.DATE_SELECTION].isValid}
-          onClick={handleStarAuth}
+          onClick={() => {
+            handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT);
+          }}
         >
           CONTINUAR
         </Button>
@@ -191,11 +198,11 @@ function AppointmentSteps() {
           fullWidth
           color={ButtonColors.WHITE}
           className={styles.button}
-          onClick={handleAccountCreation}
-          isLoading={isPending}
+          onClick={handleSendOTP}
+          isLoading={isPendingSendOtp}
           disabled={
             !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
-            isPending
+            isPendingSendOtp
           }
         >
           Continuar

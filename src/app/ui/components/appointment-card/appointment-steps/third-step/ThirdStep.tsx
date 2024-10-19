@@ -30,6 +30,10 @@ export default function ThirdStep(props: IThirdStepProps) {
     newAppointmentActions.setCustomerInfo,
   );
 
+  const appointmentInfo = useNewAppointmentStore(
+    newAppointmentSelectors.appointmentStore,
+  );
+
   const {
     register,
     formState: { isValid, errors, touchedFields },
@@ -40,15 +44,15 @@ export default function ThirdStep(props: IThirdStepProps) {
     reValidateMode: "onChange",
     mode: "onChange",
     defaultValues: {
-      name: "",
-      email: "",
-      phoneNumber: "",
+      name: appointmentInfo.customerName || "",
+      email: appointmentInfo.customerEmail || "",
+      phoneNumber: appointmentInfo.phoneNumber || "",
     },
   });
 
   const customerName = watch("name");
   const phoneNumber = watch("phoneNumber");
-  const email = watch("phoneNumber");
+  const email = watch("email");
 
   useEffect(() => {
     props.isValidChange(isValid);

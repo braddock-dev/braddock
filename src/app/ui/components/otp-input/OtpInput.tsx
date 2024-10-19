@@ -6,17 +6,20 @@ import { twMerge } from "tailwind-merge";
 
 interface IOTPStepProps {
   onComplete: (...args: any[]) => void;
+  disabled?: boolean;
 }
 export function OtpInput(props: IOTPStepProps) {
   return (
     <OTPInput
-      maxLength={6}
+      maxLength={4}
+      autoFocus
       containerClassName="group flex items-center has-[:disabled]:opacity-30"
       onComplete={props.onComplete}
+      disabled={props.disabled}
       render={({ slots }) => (
         <>
           <div className="flex">
-            {slots.slice(0, 3).map((slot, idx) => (
+            {slots.slice(0, 2).map((slot, idx) => (
               <Slot key={idx} {...slot} />
             ))}
           </div>
@@ -24,7 +27,7 @@ export function OtpInput(props: IOTPStepProps) {
           <FakeDash />
 
           <div className="flex">
-            {slots.slice(3).map((slot, idx) => (
+            {slots.slice(2).map((slot, idx) => (
               <Slot key={idx} {...slot} />
             ))}
           </div>
