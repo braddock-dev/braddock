@@ -3,24 +3,20 @@
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import React, { ReactElement, useCallback, useState } from "react";
-import { toast } from "sonner";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
-import { useMutation } from "@tanstack/react-query";
 import {
   newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
-import JSConfetti from "js-confetti";
 import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/fourth-step/FourthStep";
 import OTPStep from "@/app/ui/components/appointment-card/appointment-steps/otp-step/OTPStep";
 import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
-import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/data/AppointmentData";
-import { scheduleAppointment } from "@/app/backend/actions/appointmentActions";
+import { useAppointment } from "@/app/ui/components/appointment-card/appointment-steps/useAppointment";
 
-enum APPOINTMENT_STEPS {
+export enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
   DATE_SELECTION = "DATE_SELECTION",
   COMPLETE_APPOINTMENT = "COMPLETE_APPOINTMENT",
@@ -48,30 +44,6 @@ function AppointmentSteps() {
     newAppointmentSelectors.appointmentStore,
   );
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["newAppointment"],
-    mutationFn: (newAppointmentData: IBaseNewAppointmentInfo) => {
-      return scheduleAppointment({
-        selectedTreatments: newAppointmentData.selectedTreatments,
-        customerName: newAppointmentData.customerName,
-        phoneNumber: newAppointmentData.phoneNumber,
-        customerEmail: newAppointmentData.customerEmail,
-        selectedTimeSlot: newAppointmentData.selectedTimeSlot,
-      });
-    },
-    onError: () => {
-      toast.error("Erro ao agendar, tente novamente");
-    },
-    onSuccess: () => {
-      toast.success("Agendamento realizado com sucesso");
-      const jsConfetti = new JSConfetti();
-      jsConfetti.addConfetti();
-      handleChangeStep(APPOINTMENT_STEPS.SUCCESS_STEP);
-    },
-  });
-
-  const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
-
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
     APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
@@ -80,12 +52,22 @@ function AppointmentSteps() {
     defaultAvailableSteps,
   );
 
-  const handleChangeStep = (goTo: APPOINTMENT_STEPS) => {
+  const { isPendingNewAppointment, mutateNewAppointment } = useAppointment(
+    handleOnAppointmentSuccess,
+  );
+
+  const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
+
+  function handleChangeStep(goTo: APPOINTMENT_STEPS) {
     setCurrentStep(goTo);
-  };
+  }
+
+  function handleOnAppointmentSuccess() {
+    handleChangeStep(APPOINTMENT_STEPS.SUCCESS_STEP);
+  }
 
   const handleStartAppointment = () => {
-    mutate(appointmentStore);
+    mutateNewAppointment(appointmentStore);
   };
 
   const changeStepValidState = useCallback(
@@ -192,7 +174,7 @@ function AppointmentSteps() {
           className={styles.button}
           outline
           onClick={() => handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION)}
-          disabled={isPending}
+          disabled={isPendingNewAppointment || isPendingSendOtp}
         >
           VOLTAR
         </Button>
@@ -201,9 +183,10 @@ function AppointmentSteps() {
           color={ButtonColors.WHITE}
           className={styles.button}
           onClick={handleSendOTP}
-          isLoading={isPendingSendOtp}
+          isLoading={isPendingNewAppointment || isPendingSendOtp}
           disabled={
             !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
+            isPendingNewAppointment ||
             isPendingSendOtp
           }
         >
@@ -221,7 +204,7 @@ function AppointmentSteps() {
           onClick={() =>
             handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT)
           }
-          disabled={isPending}
+          disabled={isPendingNewAppointment}
         >
           VOLTAR
         </Button>
@@ -230,9 +213,10 @@ function AppointmentSteps() {
           color={ButtonColors.WHITE}
           className={styles.button}
           onClick={handleStartAppointment}
-          isLoading={isPending}
+          isLoading={isPendingNewAppointment}
           disabled={
-            !availableSteps[APPOINTMENT_STEPS.OTP_STEP].isValid || isPending
+            !availableSteps[APPOINTMENT_STEPS.OTP_STEP].isValid ||
+            isPendingNewAppointment
           }
         >
           FINALIZAR

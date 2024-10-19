@@ -31,21 +31,25 @@ class OtpService {
 
       const response = await ApiInterface.send(request);
 
-      Logger.info(this.LOG_TAG, "OTP set", [response]);
+      Logger.info(this.LOG_TAG, "OTP response", [response]);
 
       if (response.status !== HttpStatusCode.Created) {
-        Logger.error(this.LOG_TAG, "Error setting OTP", response.data);
+        Logger.error(this.LOG_TAG, "Error sending OTP", response.data);
         throw new Error(Constants.ERRORS.GENERIC.UNKNOWN);
       }
 
       if (response.data.requestId) {
-        Logger.debug(this.LOG_TAG, "OTP set", response.data.requestId);
+        Logger.debug(
+          this.LOG_TAG,
+          "OTP sent successfully",
+          response.data.requestId,
+        );
         return response.data.requestId;
       }
 
       throw new Error(Constants.ERRORS.GENERIC.UNKNOWN);
     } catch (error) {
-      Logger.error(this.LOG_TAG, "Error setting OTP", error);
+      Logger.error(this.LOG_TAG, "Error sending OTP", error);
       throw error;
     }
   }

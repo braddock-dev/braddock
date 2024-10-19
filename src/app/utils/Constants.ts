@@ -44,6 +44,7 @@ export const Constants = {
     GET_APPOINTMENTS: () => `${EXTERNAL_CONFIGS.BASE_URL}/appointments`,
     SEND_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/sendVerificationCode`,
     VERIFY_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/checkVerificationCode`,
+    UPDATE_CUSTOMER: () => `${EXTERNAL_CONFIGS.BASE_URL}/customers`,
   },
   APP_ROUTES: {
     HOME: "/",

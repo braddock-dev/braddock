@@ -4,12 +4,12 @@ import {
   IAuthTokenInfo,
   IOtpRequestData,
 } from "@/app/backend/business/auth/data/OtpData";
-import { sendOtp, verifyOtp } from "@/app/backend/actions/auth";
+import { sendOtp, verifyOtp } from "@/app/backend/actions/authActions";
 import { useOtpValidationStore } from "@/app/store/otpValidationStore";
 
 const LOADING_TOAST_ID = "loading-toast";
 
-export const useOTPValidationCode = () => {
+export const useOTPValidationCode = (onVerifySuccess?: () => void) => {
   const store = useOtpValidationStore((state) => state);
 
   const {
@@ -36,7 +36,7 @@ export const useOTPValidationCode = () => {
   });
 
   const {
-    mutateAsync: mutateVerifyCode,
+    mutate: mutateVerifyCode,
     isPending: isPendingVerifyCode,
     isError: isErrorVerifyOtp,
   } = useMutation({
@@ -45,6 +45,7 @@ export const useOTPValidationCode = () => {
     onSuccess: (data: IAuthTokenInfo) => {
       toast.success("Código de verificação validado com sucesso");
       store.setIsValid(true);
+      onVerifySuccess?.();
     },
     onError: () => {
       toast.error("Erro ao validar código de verificação, tente novamente");
