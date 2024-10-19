@@ -7,6 +7,7 @@ import {
 import { Constants } from "@/app/utils/Constants";
 import {
   IAppointmentsResponse,
+  INewAppointmentRequest,
   IQueryAppointmentRequest,
 } from "@/app/backend/services/data/AppointmentDaos";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
@@ -45,6 +46,40 @@ class AppointmentsService {
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to fetch appointments.", error);
       return Promise.reject(error);
+    }
+  }
+
+  public async scheduleAppointment(
+    appointmentData: INewAppointmentRequest,
+  ): Promise<any> {
+    Logger.log(this.LOG_TAG, "Start scheduling appointment");
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.SCHEDULE_APPOINTMENT(
+          Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
+          appointmentData.timeSlotId.toString(),
+        ),
+        httpMethod: HttpMethods.POST,
+        data: {
+          treatmentsIds: appointmentData.treatmentsId,
+        },
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.log(this.LOG_TAG, "Schedule appointment response success", [
+        response,
+      ]);
+
+      if (!response || response.status !== HttpStatus.CREATED) {
+        return Promise.reject("Failed to schedule appointment");
+      }
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error scheduling appointment", error);
+      throw error;
     }
   }
 }

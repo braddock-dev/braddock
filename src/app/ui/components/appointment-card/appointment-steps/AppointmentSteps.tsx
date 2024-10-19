@@ -8,17 +8,17 @@ import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/fi
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
 import { useMutation } from "@tanstack/react-query";
-import { scheduleAppointment } from "@/app/backend/actions/treatmentsActions";
 import {
   newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
-import { IBaseNewAppointmentInfo } from "@/app/backend/business/treatments/data/TreatmentsData";
 import JSConfetti from "js-confetti";
 import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/fourth-step/FourthStep";
 import OTPStep from "@/app/ui/components/appointment-card/appointment-steps/otp-step/OTPStep";
 import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
+import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/data/AppointmentData";
+import { scheduleAppointment } from "@/app/backend/actions/appointmentActions";
 
 enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",

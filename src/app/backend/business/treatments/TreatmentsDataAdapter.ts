@@ -1,10 +1,8 @@
 import {
   IDaySlot,
-  INewAppointmentRequestData,
   ITimeSlot,
   ITreatment,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
-import { INewAppointmentRequest } from "@/app/backend/services/data/AppointmentDaos";
 
 class TreatmentsDataAdapter {
   public convertDataToTreatment(data: any): ITreatment {
@@ -43,30 +41,6 @@ class TreatmentsDataAdapter {
 
   public convertDataToDaySlots(data: any[]): IDaySlot[] {
     return data.map(this.convertDataToDaySlot.bind(this));
-  }
-
-  public convertAppointmentDataToRequestData(
-    newAppointment: INewAppointmentRequestData,
-  ): INewAppointmentRequest {
-    if (!newAppointment.selectedTreatments.length) {
-      throw new Error("No treatments selected");
-    }
-
-    if (!newAppointment.selectedTimeSlot?.timeInMillis) {
-      throw new Error("No time slot selected");
-    }
-
-    const treatmentsId = newAppointment.selectedTreatments.map(
-      (treatment) => treatment.id,
-    );
-
-    return {
-      treatmentsId: treatmentsId,
-      timeSlotId: newAppointment.selectedTimeSlot.timeInMillis,
-      customerName: newAppointment.customerName,
-      customerPhone: newAppointment.phoneNumber,
-      customerEmail: newAppointment.customerEmail,
-    };
   }
 }
 

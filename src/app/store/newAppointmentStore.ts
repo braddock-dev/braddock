@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import {
-  IBaseNewAppointmentInfo,
   IDaySlot,
   ITimeSlot,
   ITreatment,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
+import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/data/AppointmentData";
 
 export interface INewAppointmentStore {
   treatments: ITreatment[];

@@ -6,12 +6,14 @@ import {
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
 import {
   IAppointmentsResponse,
+  INewAppointmentRequest,
   IQueryAppointmentRequest,
 } from "@/app/backend/services/data/AppointmentDaos";
 import dayjs from "dayjs";
 import dayJsWrapper from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import { addMinutesToDate, minutesToHour } from "@/app/utils/functions";
+import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 
 class AppointmentDataAdapter {
   private static DEFAULT_DATE_INTERVAL = {
@@ -83,6 +85,30 @@ class AppointmentDataAdapter {
 
   public convertAppointmentsToEvents(appointments: IAppointment[]): IEvent[] {
     return appointments.map(this.convertAppointmentToEvent.bind(this));
+  }
+
+  public convertAppointmentDataToRequestData(
+    newAppointment: INewAppointmentRequestData,
+  ): INewAppointmentRequest {
+    if (!newAppointment.selectedTreatments.length) {
+      throw new Error("No treatments selected");
+    }
+
+    if (!newAppointment.selectedTimeSlot?.timeInMillis) {
+      throw new Error("No time slot selected");
+    }
+
+    const treatmentsId = newAppointment.selectedTreatments.map(
+      (treatment) => treatment.id,
+    );
+
+    return {
+      treatmentsId: treatmentsId,
+      timeSlotId: newAppointment.selectedTimeSlot.timeInMillis,
+      customerName: newAppointment.customerName,
+      customerPhone: newAppointment.phoneNumber,
+      customerEmail: newAppointment.customerEmail,
+    };
   }
 }
 

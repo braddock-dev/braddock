@@ -11,7 +11,7 @@ import {
   IAppointment,
   IAppointmentQueryData,
 } from "@/app/backend/business/treatments/data/AppointmentData";
-import AppointmentDataAdapter from "@/app/backend/business/treatments/AppointmentDataAdapter";
+import AppointmentDataAdapter from "@/app/backend/business/appointments/AppointmentDataAdapter";
 import ptLocale from "@fullcalendar/core/locales/pt";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { toast } from "sonner";
