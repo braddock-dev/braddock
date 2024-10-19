@@ -135,7 +135,8 @@ function AppointmentSteps() {
     [APPOINTMENT_STEPS.SUCCESS_STEP]: <FourthStep />,
     [APPOINTMENT_STEPS.OTP_STEP]: (
       <OTPStep
-        isValidChange={() => {
+        isValidChange={(isValid) => {
+          changeStepValidState(APPOINTMENT_STEPS.OTP_STEP, isValid);
           handleStartAppointment();
         }}
       />
