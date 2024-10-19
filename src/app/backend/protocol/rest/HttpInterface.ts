@@ -5,6 +5,7 @@ import IHttpInterface, {
   IHttpResponse,
 } from "@/app/backend/protocol/rest/IHttpInterface";
 import Logger from "@/app/utils/Logger";
+import AuthStoreInterface from "@/app/backend/protocol/rest/AuthStoreInterface";
 
 class HttpInterface implements IHttpInterface {
   private readonly LOG_TAG: string = "HttpInterface";
@@ -38,12 +39,14 @@ class HttpInterface implements IHttpInterface {
   }
 
   send(request: IHttpRequestConfig): Promise<IHttpResponse> {
+    this.applyUserAuthHeader();
+    this.processRequestConfig(request);
+
     Logger.debug(
       this.LOG_TAG,
       "Sending " + request.httpMethod + " request... " + request.url,
       [request],
     );
-    this.processRequestConfig(request);
 
     switch (request.httpMethod) {
       case HttpMethods.GET:
@@ -156,6 +159,23 @@ class HttpInterface implements IHttpInterface {
           }
         },
       ];
+    }
+  }
+
+  private applyUserAuthHeader(): void {
+    const { token } = AuthStoreInterface.getAuthToken();
+
+    if (
+      this.axios.defaults &&
+      this.axios.defaults.headers &&
+      this.axios.defaults.headers.common
+    ) {
+      if (token) {
+        this.axios.defaults.headers.common["Token"] = token;
+        Logger.debug(this.LOG_TAG, "User token set", [
+          this.axios.defaults.headers.common,
+        ]);
+      }
     }
   }
 }

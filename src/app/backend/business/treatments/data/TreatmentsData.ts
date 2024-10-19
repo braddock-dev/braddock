@@ -33,4 +33,5 @@ export interface INewAppointmentRequestData {
   selectedTimeSlot?: ITimeSlot;
   phoneNumber: string;
   customerName: string;
+  customerEmail: string;
 }

@@ -5,6 +5,7 @@ import {
   IOtpRequestData,
 } from "@/app/backend/business/auth/data/OtpData";
 import OtpDataAdapter from "@/app/backend/business/auth/OtpDataAdapter";
+import AuthStoreInterface from "@/app/backend/protocol/rest/AuthStoreInterface";
 
 class OtpManager {
   private readonly LOG_TAG = "OtpManager";
@@ -40,6 +41,7 @@ class OtpManager {
       const authTokenInfo = OtpDataAdapter.convertDataToAuthToken(responseData);
       Logger.info(this.LOG_TAG, "OTP verified", [authTokenInfo]);
 
+      AuthStoreInterface.setAuthCookies(authTokenInfo);
       return authTokenInfo;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error verifying OTP", error);

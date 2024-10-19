@@ -55,6 +55,7 @@ function AppointmentSteps() {
         selectedTreatments: newAppointmentData.selectedTreatments,
         customerName: newAppointmentData.customerName,
         phoneNumber: newAppointmentData.phoneNumber,
+        customerEmail: newAppointmentData.customerEmail,
         selectedTimeSlot: newAppointmentData.selectedTimeSlot,
       });
     },

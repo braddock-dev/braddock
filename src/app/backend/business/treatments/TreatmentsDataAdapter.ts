@@ -65,6 +65,7 @@ class TreatmentsDataAdapter {
       timeSlotId: newAppointment.selectedTimeSlot.timeInMillis,
       customerName: newAppointment.customerName,
       customerPhone: newAppointment.phoneNumber,
+      customerEmail: newAppointment.customerEmail,
     };
   }
 }

@@ -37,7 +37,7 @@ class TreatmentsService {
       return response.data;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error getting treatments", error);
-      return Promise.reject(error);
+      throw error;
     }
   }
 
@@ -68,7 +68,7 @@ class TreatmentsService {
       return response.data;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error getting treatment timeslots", error);
-      return Promise.reject(error);
+      throw error;
     }
   }
 
@@ -103,7 +103,7 @@ class TreatmentsService {
       return response.data;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error scheduling appointment", error);
-      return Promise.reject(error);
+      throw error;
     }
   }
 }

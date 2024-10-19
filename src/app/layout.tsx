@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "./ui/styles/globals.scss";
 import QueryClientWrapper from "@/app/ui/components/QueryClientWrapper";
 import ResponsivenessProvider from "@/app/ui/components/responsiveness-provider/ResponsivenessProvider";
-import { Toaster } from "sonner";
 import PrelineScript from "@/app/ui/components/preline-script/PrelineScript";
+import ToastWrapper from "@/app/ui/components/toast-wrapper/ToastWrapper";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,8 +36,8 @@ export default function RootLayout({
       <body className={`${interItalic.variable} ${inter.className}`}>
         <ResponsivenessProvider>
           <QueryClientWrapper>{children}</QueryClientWrapper>
+          <ToastWrapper />
         </ResponsivenessProvider>
-        <Toaster richColors />
       </body>
 
       <PrelineScript />
