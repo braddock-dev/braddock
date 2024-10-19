@@ -7,15 +7,18 @@ import { twMerge } from "tailwind-merge";
 interface IOTPStepProps {
   onComplete: (...args: any[]) => void;
   disabled?: boolean;
+  value?: string;
+  onChange?: (...args: any[]) => void;
 }
 export function OtpInput(props: IOTPStepProps) {
   return (
     <OTPInput
       maxLength={4}
-      autoFocus
       containerClassName="group flex items-center has-[:disabled]:opacity-30"
       onComplete={props.onComplete}
       disabled={props.disabled}
+      value={props.value}
+      onChange={props.onChange}
       render={({ slots }) => (
         <>
           <div className="flex">

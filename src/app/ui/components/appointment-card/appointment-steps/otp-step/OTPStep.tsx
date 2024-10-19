@@ -7,12 +7,15 @@ import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appoi
 import { useOtpValidationStore } from "@/app/store/otpValidationStore";
 import Logger from "@/app/utils/Logger";
 import { useCustomerInfo } from "@/app/ui/components/appointment-card/appointment-steps/useCustomerInfo";
+import { useState } from "react";
 
 const LOG_TAG = "OTPStep";
 interface IOTPStepProps {
   isValidChange: (isValid: boolean) => void;
 }
 export default function OTPStep(props: IOTPStepProps) {
+  const [otpValue, setOtpValue] = useState("");
+
   const appointmentStore = useNewAppointmentStore(
     newAppointmentSelectors.appointmentStore,
   );
@@ -29,6 +32,7 @@ export default function OTPStep(props: IOTPStepProps) {
 
   const handleResendCode = () => {
     mutateSendOtp(phoneNumber);
+    setOtpValue("");
   };
 
   function handleOnVerifyOtpSuccess() {
@@ -64,9 +68,14 @@ export default function OTPStep(props: IOTPStepProps) {
         </p>
 
         <div className={"mt-5 flex justify-center items-center flex-col gap-5"}>
-          <OtpInput onComplete={handleOnComplete} disabled={isErrorSendOpt} />
+          <OtpInput
+            onComplete={handleOnComplete}
+            disabled={isErrorSendOpt}
+            value={otpValue}
+            onChange={setOtpValue}
+          />
 
-          {otpStore.showResendCode && (
+          {(otpStore.showResendCode || isErrorSendOpt) && (
             <span
               className={"text-white underline text-sm cursor-pointer"}
               onClick={handleResendCode}
