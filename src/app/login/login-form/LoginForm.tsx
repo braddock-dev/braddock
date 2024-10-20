@@ -55,7 +55,7 @@ export default function LoginForm() {
   return (
     <div
       className={
-        "w-full h-[100vh] bg-gray-200 flex justify-center items-center"
+        "w-full h-[100vh] bg-brown/15 flex justify-center items-center"
       }
     >
       <div
