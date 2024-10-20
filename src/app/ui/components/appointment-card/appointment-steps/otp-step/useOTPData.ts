@@ -1,16 +1,18 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
-  IAuthTokenInfo,
+  ICompleteAuthData,
   IOtpRequestData,
 } from "@/app/backend/business/auth/data/OtpData";
 import { sendOtp, verifyOtp } from "@/app/backend/actions/authActions";
 import { useOtpValidationStore } from "@/app/store/otpValidationStore";
+import { useAuthStore } from "@/app/store/authStore";
 
 const LOADING_TOAST_ID = "loading-toast";
 
 export const useOTPValidationCode = (onVerifySuccess?: () => void) => {
   const store = useOtpValidationStore((state) => state);
+  const setAuthUser = useAuthStore((state) => state.setUserInfo);
 
   const {
     mutateAsync: mutateSendOtp,
@@ -42,9 +44,10 @@ export const useOTPValidationCode = (onVerifySuccess?: () => void) => {
   } = useMutation({
     mutationKey: ["verifyOTP"],
     mutationFn: (data: IOtpRequestData) => verifyOtp(data),
-    onSuccess: (data: IAuthTokenInfo) => {
+    onSuccess: (data: ICompleteAuthData) => {
       toast.success("Código de verificação validado com sucesso");
       store.setIsValid(true);
+      setAuthUser(data.userInfo);
       onVerifySuccess?.();
     },
     onError: () => {

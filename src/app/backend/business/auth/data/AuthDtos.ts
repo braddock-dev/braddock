@@ -6,6 +6,6 @@ export enum AuthRoles {
 export interface IUserInfo {
   name: string;
   role: AuthRoles;
-  msisdn: string;
+  phoneNumber: string;
   email: string;
 }

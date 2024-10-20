@@ -2,7 +2,7 @@
 
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import React, { ReactElement, useCallback, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
@@ -16,6 +16,7 @@ import OTPStep from "@/app/ui/components/appointment-card/appointment-steps/otp-
 import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
 import { useAppointment } from "@/app/ui/components/appointment-card/appointment-steps/useAppointment";
 import { useCustomerInfo } from "@/app/ui/components/appointment-card/appointment-steps/useCustomerInfo";
+import { authSelectors, useAuthStore } from "@/app/store/authStore";
 
 export enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -40,9 +41,17 @@ const defaultAvailableSteps: IAvailableStepsMap = {
 };
 
 function AppointmentSteps() {
+  const authUser = useAuthStore((state) => state.userInfo);
+
   const resetState = useNewAppointmentStore(newAppointmentActions.resetState);
+  const isUserAuthenticated = useAuthStore(authSelectors.isAuthenticated);
+
   const appointmentStore = useNewAppointmentStore(
     newAppointmentSelectors.appointmentStore,
+  );
+
+  const setCustomerInfo = useNewAppointmentStore(
+    newAppointmentActions.setCustomerInfo,
   );
 
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
@@ -60,6 +69,13 @@ function AppointmentSteps() {
   const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
 
   const { mutateUpdateCustomer } = useCustomerInfo();
+
+  useEffect(() => {
+    if (authUser) {
+      setCustomerInfo(authUser.name, authUser.phoneNumber, authUser.email);
+      debugger;
+    }
+  }, [authUser]);
 
   function handleChangeStep(goTo: APPOINTMENT_STEPS) {
     setCurrentStep(goTo);
@@ -97,6 +113,14 @@ function AppointmentSteps() {
     mutateSendOtp(appointmentStore.phoneNumber).then(() => {
       handleChangeStep(APPOINTMENT_STEPS.OTP_STEP);
     });
+  };
+
+  const handleClickConfirmUserInfo = () => {
+    if (isUserAuthenticated) {
+      handleStartAppointment();
+    } else {
+      handleSendOTP();
+    }
   };
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -190,15 +214,14 @@ function AppointmentSteps() {
           fullWidth
           color={ButtonColors.WHITE}
           className={styles.button}
-          onClick={handleSendOTP}
-          isLoading={isPendingNewAppointment || isPendingSendOtp}
+          onClick={handleClickConfirmUserInfo}
+          isLoading={isPendingSendOtp}
           disabled={
             !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
-            isPendingNewAppointment ||
             isPendingSendOtp
           }
         >
-          Continuar
+          CONTINUAR
         </Button>
       </>
     ),

@@ -2,7 +2,7 @@
 
 import OtpManager from "@/app/backend/business/auth/OtpManager";
 import {
-  IAuthTokenInfo,
+  ICompleteAuthData,
   IOtpRequestData,
 } from "@/app/backend/business/auth/data/OtpData";
 import AuthManager from "@/app/backend/business/auth/AuthManager";
@@ -14,7 +14,7 @@ export async function sendOtp(phoneNumber: string): Promise<string> {
 
 export async function verifyOtp(
   data: IOtpRequestData,
-): Promise<IAuthTokenInfo> {
+): Promise<ICompleteAuthData> {
   return OtpManager.verifyOtp(data);
 }
 

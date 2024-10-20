@@ -1,11 +1,12 @@
 import Logger from "@/app/utils/Logger";
 import OtpService from "@/app/backend/services/OtpService";
 import {
-  IAuthTokenInfo,
+  ICompleteAuthData,
   IOtpRequestData,
 } from "@/app/backend/business/auth/data/OtpData";
 import OtpDataAdapter from "@/app/backend/business/auth/OtpDataAdapter";
 import AuthStoreInterface from "@/app/backend/protocol/rest/AuthStoreInterface";
+import AuthManager from "@/app/backend/business/auth/AuthManager";
 
 class OtpManager {
   private readonly LOG_TAG = "OtpManager";
@@ -30,7 +31,7 @@ class OtpManager {
 
   public async verifyOtp(
     requestData: IOtpRequestData,
-  ): Promise<IAuthTokenInfo> {
+  ): Promise<ICompleteAuthData> {
     Logger.debug(this.LOG_TAG, "Verifying OTP", [
       requestData.requestId,
       requestData.otpCode,
@@ -40,9 +41,13 @@ class OtpManager {
       const responseData = await OtpService.verifyOtp(requestData);
       const authTokenInfo = OtpDataAdapter.convertDataToAuthToken(responseData);
       Logger.info(this.LOG_TAG, "OTP verified", [authTokenInfo]);
-
       AuthStoreInterface.setAuthCookies(authTokenInfo);
-      return authTokenInfo;
+
+      const userInfoData = await AuthManager.getUserInfo();
+
+      Logger.info(this.LOG_TAG, "User info fetched", [userInfoData]);
+
+      return { authToken: authTokenInfo, userInfo: userInfoData };
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error verifying OTP", error);
       throw error;

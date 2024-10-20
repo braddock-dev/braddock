@@ -9,3 +9,11 @@ export const VERIFY_OTP_RESPONSE = {
   expiration: 1744933560792,
   role: "Customer",
 };
+
+export const GET_USER_INFO_RESPONSE = {
+  name: "Herquilóide Hele",
+  role: "Customer",
+  msisdn: "+351915071158",
+  email: "herquiloide@gmail.com",
+  createdAt: 1710449392545,
+};

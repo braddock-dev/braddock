@@ -5,6 +5,7 @@ import QueryClientWrapper from "@/app/ui/components/QueryClientWrapper";
 import ResponsivenessProvider from "@/app/ui/components/responsiveness-provider/ResponsivenessProvider";
 import PrelineScript from "@/app/ui/components/preline-script/PrelineScript";
 import ToastWrapper from "@/app/ui/components/toast-wrapper/ToastWrapper";
+import AuthProvider from "@/app/ui/components/auth-provider/AuthProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,10 +35,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${interItalic.variable} ${inter.className}`}>
-        <ResponsivenessProvider>
-          <QueryClientWrapper>{children}</QueryClientWrapper>
-          <ToastWrapper />
-        </ResponsivenessProvider>
+        <AuthProvider>
+          <ResponsivenessProvider>
+            <QueryClientWrapper>{children}</QueryClientWrapper>
+            <ToastWrapper />
+          </ResponsivenessProvider>
+        </AuthProvider>
       </body>
 
       <PrelineScript />

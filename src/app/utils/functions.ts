@@ -38,3 +38,10 @@ export function getFormattedHourDuration(hours: number) {
 function isFraction(num: number) {
   return num !== Math.trunc(num);
 }
+
+export function removePhoneNumberPrefix(
+  phoneNumber: string,
+  prefix: string,
+): string {
+  return phoneNumber.replace(prefix, "");
+}
