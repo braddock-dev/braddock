@@ -1,7 +1,9 @@
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
+
 export interface IAuthTokenInfo {
   token: string;
   expiration: string;
-  role?: string;
+  role: AuthRoles;
 }
 
 export interface IOtpRequestData {
