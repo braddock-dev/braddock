@@ -30,7 +30,7 @@ export const handlers = [
     return HttpResponse.json(VERIFY_OTP_RESPONSE, { status: HttpStatus.OK });
   }),
 
-  http.post(Constants.API_ROUTES.UPDATE_CUSTOMER(), () => {
+  http.put(Constants.API_ROUTES.UPDATE_CUSTOMER(), () => {
     return HttpResponse.json({}, { status: HttpStatus.OK });
   }),
 ];

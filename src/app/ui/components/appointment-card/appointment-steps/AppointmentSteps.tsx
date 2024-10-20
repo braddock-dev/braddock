@@ -15,6 +15,7 @@ import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/f
 import OTPStep from "@/app/ui/components/appointment-card/appointment-steps/otp-step/OTPStep";
 import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
 import { useAppointment } from "@/app/ui/components/appointment-card/appointment-steps/useAppointment";
+import { useCustomerInfo } from "@/app/ui/components/appointment-card/appointment-steps/useCustomerInfo";
 
 export enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -58,11 +59,18 @@ function AppointmentSteps() {
 
   const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
 
+  const { mutateUpdateCustomer } = useCustomerInfo();
+
   function handleChangeStep(goTo: APPOINTMENT_STEPS) {
     setCurrentStep(goTo);
   }
 
   function handleOnAppointmentSuccess() {
+    mutateUpdateCustomer({
+      customerName: appointmentStore.customerName,
+      customerEmail: appointmentStore.customerEmail,
+    });
+
     handleChangeStep(APPOINTMENT_STEPS.SUCCESS_STEP);
   }
 

@@ -31,6 +31,8 @@ class CustomerService {
 
       const response = await ApiInterface.send(request);
 
+      Logger.info(this.LOG_TAG, "Customer info update response", [response]);
+
       if (!response || response.status !== HttpStatus.OK) {
         Logger.error(this.LOG_TAG, "Error updating customer info", [response]);
         throw new Error("Failed to update customer info");

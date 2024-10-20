@@ -6,7 +6,6 @@ import {
 import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
 import { useOtpValidationStore } from "@/app/store/otpValidationStore";
 import Logger from "@/app/utils/Logger";
-import { useCustomerInfo } from "@/app/ui/components/appointment-card/appointment-steps/useCustomerInfo";
 import { useState } from "react";
 
 const LOG_TAG = "OTPStep";
@@ -16,16 +15,11 @@ interface IOTPStepProps {
 export default function OTPStep(props: IOTPStepProps) {
   const [otpValue, setOtpValue] = useState("");
 
-  const appointmentStore = useNewAppointmentStore(
-    newAppointmentSelectors.appointmentStore,
-  );
   const otpStore = useOtpValidationStore((state) => state);
 
   const phoneNumber = useNewAppointmentStore(
     newAppointmentSelectors.phoneNumber,
   );
-
-  const { mutateUpdateCustomer } = useCustomerInfo();
 
   const { mutateSendOtp, isErrorSendOpt, mutateVerifyCode } =
     useOTPValidationCode(handleOnVerifyOtpSuccess);
@@ -36,11 +30,6 @@ export default function OTPStep(props: IOTPStepProps) {
   };
 
   function handleOnVerifyOtpSuccess() {
-    mutateUpdateCustomer({
-      customerName: appointmentStore.customerName,
-      customerEmail: appointmentStore.customerEmail,
-    });
-
     props.isValidChange(true);
   }
 
