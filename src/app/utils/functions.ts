@@ -1,5 +1,7 @@
 import dayjs from "@/app/utils/dayjs";
 import { Dayjs } from "dayjs";
+import { NextURL } from "next/dist/server/web/next-url";
+import { NextResponse } from "next/server";
 
 export function getPageScrollPosition() {
   return {
@@ -45,3 +47,12 @@ export function removePhoneNumberPrefix(
 ): string {
   return phoneNumber.replace(prefix, "");
 }
+
+export const redirectNoCache = (
+  url: string | NextURL | URL,
+  init?: number | ResponseInit | any,
+): NextResponse => {
+  const response = NextResponse.redirect(url, init);
+  response.headers.set("x-middleware-cache", "no-cache");
+  return response;
+};

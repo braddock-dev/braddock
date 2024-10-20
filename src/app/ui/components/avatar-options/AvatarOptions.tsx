@@ -17,6 +17,7 @@ import { logout } from "@/app/backend/actions/authActions";
 import { useAuthStore } from "@/app/store/authStore";
 import { toast } from "sonner";
 import { useNewAppointmentStore } from "@/app/store/newAppointmentStore";
+import { Constants } from "@/app/utils/Constants";
 
 interface AvatarOptionsProps {
   userInfo: IUserInfo;
@@ -46,14 +47,16 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
       case AuthRoles.BUSINESS: {
         return [
           {
-            label: "Notificações",
+            label: "Home",
             icon: <NotificationsIcon className="shrink-0 size-4" />,
-            onClick: () => router.push("/notifications"),
+            onClick: () => router.push(Constants.APP_ROUTES.ADMIN),
           },
           {
             label: "Minha Conta",
             icon: <UserIcon className="shrink-0 size-4" />,
-            onClick: () => router.push("/account"),
+            onClick: () => {
+              toast.info("Em desenvolvimento");
+            },
           },
           {
             label: "Sair",
@@ -69,7 +72,9 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
           {
             label: "Meus Agendamentos",
             icon: <CalendarIcon className="shrink-0 size-4" />,
-            onClick: () => router.push("/client/appointments"),
+            onClick: () => {
+              toast.info("Em desenvolvimento");
+            },
           },
           {
             label: "Sair",

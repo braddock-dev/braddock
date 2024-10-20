@@ -7,10 +7,13 @@ import {
 import { sendOtp, verifyOtp } from "@/app/backend/actions/authActions";
 import { useOtpValidationStore } from "@/app/store/otpValidationStore";
 import { useAuthStore } from "@/app/store/authStore";
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
 const LOADING_TOAST_ID = "loading-toast";
 
-export const useOTPValidationCode = (onVerifySuccess?: () => void) => {
+export const useOTPValidationCode = (
+  onVerifySuccess?: (userRole: AuthRoles) => void,
+) => {
   const store = useOtpValidationStore((state) => state);
   const setAuthUser = useAuthStore((state) => state.setUserInfo);
 
@@ -48,7 +51,7 @@ export const useOTPValidationCode = (onVerifySuccess?: () => void) => {
       toast.success("Código de verificação validado com sucesso");
       store.setIsValid(true);
       setAuthUser(data.userInfo);
-      onVerifySuccess?.();
+      onVerifySuccess?.(data.userInfo.role);
     },
     onError: () => {
       toast.error("Erro ao validar código de verificação, tente novamente");

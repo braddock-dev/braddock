@@ -2,11 +2,20 @@ import { Constants } from "@/app/utils/Constants";
 import Logger from "@/app/utils/Logger";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import AuthGuardManager from "@/app/backend/business/auth/AuthGuardManager";
+import { redirectNoCache } from "@/app/utils/functions";
 
 const LOG_TAG = "Middleware";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   Logger.debug(LOG_TAG, "Accessing route path", [request.nextUrl]);
+
+  const redirectTo = await AuthGuardManager.handleAuthGuard(request);
+
+  if (redirectTo) {
+    Logger.debug(LOG_TAG, "Redirecting to", [redirectTo]);
+    return redirectNoCache(redirectTo);
+  }
 
   if (request.nextUrl.pathname === Constants.APP_ROUTES.ADMIN) {
     const newUrl = new URL(Constants.APP_ROUTES.APPOINTMENTS, request.url);

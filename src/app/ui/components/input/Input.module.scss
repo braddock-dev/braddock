@@ -131,4 +131,28 @@
     margin-top: toRem(3);
     margin-left: toRem(5);
   }
+
+
+  &[data-theme-mode="light"]{
+    .input{
+      background: $white;
+      border: 2px solid $gray02;
+      color: $black;
+
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 30px $white inset !important; /* Change 'white' to your desired background color */
+        box-shadow: 0 0 0 30px $white inset !important; /* For other browsers */
+        -webkit-text-fill-color: $black !important; /* Ensure text remains visible */
+      }
+    }
+
+    .label{
+      color: $gray02;
+
+      &.floatLabel {
+        background-color: $white;
+      }
+    }
+  }
+
 }

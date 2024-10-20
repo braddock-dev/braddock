@@ -50,6 +50,7 @@ export const Constants = {
     HOME: "/",
     ADMIN: "/admin",
     APPOINTMENTS: "/admin/appointments",
+    LOGIN: "/login",
   },
   UI: {
     PHONE_PREFIX: {

@@ -19,6 +19,7 @@ interface IInputProps extends React.ComponentPropsWithoutRef<"input"> {
   classNameContainer?: string;
   isValid?: boolean;
   hasValue: boolean;
+  themeMode?: "light" | "dark";
 }
 function Input(
   {
@@ -29,6 +30,7 @@ function Input(
     classNameContainer,
     isValid,
     hasValue,
+    themeMode = "dark",
     ...rest
   }: IInputProps,
   ref?: React.Ref<HTMLInputElement>,
@@ -65,6 +67,7 @@ function Input(
       onFocus={() => setInputFocus(true)}
       onBlur={() => setInputFocus(false)}
       data-is-valid={isValid}
+      data-theme-mode={themeMode}
     >
       <input
         ref={ref}
