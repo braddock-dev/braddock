@@ -21,3 +21,7 @@ export async function verifyOtp(
 export async function getUserInfo(): Promise<IUserInfo> {
   return AuthManager.getUserInfo();
 }
+
+export async function logout(): Promise<void> {
+  return AuthManager.logout();
+}

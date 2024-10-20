@@ -2,6 +2,8 @@ import Logger from "@/app/utils/Logger";
 import { IUserInfo } from "@/app/backend/business/auth/data/AuthDtos";
 import AuthService from "@/app/backend/services/AuthService";
 import AuthDataAdapter from "@/app/backend/business/auth/AuthDataAdapter";
+import AuthStoreInterface from "@/app/backend/protocol/rest/AuthStoreInterface";
+import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 
 class AuthManager {
   private readonly LOG_TAG = "AuthManager";
@@ -22,6 +24,20 @@ class AuthManager {
       return userInfo;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error getting user info", error);
+      throw error;
+    }
+  }
+
+  public async logout(): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Logging out");
+
+    try {
+      AuthStoreInterface.removeAuthCookies();
+      ApiInterface.removeUserAuthHeader();
+
+      Logger.debug(this.LOG_TAG, "Logout successful");
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error logging out", error);
       throw error;
     }
   }

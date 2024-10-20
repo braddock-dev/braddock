@@ -121,6 +121,19 @@ class HttpInterface implements IHttpInterface {
     this.outboundRequestInterceptFn = interceptFn;
   }
 
+  public removeUserAuthHeader(): void {
+    if (
+      this.axios.defaults &&
+      this.axios.defaults.headers &&
+      this.axios.defaults.headers.common
+    ) {
+      delete this.axios.defaults.headers.common["Token"];
+      Logger.debug(this.LOG_TAG, "User token removed", [
+        this.axios.defaults.headers.common,
+      ]);
+    }
+  }
+
   private handleOutboundRequestIntercept(requestConfig: any): Promise<any> {
     if (this.outboundRequestInterceptFn) {
       return this.outboundRequestInterceptFn(requestConfig);
