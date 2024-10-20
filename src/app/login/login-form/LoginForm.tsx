@@ -60,10 +60,10 @@ export default function LoginForm() {
     >
       <div
         className={
-          "grid grid-cols-2 gap-7 bg-black/85 h-[60vh] w-[65vw] max-w-[850px] rounded-2xl overflow-hidden  aspect-square"
+          "flex flex-col md:grid grid-cols-none md:grid-cols-2 gap-0 md:gap-7 bg-black/85 h-full md:h-[60vh] w-[100vw] md:w-[65vw] max-w-[850px] rounded-none md:rounded-2xl overflow-hidden  aspect-square"
         }
       >
-        <div className={""}>
+        <div className={"h-[30vh] md:h-auto"}>
           <Image
             src={HeroImage}
             alt={"Hero Image"}
@@ -76,7 +76,9 @@ export default function LoginForm() {
         <div className={"flex flex-col gap-2 p-5 justify-center items-center"}>
           <div className={"flex flex-col gap-6"}>
             <div className={"flex flex-col gap-2"}>
-              <h1 className={"text-4xl font-bold text-lightBrown01"}>
+              <h1
+                className={"text-3xl md:text-4xl font-bold text-lightBrown01"}
+              >
                 Entrar na plataforma
               </h1>
               <p className={"text-gray-100 text-sm"}>

@@ -45,7 +45,7 @@ export default function LoginPhoneNumberStep(props: LoginPhoneNumberStepProps) {
         type={"tel"}
         inputMode={"tel"}
         autoComplete={"none"}
-        placeholder={"Introduza o Número"}
+        placeholder={"Introduza o Número (PT)"}
         floatingMode
         {...register("phoneNumber", { required: true, min: 10 })}
         touched={touchedFields.phoneNumber}

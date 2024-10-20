@@ -104,7 +104,7 @@ export default function ThirdStep(props: IThirdStepProps) {
             type={"tel"}
             inputMode={"tel"}
             autoComplete={"none"}
-            placeholder={"Seu Contacto"}
+            placeholder={"Seu Contacto (PT)"}
             floatingMode
             {...register("phoneNumber", { required: true, min: 10 })}
             touched={touchedFields.phoneNumber}
