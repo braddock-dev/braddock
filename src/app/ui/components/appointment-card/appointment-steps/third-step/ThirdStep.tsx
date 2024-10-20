@@ -12,11 +12,14 @@ import {
   UserInfoForm,
   userInfoFormSchema,
 } from "@/app/ui/components/appointment-card/appointment-steps/third-step/FormSchema";
+import { useAuthStore } from "@/app/store/authStore";
 
 interface IThirdStepProps {
   isValidChange: (isValid: boolean) => void;
 }
 export default function ThirdStep(props: IThirdStepProps) {
+  const authUser = useAuthStore((state) => state.userInfo);
+
   const setCustomerInfo = useNewAppointmentStore(
     newAppointmentActions.setCustomerInfo,
   );
@@ -30,6 +33,8 @@ export default function ThirdStep(props: IThirdStepProps) {
     formState: { isValid, errors, touchedFields },
     getValues,
     watch,
+    setValue,
+    trigger,
   } = useForm<UserInfoForm>({
     resolver: zodResolver(userInfoFormSchema),
     reValidateMode: "onChange",
@@ -54,6 +59,15 @@ export default function ThirdStep(props: IThirdStepProps) {
       setCustomerInfo(customerName, phoneNumber, email);
     }
   }, [customerName, email, isValid, phoneNumber]);
+
+  useEffect(() => {
+    if (authUser && !customerName) {
+      setValue("name", authUser.name);
+      setValue("email", authUser.email);
+      setValue("phoneNumber", authUser.phoneNumber);
+      trigger();
+    }
+  }, [authUser, customerName]);
 
   return (
     <div className={styles.container}>

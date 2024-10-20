@@ -2,7 +2,7 @@
 
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { ReactElement, useCallback, useState } from "react";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
@@ -41,17 +41,11 @@ const defaultAvailableSteps: IAvailableStepsMap = {
 };
 
 function AppointmentSteps() {
-  const authUser = useAuthStore((state) => state.userInfo);
-
   const resetState = useNewAppointmentStore(newAppointmentActions.resetState);
   const isUserAuthenticated = useAuthStore(authSelectors.isAuthenticated);
 
   const appointmentStore = useNewAppointmentStore(
     newAppointmentSelectors.appointmentStore,
-  );
-
-  const setCustomerInfo = useNewAppointmentStore(
-    newAppointmentActions.setCustomerInfo,
   );
 
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
@@ -69,13 +63,6 @@ function AppointmentSteps() {
   const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
 
   const { mutateUpdateCustomer } = useCustomerInfo();
-
-  useEffect(() => {
-    if (authUser) {
-      setCustomerInfo(authUser.name, authUser.phoneNumber, authUser.email);
-      debugger;
-    }
-  }, [authUser]);
 
   function handleChangeStep(goTo: APPOINTMENT_STEPS) {
     setCurrentStep(goTo);
@@ -215,10 +202,11 @@ function AppointmentSteps() {
           color={ButtonColors.WHITE}
           className={styles.button}
           onClick={handleClickConfirmUserInfo}
-          isLoading={isPendingSendOtp}
+          isLoading={isPendingSendOtp || isPendingNewAppointment}
           disabled={
             !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
-            isPendingSendOtp
+            isPendingSendOtp ||
+            isPendingNewAppointment
           }
         >
           CONTINUAR
