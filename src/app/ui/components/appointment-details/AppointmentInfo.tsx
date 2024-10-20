@@ -1,7 +1,10 @@
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
 import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
-import { getFormattedHourDuration } from "@/app/utils/functions";
+import {
+  formatPhoneNumber,
+  getFormattedHourDuration,
+} from "@/app/utils/functions";
 import ServiceItem from "@/app/ui/components/appointment-details/ServiceItem";
 import Image from "next/image";
 import AvatarUser from "@/app/ui/images/avatarFallback.png";
@@ -71,7 +74,9 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
             <p className={"text-neutral-700 text-sm"}>
               {appointment.clientName}
             </p>
-            <span className={"text-neutral-500 text-sm"}>+351 915 071 158</span>
+            <span className={"text-neutral-500 text-sm"}>
+              {formatPhoneNumber(appointment.clientPhoneNumber)}
+            </span>
           </div>
         </div>
       </SectionInfo>

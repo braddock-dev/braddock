@@ -3,7 +3,7 @@ export const SEND_OTP_RESPONSE = {
   expiration: 1729375106968,
 };
 
-const USER_ROLE = "Customer"; //Customer or Business
+const USER_ROLE = "Business"; //Customer or Business
 
 export const VERIFY_OTP_RESPONSE = {
   token:

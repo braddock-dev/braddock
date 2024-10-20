@@ -79,7 +79,7 @@ export default function Page() {
     <div>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-        initialView="dayGridMonth"
+        initialView="dayGridWeek"
         headerToolbar={{
           left: "prev,next today",
           center: "title",

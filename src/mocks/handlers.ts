@@ -7,6 +7,7 @@ import {
   SEND_OTP_RESPONSE,
   VERIFY_OTP_RESPONSE,
 } from "@/mocks/data/authMockData";
+import { APPOINTMENTS } from "@/mocks/data/appointments";
 
 export const handlers = [
   http.get(Constants.API_ROUTES.GET_TREATMENTS(":businessId"), () => {
@@ -33,6 +34,10 @@ export const handlers = [
 
   http.put(Constants.API_ROUTES.UPDATE_CUSTOMER(), () => {
     return HttpResponse.json({}, { status: HttpStatus.OK });
+  }),
+
+  http.get(Constants.API_ROUTES.GET_APPOINTMENTS(), () => {
+    return HttpResponse.json(APPOINTMENTS, { status: HttpStatus.OK });
   }),
 
   http.get(Constants.API_ROUTES.GET_USER_INFO(), (info) => {

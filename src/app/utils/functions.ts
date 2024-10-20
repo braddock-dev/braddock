@@ -56,3 +56,8 @@ export const redirectNoCache = (
   response.headers.set("x-middleware-cache", "no-cache");
   return response;
 };
+
+export const formatPhoneNumber = (value?: string): string => {
+  if (value == null) return "-";
+  return value.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+};

@@ -25,7 +25,8 @@ class AppointmentDataAdapter {
     return {
       businessId: data.businessId,
       id: data.id,
-      clientName: data.clientName,
+      clientName: data.customerName || "",
+      clientPhoneNumber: data.customerMsisdn || "",
       startTimeInMillis: data.startTimeInMillis,
       createdAt: data.createdAt,
       durationInMinutes: data.durationInMinutes,
@@ -71,7 +72,7 @@ class AppointmentDataAdapter {
   public convertAppointmentToEvent(appointment: IAppointment): IEvent {
     return {
       id: appointment.id,
-      title: `Corte de cabelo com ${appointment.clientName}`,
+      title: `Corte de cabelo com ${appointment.clientName || "Cliente"}`,
       start: dayJsWrapper(appointment.startTimeInMillis).format(),
       end: addMinutesToDate(
         appointment.startTimeInMillis,
