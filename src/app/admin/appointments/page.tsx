@@ -17,8 +17,15 @@ import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { toast } from "sonner";
 import AppointmentDetails from "@/app/ui/components/appointment-details/AppointmentDetails";
 import { EventClickArg } from "@fullcalendar/core";
+import {
+  responsivenessSelectors,
+  useResponsiveness,
+} from "@/app/store/responsivenessStore";
 
 export default function Page() {
+  const isMobile = useResponsiveness(
+    responsivenessSelectors.isSmallTabletOrLess,
+  );
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
   const [selectedAppointment, setSelectedAppointment] =
@@ -34,6 +41,27 @@ export default function Page() {
 
     return AppointmentDataAdapter.convertAppointmentsToEvents(data);
   }, [data]);
+
+  const mobileCalendarView = useMemo(() => {
+    if (isMobile) {
+      return {
+        initialView: "listWeek",
+        header: {
+          left: "prev,next",
+          right: "dayGridWeek,listWeek",
+        },
+      };
+    }
+
+    return {
+      initialView: "dayGridWeek",
+      header: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridDay,dayGridMonth,dayGridWeek,listWeek",
+      },
+    };
+  }, [isMobile]);
 
   if (error) {
     toast.error("Erro ao carregar os agendamentos");
@@ -79,18 +107,15 @@ export default function Page() {
     <div>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-        initialView="dayGridWeek"
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridDay,dayGridMonth,dayGridWeek,listWeek",
-        }}
+        initialView={mobileCalendarView.initialView}
+        headerToolbar={mobileCalendarView.header}
         nowIndicator
         selectMirror
         eventInteractive={false}
         events={events}
         locale={ptLocale}
         eventClick={handleClickEvent}
+        key={mobileCalendarView.initialView}
       />
 
       <button

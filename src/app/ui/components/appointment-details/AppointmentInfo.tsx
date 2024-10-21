@@ -21,12 +21,12 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
     <div className="p-4 flex flex-col gap-6">
       <SectionInfo title={"Quando?"}>
         <div className={"text-neutral-500"}>
-          <p className={"capitalize"}>
+          <p className={"capitalize text-sm md:text"}>
             {dayjs(appointment.startTimeInMillis).format(
               Constants.DATE_FORMAT.CUSTOM_DATE,
             )}
           </p>
-          <p className={"flex gap-1 items-center"}>
+          <p className={"flex gap-1 items-center text-sm md:text"}>
             <span>Das</span>
             <span className={"font-bold text-brown"}>
               {dayjs(appointment.startTimeInMillis).format(

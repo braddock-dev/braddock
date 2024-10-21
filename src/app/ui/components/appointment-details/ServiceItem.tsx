@@ -11,7 +11,7 @@ export default function ServiceItem(props: IServiceItemProps) {
     <SelectButton
       selectButton={{
         text: (
-          <span className={"text-[12px] text-brown font-bold"}>
+          <span className={"text-[10px] md:text-[12px] text-brown font-bold"}>
             {props.title}
           </span>
         ),
