@@ -35,7 +35,7 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
     onSuccess: () => {
       removeUserInfo();
       resetNewAppointment();
-      toast.success("Conta desconectada com sucesso.");
+      toast.info("Conta desconectada com sucesso.");
     },
     onError: () => {
       toast.error("Erro ao sair da conta, tente novamente.");
