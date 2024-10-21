@@ -9,10 +9,13 @@ import { motion } from "framer-motion";
 import { defaultAppearAnimation } from "@/app/utils/animations";
 import AvatarOptions from "@/app/ui/components/avatar-options/AvatarOptions";
 import { useAuthStore } from "@/app/store/authStore";
+import { useRouter } from "next/navigation";
+import { Constants } from "@/app/utils/Constants";
 
 const START_STICKY_POSITION = 10;
 
 export default function Header() {
+  const router = useRouter();
   const userInfo = useAuthStore((state) => state.userInfo);
 
   const { y: scrollPosition } = useScrollPosition();
@@ -33,17 +36,19 @@ export default function Header() {
         </motion.div>
 
         <div className={"flex gap-5 items-center"}>
-          <motion.div {...defaultAppearAnimation}>
-            <Button
-              color={ButtonColors.WHITE}
-              href={`https://wa.me/+351915917539?text=${encodeURI("Saudações, gostaria de marcar um horário para cortar o cabelo.")}`}
-              target={"_blank"}
-            >
-              CONTACTE-NOS
-            </Button>
-          </motion.div>
-
-          {userInfo && <AvatarOptions userInfo={userInfo} />}
+          {!userInfo ? (
+            <motion.div {...defaultAppearAnimation}>
+              <Button
+                color={ButtonColors.WHITE}
+                href={"#"}
+                onClick={() => router.push(Constants.APP_ROUTES.LOGIN)}
+              >
+                ENTRAR
+              </Button>
+            </motion.div>
+          ) : (
+            <AvatarOptions userInfo={userInfo} />
+          )}
         </div>
       </div>
     </div>
