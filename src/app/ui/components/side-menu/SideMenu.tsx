@@ -1,4 +1,6 @@
 import AppLogo from "@/app/ui/vectors/logo-horizontal.svg";
+import Link from "next/link";
+import { Constants } from "@/app/utils/Constants";
 
 export default function SideMenu() {
   return (
@@ -19,13 +21,13 @@ export default function SideMenu() {
       >
         <div className="relative flex flex-col h-full max-h-full">
           <div className="px-6 pt-4 flex justify-center">
-            <a
+            <Link
               className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
-              href="#"
+              href={Constants.APP_ROUTES.HOME}
               aria-label="Preline"
             >
               <AppLogo className={"h-8"} />
-            </a>
+            </Link>
           </div>
 
           <div className="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">

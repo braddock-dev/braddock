@@ -14,7 +14,8 @@ export default function ToastWrapper() {
   return (
     <Toaster
       richColors
-      position={isSmallTabletOrLess ? "top-center" : "bottom-right"}
+      position={isSmallTabletOrLess ? "top-center" : "top-right"}
+      closeButton
     />
   );
 }

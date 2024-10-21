@@ -7,6 +7,8 @@ import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appoi
 import { useOtpValidationStore } from "@/app/store/otpValidationStore";
 import Logger from "@/app/utils/Logger";
 import { useState } from "react";
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
+import { toast } from "sonner";
 
 const LOG_TAG = "OTPStep";
 interface IOTPStepProps {
@@ -29,7 +31,14 @@ export default function OTPStep(props: IOTPStepProps) {
     setOtpValue("");
   };
 
-  function handleOnVerifyOtpSuccess() {
+  function handleOnVerifyOtpSuccess(authRoles: AuthRoles) {
+    if (authRoles !== AuthRoles.CUSTOMER) {
+      toast.info(
+        "Apenas clientes podem agendar, entre com uma conta de cliente",
+      );
+      return;
+    }
+
     props.isValidChange(true);
   }
 

@@ -17,6 +17,8 @@ import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appoi
 import { useAppointment } from "@/app/ui/components/appointment-card/appointment-steps/useAppointment";
 import { useCustomerInfo } from "@/app/ui/components/appointment-card/appointment-steps/useCustomerInfo";
 import { authSelectors, useAuthStore } from "@/app/store/authStore";
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
+import { toast } from "sonner";
 
 export enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -41,6 +43,7 @@ const defaultAvailableSteps: IAvailableStepsMap = {
 };
 
 function AppointmentSteps() {
+  const authUser = useAuthStore((state) => state.userInfo);
   const resetState = useNewAppointmentStore(newAppointmentActions.resetState);
   const isUserAuthenticated = useAuthStore(authSelectors.isAuthenticated);
 
@@ -110,6 +113,17 @@ function AppointmentSteps() {
     }
   };
 
+  const handleStartAppointmentFlow = useCallback(() => {
+    if (authUser?.role === AuthRoles.BUSINESS) {
+      toast.info(
+        "Apenas clientes podem agendar, entre com uma conta de cliente",
+      );
+      return;
+    }
+
+    handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION);
+  }, [authUser?.role]);
+
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
     [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
       <FirstStep
@@ -133,7 +147,6 @@ function AppointmentSteps() {
         }
       />
     ),
-    [APPOINTMENT_STEPS.SUCCESS_STEP]: <FourthStep />,
     [APPOINTMENT_STEPS.OTP_STEP]: (
       <OTPStep
         isValidChange={(isValid) => {
@@ -142,6 +155,7 @@ function AppointmentSteps() {
         }}
       />
     ),
+    [APPOINTMENT_STEPS.SUCCESS_STEP]: <FourthStep />,
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {
@@ -151,7 +165,7 @@ function AppointmentSteps() {
         color={ButtonColors.WHITE}
         className={styles.button}
         disabled={!availableSteps[APPOINTMENT_STEPS.SERVICES_SELECTION].isValid}
-        onClick={() => handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION)}
+        onClick={handleStartAppointmentFlow}
       >
         CONTINUAR
       </Button>
