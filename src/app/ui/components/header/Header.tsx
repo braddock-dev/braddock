@@ -47,8 +47,10 @@ export default function Header() {
               </Button>
             </motion.div>
           ) : (
-            <AvatarOptions userInfo={userInfo} />
+            <></>
           )}
+
+          {userInfo && <AvatarOptions userInfo={userInfo} />}
         </div>
       </div>
     </div>
