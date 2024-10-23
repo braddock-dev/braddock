@@ -21,6 +21,7 @@ import {
   responsivenessSelectors,
   useResponsiveness,
 } from "@/app/store/responsivenessStore";
+import SidePanel from "@/app/ui/components/side-panel/SidePanel";
 
 export default function Page() {
   const isMobile = useResponsiveness(
@@ -130,12 +131,18 @@ export default function Page() {
         Open offcanvas
       </button>
 
-      <AppointmentDetails
-        appointment={selectedAppointment}
-        onClose={() => {
-          setSelectedAppointment(undefined);
-        }}
-      />
+      <SidePanel
+        onClose={() => {}}
+        title={"Detalhes do Agendamento"}
+        isOpen={true}
+      >
+        <AppointmentDetails
+          appointment={selectedAppointment}
+          onClose={() => {
+            setSelectedAppointment(undefined);
+          }}
+        />
+      </SidePanel>
     </div>
   );
 }
