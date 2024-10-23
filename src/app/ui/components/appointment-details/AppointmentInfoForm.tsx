@@ -1,10 +1,16 @@
+"use client";
+
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
-import React from "react";
+import React, { useMemo } from "react";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import SelectComponent, {
   ISelectItem,
+  ItemType,
 } from "@/app/ui/components/select/Select";
+import { useQuery } from "@tanstack/react-query";
+import { getTreatmentsList } from "@/app/backend/actions/treatmentsActions";
+import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 
 interface IAppointmentInfoFormProps {
   appointment: IAppointment;
@@ -15,26 +21,61 @@ export default function AppointmentInfoForm({
   appointment,
   ...props
 }: IAppointmentInfoFormProps) {
-  const { treatments } = appointment;
+  const [selectedTreatments, setSelectedTreatments] = React.useState<
+    ITreatment[]
+  >(appointment.treatments);
+
+  const {
+    data: allTreatments,
+    isLoading: isTreatmentsLoading,
+    refetch: refetchTreatments,
+    isError: isTreatmentsError,
+    error: treatmentsError,
+  } = useQuery({
+    queryKey: ["treatmentsList"],
+    queryFn: () => getTreatmentsList(),
+  });
 
   const handleSelectedButtonsChange = (selectedButtons: string[]) => {
     console.log(selectedButtons);
   };
 
-  const options: ISelectItem[] = [
-    { value: "Corte de cabelo", label: "Corte de cabelo" },
-    { value: "barba", label: "Corte e Barba" },
-    { value: "Barbaterapia", label: "Barbaterapia" },
-  ];
+  const options = useMemo((): ISelectItem[] => {
+    if (!allTreatments) return [];
+
+    return allTreatments.map((treatment) => ({
+      label: `${treatment.name} - ${treatment.durationInMinutes} Min`,
+      selectedDisplay: treatment.name,
+      value: treatment.id,
+      type: ItemType.SIMPLE,
+      data: treatment,
+    }));
+  }, [allTreatments]);
+
+  const defaultSelectedIds = useMemo(() => {
+    return appointment.treatments.map((treatment) => treatment.id);
+  }, [appointment.treatments]);
+
+  const totalDuration = useMemo(() => {
+    return selectedTreatments.reduce(
+      (acc, treatment) => acc + treatment.durationInMinutes,
+      0,
+    );
+  }, [selectedTreatments]);
 
   return (
     <div className="p-4 flex flex-col gap-6">
-      <SectionInfo title={"Serviços"}>
+      <SectionInfo title={`Serviços (Duração: ${totalDuration} Min)`}>
         <SelectComponent
           placeholder={"Selecione os serviços"}
-          onChange={() => {}}
+          onChange={(selected) => {
+            setSelectedTreatments(
+              selected.map((selectedItem) => selectedItem.data),
+            );
+          }}
           items={options}
-          defaultValue={["barba"]}
+          defaultValue={defaultSelectedIds}
+          maxHeight={500}
         />
       </SectionInfo>
 

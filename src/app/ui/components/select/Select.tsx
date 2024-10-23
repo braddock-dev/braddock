@@ -19,12 +19,16 @@ export interface ISelectItem {
   label: string;
   value: string;
   type?: ItemType;
+  selectedDisplay?: string;
+  data: any;
 }
 
 export enum ItemsPlacement {
   TOP = "TOP",
   BOTTOM = "BOTTOM",
 }
+
+const DEFAULT_MAX_HEIGHT = 250;
 
 interface ISelectProps {
   items: ISelectItem[];
@@ -37,6 +41,7 @@ interface ISelectProps {
   scrollableParent?: HTMLElement;
   itemsPlacement?: ItemsPlacement;
   disabled?: boolean;
+  maxHeight?: number;
 }
 
 export default function SelectComponent(props: ISelectProps) {
@@ -46,6 +51,8 @@ export default function SelectComponent(props: ISelectProps) {
 
   const selectContainerRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick(selectContainerRef, () => setIsOpen(false));
+
+  const optionsMaxHeight = props.maxHeight || DEFAULT_MAX_HEIGHT;
 
   const handleSelectItem = (item: ISelectItem) => {
     let itemsTobeSelected: ISelectItem[] = [];
@@ -143,7 +150,7 @@ export default function SelectComponent(props: ISelectProps) {
 
         <div className={styles.selectButton}>
           <span className={styles.selectedValue}>
-            {selectedItems.map((item) => item.label).join(", ") ||
+            {selectedItems.map((item) => item.selectedDisplay).join(", ") ||
               props.placeholder}
           </span>
 
@@ -163,6 +170,7 @@ export default function SelectComponent(props: ISelectProps) {
           className={styles.options}
           ref={optionsRef}
           data-items-placement={props.itemsPlacement}
+          style={{ maxHeight: `${optionsMaxHeight}px` }}
         >
           {props.items.map((item, index) => (
             <li

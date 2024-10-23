@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
 import AppointmentInfo from "@/app/ui/components/appointment-details/AppointmentInfo";
 import AppointmentInfoForm from "@/app/ui/components/appointment-details/AppointmentInfoForm";
@@ -12,6 +12,10 @@ export default function AppointmentDetails({
   ...props
 }: IAppointmentDetailsProps) {
   const [editMode, setEditMode] = React.useState(false);
+
+  useEffect(() => {
+    setEditMode(false);
+  }, [appointment]);
 
   return (
     <div
