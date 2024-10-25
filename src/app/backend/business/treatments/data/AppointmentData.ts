@@ -1,4 +1,5 @@
 import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import { TZDate } from "@toast-ui/calendar";
 
 export interface IAppointment {
   businessId: string;
@@ -19,15 +20,12 @@ export interface IAppointmentQueryData {
   endDate?: number;
 }
 
-export interface IEvent {
+export type IEvent = {
   id: string;
+  calendarId: string;
   title: string;
-  start: string;
-  end: string;
-  interactive: boolean;
-  className?: string;
-  editable: boolean;
-  overlap: boolean;
-  backgroundColor?: string;
-  borderColor?: string;
-}
+  category: string;
+  start: TZDate;
+  end: TZDate;
+  isReadOnly: boolean;
+};

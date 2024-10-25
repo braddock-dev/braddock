@@ -1,9 +1,5 @@
 "use client";
 
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
 import { useQuery } from "@tanstack/react-query";
 import { getAppointments } from "@/app/backend/actions/appointmentActions";
 import { useMemo, useRef, useState } from "react";
@@ -11,17 +7,16 @@ import {
   IAppointment,
   IAppointmentQueryData,
 } from "@/app/backend/business/treatments/data/AppointmentData";
-import AppointmentDataAdapter from "@/app/backend/business/appointments/AppointmentDataAdapter";
-import ptLocale from "@fullcalendar/core/locales/pt";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { toast } from "sonner";
 import AppointmentDetails from "@/app/ui/components/appointment-details/AppointmentDetails";
-import { EventClickArg } from "@fullcalendar/core";
 import {
   responsivenessSelectors,
   useResponsiveness,
 } from "@/app/store/responsivenessStore";
 import SidePanel from "@/app/ui/components/side-panel/SidePanel";
+import CalendarWrapper from "@/app/admin/appointments/CalendarWrapper";
+import { convertAppointmentsToEvents } from "@/app/admin/appointments/utils";
 
 export default function Page() {
   const isMobile = useResponsiveness(
@@ -40,29 +35,8 @@ export default function Page() {
   const events = useMemo(() => {
     if (!data) return [];
 
-    return AppointmentDataAdapter.convertAppointmentsToEvents(data);
+    return convertAppointmentsToEvents(data);
   }, [data]);
-
-  const mobileCalendarView = useMemo(() => {
-    if (isMobile) {
-      return {
-        initialView: "listWeek",
-        header: {
-          left: "prev,next",
-          right: "dayGridWeek,listWeek",
-        },
-      };
-    }
-
-    return {
-      initialView: "dayGridWeek",
-      header: {
-        left: "prev,next today",
-        center: "title",
-        right: "dayGridDay,dayGridMonth,dayGridWeek,listWeek",
-      },
-    };
-  }, [isMobile]);
 
   if (error) {
     toast.error("Erro ao carregar os agendamentos");
@@ -99,25 +73,14 @@ export default function Page() {
     }
   }
 
-  const handleClickEvent = (event: EventClickArg) => {
+  const handleClickEvent = (event) => {
     console.log("event", event);
     openOverlay(event.event.id);
   };
 
   return (
     <div>
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-        initialView={mobileCalendarView.initialView}
-        headerToolbar={mobileCalendarView.header}
-        nowIndicator
-        selectMirror
-        eventInteractive={false}
-        events={events}
-        locale={ptLocale}
-        eventClick={handleClickEvent}
-        key={mobileCalendarView.initialView}
-      />
+      <CalendarWrapper events={events} />
 
       <button
         type="button"

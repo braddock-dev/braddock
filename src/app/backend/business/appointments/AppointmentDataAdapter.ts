@@ -1,7 +1,6 @@
 import {
   IAppointment,
   IAppointmentQueryData,
-  IEvent,
 } from "@/app/backend/business/treatments/data/AppointmentData";
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
 import {
@@ -10,7 +9,6 @@ import {
   IQueryAppointmentRequest,
 } from "@/app/backend/services/data/AppointmentDaos";
 import dayjs from "dayjs";
-import dayJsWrapper from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import { addMinutesToDate, minutesToHour } from "@/app/utils/functions";
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
@@ -67,25 +65,6 @@ class AppointmentDataAdapter {
       endDate:
         data.endDate || AppointmentDataAdapter.DEFAULT_DATE_INTERVAL.endDate,
     };
-  }
-
-  public convertAppointmentToEvent(appointment: IAppointment): IEvent {
-    return {
-      id: appointment.id,
-      title: `Corte de cabelo com ${appointment.clientName || "Cliente"}`,
-      start: dayJsWrapper(appointment.startTimeInMillis).format(),
-      end: addMinutesToDate(
-        appointment.startTimeInMillis,
-        appointment.durationInMinutes,
-      ).format(),
-      interactive: true,
-      editable: true,
-      overlap: false,
-    };
-  }
-
-  public convertAppointmentsToEvents(appointments: IAppointment[]): IEvent[] {
-    return appointments.map(this.convertAppointmentToEvent.bind(this));
   }
 
   public convertAppointmentDataToRequestData(
