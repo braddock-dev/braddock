@@ -17,6 +17,7 @@ import {
 import SidePanel from "@/app/ui/components/side-panel/SidePanel";
 import CalendarWrapper from "@/app/admin/appointments/CalendarWrapper";
 import { convertAppointmentsToEvents } from "@/app/admin/appointments/utils";
+import { SelectDateTimeInfo } from "@toast-ui/calendar/types/types/eventBus";
 
 export default function Page() {
   const isMobile = useResponsiveness(
@@ -73,14 +74,21 @@ export default function Page() {
     }
   }
 
-  const handleClickEvent = (event) => {
-    console.log("event", event);
+  const handleClickEvent = (event: any) => {
     openOverlay(event.event.id);
+  };
+
+  const handleSelectDateTime = (event: SelectDateTimeInfo) => {
+    console.log("event", event);
   };
 
   return (
     <div>
-      <CalendarWrapper events={events} />
+      <CalendarWrapper
+        events={events}
+        onSelectDateTime={handleSelectDateTime}
+        onSelectEvent={handleClickEvent}
+      />
 
       <button
         type="button"

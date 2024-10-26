@@ -6,6 +6,10 @@ import { EventObject, TZDate } from "@toast-ui/calendar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { initialCalendars } from "@/app/admin/appointments/utils";
+import {
+  EventInfo,
+  SelectDateTimeInfo,
+} from "@toast-ui/calendar/types/types/eventBus";
 
 const enum CalendarActions {
   MOVE_PREV = "move-prev",
@@ -33,6 +37,8 @@ const viewModeOptions = [
 
 interface ICalendarWrapperProps {
   events: Partial<EventObject>[];
+  onSelectEvent?: (event: EventInfo) => void;
+  onSelectDateTime?: (event: SelectDateTimeInfo) => void;
 }
 export default function CalendarWrapper(props: ICalendarWrapperProps) {
   const [viewMode, setViewMode] = useState(viewModeOptions[1].value);
@@ -114,13 +120,15 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
           hourEnd: 20,
           showNowIndicator: true,
         }}
-        useFormPopup
-        useDetailPopup
+        useFormPopup={false}
+        useDetailPopup={false}
         month={{ startDayOfWeek: 1 }}
         ref={calendarRef}
         events={props.events}
         calendars={initialCalendars}
         usageStatistics={false}
+        onSelectDateTime={props.onSelectDateTime}
+        onClickEvent={props.onSelectEvent}
       />
     </div>
   );
