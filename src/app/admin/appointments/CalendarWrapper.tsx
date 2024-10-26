@@ -1,3 +1,4 @@
+"use client";
 import { useMemo, useRef, useState } from "react";
 import Calendar from "@toast-ui/react-calendar";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
@@ -60,7 +61,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
   };
 
   return (
-    <div className={"h-[100vh] w-full pb-10 flex flex-col gap-5"}>
+    <div className={"h-[120vh] w-full pb-10 flex flex-col gap-5"}>
       <div className={"flex justify-between items-center"}>
         <div className={"flex gap-1"}>
           <Button
@@ -113,10 +114,13 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
           hourEnd: 20,
           showNowIndicator: true,
         }}
+        useFormPopup
+        useDetailPopup
         month={{ startDayOfWeek: 1 }}
         ref={calendarRef}
         events={props.events}
         calendars={initialCalendars}
+        usageStatistics={false}
       />
     </div>
   );

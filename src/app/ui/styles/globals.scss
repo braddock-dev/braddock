@@ -9,47 +9,17 @@
 input {
   @apply px-2;
 }
-.fc-header-toolbar {
-  display: inline-block;
-  padding: 4px 4px;
 
-  @apply space-x-8;
+.toastui-calendar-panel.toastui-calendar-allday {
+  display: none !important;
 }
 
-.fc-day {
-  @apply m-8;
+.toastui-calendar-panel-resizer{
+  display: none !important;
 }
 
-.fc-media-screen{
-  height: 100vh;
-}
-
-.fc-scrollgrid-sync-table {
-  @apply w-full;
-}
-
-.fc-h-event {
-  @apply border bg-brown02;
-}
-
-.fc .fc-daygrid-day.fc-day-today {
-  @apply bg-blue-50;
-}
-
-.fc .fc-button{
-  @apply bg-brown01 hover:bg-brown  ;
-}
-
-.fc .fc-button-primary:not(:disabled).fc-button-active {
-  @apply bg-brown;
-}
-
-.fc .fc-button-primary:disabled {
-  @apply bg-brown02;
-}
-
-.fc-v-event {
-  @apply border bg-brown02;
+.toastui-calendar-day-view-day-names, .toastui-calendar-week-view-day-names{
+  border-bottom: none !important;
 }
 
 @layer base {

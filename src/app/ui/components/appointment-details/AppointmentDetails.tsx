@@ -5,6 +5,7 @@ import AppointmentInfoForm from "@/app/ui/components/appointment-details/Appoint
 
 interface IAppointmentDetailsProps {
   appointment?: IAppointment;
+  onClose?: () => void;
 }
 export default function AppointmentDetails({
   appointment,
@@ -23,7 +24,9 @@ export default function AppointmentDetails({
   return editMode ? (
     <AppointmentInfoForm
       appointment={appointment}
-      onCancel={() => setEditMode(false)}
+      onCancel={() => {
+        setEditMode(false);
+      }}
       onSave={() => setEditMode(false)}
     />
   ) : (
