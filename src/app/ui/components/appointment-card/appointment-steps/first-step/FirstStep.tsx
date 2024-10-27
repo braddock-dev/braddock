@@ -48,7 +48,7 @@ export default function FirstStep(props: IFirstStepProps) {
     if (treatments) {
       setTreatments(treatments);
     }
-  }, [treatments]);
+  }, [setTreatments, treatments]);
 
   const treatmentButtons = useMemo(() => {
     if (!treatments || !treatments.length) {

@@ -50,7 +50,7 @@ export default function LoginForm() {
         router.replace(Constants.APP_ROUTES.HOME);
       }
     }
-  }, [authUser?.role]);
+  }, [authUser?.role, router]);
 
   return (
     <div
