@@ -6,10 +6,7 @@ import { EventObject, TZDate } from "@toast-ui/calendar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { initialCalendars } from "@/app/admin/appointments/utils";
-import {
-  EventInfo,
-  SelectDateTimeInfo,
-} from "@toast-ui/calendar/types/types/eventBus";
+import { SelectDateTimeInfo } from "@/app/backend/business/treatments/data/AppointmentData";
 
 const enum CalendarActions {
   MOVE_PREV = "move-prev",
@@ -37,7 +34,7 @@ const viewModeOptions = [
 
 interface ICalendarWrapperProps {
   events: Partial<EventObject>[];
-  onSelectEvent?: (event: EventInfo) => void;
+  onSelectEvent?: (event: any) => void;
   onSelectDateTime?: (event: SelectDateTimeInfo) => void;
 }
 export default function CalendarWrapper(props: ICalendarWrapperProps) {

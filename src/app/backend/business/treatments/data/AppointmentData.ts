@@ -29,3 +29,11 @@ export type IEvent = {
   end: TZDate;
   isReadOnly: boolean;
 };
+
+export interface SelectDateTimeInfo {
+  start: Date;
+  end: Date;
+  isAllday: boolean;
+  nativeEvent?: MouseEvent;
+  gridSelectionElements: Element[];
+}
