@@ -1,6 +1,7 @@
 import styles from "./SecondStep.module.scss";
 import ButtonGroup, {
   DISPLAY_MODE,
+  Theme,
 } from "@/app/ui/components/button-group/ButtonGroup";
 import React, { useEffect, useMemo } from "react";
 import {
@@ -23,6 +24,8 @@ import { toast } from "sonner";
 interface ITimeSlot {
   onError: () => void;
   isValidChange: (isValid: boolean) => void;
+  theme?: Theme;
+  noPadding?: boolean;
 }
 export default function SecondStep(props: ITimeSlot) {
   const selectedTreatmentIds = useNewAppointmentStore(
@@ -116,6 +119,8 @@ export default function SecondStep(props: ITimeSlot) {
           onSelectedButtonsChange={(_, [daySlot]) =>
             setSelectedDaySlot(daySlot)
           }
+          theme={props.theme}
+          noPadding={props.noPadding}
         />
       </div>
 
@@ -129,6 +134,8 @@ export default function SecondStep(props: ITimeSlot) {
             onSelectedButtonsChange={(_, [timeSlot]) =>
               setSelectedTimeSlot(timeSlot)
             }
+            theme={props.theme}
+            noPadding={props.noPadding}
           />
         </div>
       )}

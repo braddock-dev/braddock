@@ -58,6 +58,10 @@
       align-items: center;
       padding-bottom: toRem(230);
     }
+
+    &[data-no-padding="true"]{
+      padding-bottom: 0;
+    }
   }
 
   @include desktop-hover-state() {
@@ -69,6 +73,13 @@
   @include mobile-active-state() {
     .nextButton, .prevButton {
       opacity: 1;
+    }
+  }
+
+
+  &[data-theme="LIGHT"]{
+    .title{
+      color: $gray01;
     }
   }
 

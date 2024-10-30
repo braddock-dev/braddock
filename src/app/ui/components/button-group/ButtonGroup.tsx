@@ -39,6 +39,11 @@ export enum DISPLAY_MODE {
   EVEN_LIST = "EVEN_LIST",
 }
 
+export enum Theme {
+  LIGHT = "LIGHT",
+  DARK = "DARK",
+}
+
 interface IButtonGroupProps {
   buttonItems: ISelectButton[];
   title: string;
@@ -47,8 +52,13 @@ interface IButtonGroupProps {
   showCounter?: boolean;
   displayMode: DISPLAY_MODE;
   onSelectedButtonsChange: (buttonValues: any[], buttonData: any[]) => void;
+  theme?: Theme;
+  noPadding?: boolean;
 }
-export default function ButtonGroup(props: IButtonGroupProps) {
+export default function ButtonGroup({
+  theme = Theme.DARK,
+  ...props
+}: IButtonGroupProps) {
   const [hidden, setHidden] = useState<boolean>(true);
   const swiperRef = useRef<SwiperRef | null>(null);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -123,7 +133,7 @@ export default function ButtonGroup(props: IButtonGroupProps) {
 
   const displayMode: Record<DISPLAY_MODE, ReactElement> = {
     [DISPLAY_MODE.LIST]: (
-      <div className={styles.listContainer}>
+      <div className={styles.listContainer} data-no-padding={props.noPadding}>
         {props.buttonItems.map((buttonItem, index) => (
           <SelectButton
             key={index}
@@ -135,7 +145,10 @@ export default function ButtonGroup(props: IButtonGroupProps) {
       </div>
     ),
     [DISPLAY_MODE.EVEN_LIST]: (
-      <div className={`${styles.listContainer} ${styles.evenList}`}>
+      <div
+        className={`${styles.listContainer} ${styles.evenList}`}
+        data-no-padding={props.noPadding}
+      >
         {props.buttonItems.map((buttonItem, index) => (
           <SelectButton
             key={index}
@@ -195,7 +208,7 @@ export default function ButtonGroup(props: IButtonGroupProps) {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-theme={theme}>
       <p className={styles.title}>
         {props.title}{" "}
         <span className={styles.counter}>

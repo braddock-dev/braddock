@@ -18,11 +18,24 @@ import {
   ButtonType,
   ISelectButton,
 } from "@/app/ui/components/select-button/SelectButton";
+import SelectComponent, {
+  ISelectItem,
+  ItemType,
+} from "@/app/ui/components/select/Select";
+
+export enum SelectionMode {
+  SELECT = "SELECT",
+  LIST = "LIST",
+}
 
 interface IFirstStepProps {
   isValidChange: (isValid: boolean) => void;
+  selectionMode?: SelectionMode;
 }
-export default function FirstStep(props: IFirstStepProps) {
+export default function FirstStep({
+  selectionMode = SelectionMode.LIST,
+  ...props
+}: IFirstStepProps) {
   const selectedTreatmentsIds = useNewAppointmentStore(
     newAppointmentSelectors.selectedTreatmentsIds,
   );
@@ -69,6 +82,18 @@ export default function FirstStep(props: IFirstStepProps) {
     props.isValidChange(!!treatments?.length && !!selectedTreatmentsIds.length);
   }, [treatments, selectedTreatmentsIds]);
 
+  const options = useMemo((): ISelectItem[] => {
+    if (!treatments) return [];
+
+    return treatments.map((treatment) => ({
+      label: `${treatment.name} - ${treatment.durationInMinutes} Min`,
+      selectedDisplay: treatment.name,
+      value: treatment.id,
+      type: ItemType.SIMPLE,
+      data: treatment,
+    }));
+  }, [treatments]);
+
   if (isLoading) {
     return (
       <div className={styles.container} data-loading-state={true}>
@@ -110,15 +135,34 @@ export default function FirstStep(props: IFirstStepProps) {
   };
 
   return (
-    <div className={styles.container} key={"SERVICES_SELECTION"}>
-      <ButtonGroup
-        buttonItems={treatmentButtons}
-        title={"SERVIÇOS"}
-        defaultSelectedKey={selectedTreatmentsIds}
-        isMultiple
-        displayMode={DISPLAY_MODE.LIST}
-        onSelectedButtonsChange={handleSelectedButtonsChange}
-      />
+    <div
+      className={styles.container}
+      key={"SERVICES_SELECTION"}
+      data-selection-mode={selectionMode}
+    >
+      {selectionMode === SelectionMode.LIST ? (
+        <ButtonGroup
+          buttonItems={treatmentButtons}
+          title={"SERVIÇOS"}
+          defaultSelectedKey={selectedTreatmentsIds}
+          isMultiple
+          displayMode={DISPLAY_MODE.LIST}
+          onSelectedButtonsChange={handleSelectedButtonsChange}
+        />
+      ) : (
+        <SelectComponent
+          placeholder={"Selecione os serviços"}
+          onChange={(selected) => {
+            const treatments = selected.map(
+              (selectedItem) => selectedItem.data,
+            );
+            handleSelectedButtonsChange([], treatments);
+          }}
+          items={options}
+          defaultValue={selectedTreatmentsIds}
+          maxHeight={500}
+        />
+      )}
     </div>
   );
 }
