@@ -45,7 +45,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
     if (calendarRef.current && calendarRef.current.getInstance) {
       return calendarRef.current.getInstance();
     }
-  }, [calendarRef]);
+  }, [calendarRef.current]);
 
   const onClickNavigation = (actionName: CalendarActions) => {
     if (!calendarInstance) return;
