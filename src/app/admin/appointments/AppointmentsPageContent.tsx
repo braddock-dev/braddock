@@ -86,6 +86,13 @@ export default function AppointmentsPageContent() {
     console.log("event", event);
   };
 
+  const handleCloseDetailsSidePanel = () => {
+    setSelectedAppointment(undefined);
+    setAppointmentDetailsModalOpen(false);
+    resetNewAppointmentStore();
+    refetch();
+  };
+
   return (
     <div>
       <CalendarWrapper
@@ -107,21 +114,13 @@ export default function AppointmentsPageContent() {
       </button>
 
       <SidePanelWrapper
-        onClose={() => {
-          setSelectedAppointment(undefined);
-          setAppointmentDetailsModalOpen(false);
-          resetNewAppointmentStore();
-          refetch();
-        }}
+        onClose={handleCloseDetailsSidePanel}
         title={"Detalhes do Agendamento"}
         isOpen={appointmentDetailsModalOpen}
       >
         <AppointmentDetails
           appointment={selectedAppointment}
-          onClose={() => {
-            setSelectedAppointment(undefined);
-            setAppointmentDetailsModalOpen(false);
-          }}
+          onClose={handleCloseDetailsSidePanel}
         />
       </SidePanelWrapper>
     </div>
