@@ -55,6 +55,31 @@ class AppointmentsManager {
     }
   }
 
+  public async editAppointment(
+    appointmentId: string,
+    appointmentData: INewAppointmentRequestData,
+  ): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start editing appointment", [
+      appointmentId,
+      appointmentData,
+    ]);
+
+    try {
+      await this.deleteAppointment(appointmentId);
+      const createdAppointment =
+        await this.scheduleAppointment(appointmentData);
+
+      Logger.debug(this.LOG_TAG, "Edit appointment response", [
+        createdAppointment,
+      ]);
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error editing appointment", error);
+      throw error;
+    }
+  }
+
   public async deleteAppointment(appointmentId: string): Promise<void> {
     Logger.debug(this.LOG_TAG, "Start deleting appointment", [appointmentId]);
 

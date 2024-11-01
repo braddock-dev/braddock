@@ -1,35 +1,29 @@
 "use client";
 
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
-import React, { useEffect, useMemo } from "react";
-import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
+import React, { useMemo } from "react";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import FirstStep, {
   SelectionMode,
 } from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import {
-  newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
 import { Theme } from "@/app/ui/components/button-group/ButtonGroup";
 
 interface IAppointmentInfoFormProps {
-  appointment: IAppointment;
   onCancel: () => void;
   onSave: () => void;
+  isSaving: boolean;
+  isValid?: boolean;
 }
 export default function AppointmentInfoForm({
-  appointment,
   ...props
 }: IAppointmentInfoFormProps) {
   const selectedTreatments = useNewAppointmentStore(
     newAppointmentSelectors.selectedTreatments,
-  );
-
-  const setSelectedTreatment = useNewAppointmentStore(
-    newAppointmentActions.setSelectedTreatment,
   );
 
   const totalDuration = useMemo(() => {
@@ -38,10 +32,6 @@ export default function AppointmentInfoForm({
       0,
     );
   }, [selectedTreatments]);
-
-  useEffect(() => {
-    setSelectedTreatment(appointment.treatments);
-  }, [appointment.treatments]);
 
   return (
     <div className="p-4 flex flex-col gap-6">
@@ -68,7 +58,12 @@ export default function AppointmentInfoForm({
             CANCELAR
           </Button>
 
-          <Button color={ButtonColors.BROWN} onClick={props.onSave}>
+          <Button
+            color={ButtonColors.BROWN}
+            onClick={props.onSave}
+            disabled={props.isSaving || !props.isValid}
+            isLoading={props.isSaving}
+          >
             SALVAR
           </Button>
         </div>

@@ -14,10 +14,18 @@ import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import CalendarWrapper from "@/app/admin/appointments/CalendarWrapper";
 import AppointmentDetails from "@/app/ui/components/appointment-details/AppointmentDetails";
 import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
+import {
+  newAppointmentActions,
+  useNewAppointmentStore,
+} from "@/app/store/newAppointmentStore";
 
 export default function AppointmentsPageContent() {
   const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] =
     useState(false);
+
+  const resetNewAppointmentStore = useNewAppointmentStore(
+    newAppointmentActions.resetState,
+  );
 
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
@@ -102,6 +110,8 @@ export default function AppointmentsPageContent() {
         onClose={() => {
           setSelectedAppointment(undefined);
           setAppointmentDetailsModalOpen(false);
+          resetNewAppointmentStore();
+          refetch();
         }}
         title={"Detalhes do Agendamento"}
         isOpen={appointmentDetailsModalOpen}

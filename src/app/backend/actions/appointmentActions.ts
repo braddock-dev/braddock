@@ -22,3 +22,10 @@ export async function scheduleAppointment(
 export async function deleteAppointment(appointmentId: string): Promise<void> {
   return AppointmentsManager.deleteAppointment(appointmentId);
 }
+
+export async function editAppointment(
+  appointmentId: string,
+  appointmentData: INewAppointmentRequestData,
+): Promise<void> {
+  return AppointmentsManager.editAppointment(appointmentId, appointmentData);
+}

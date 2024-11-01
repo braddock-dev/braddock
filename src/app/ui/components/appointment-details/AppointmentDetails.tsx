@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
 import AppointmentInfo from "@/app/ui/components/appointment-details/AppointmentInfo";
-import AppointmentInfoForm from "@/app/ui/components/appointment-details/AppointmentInfoForm";
 import { useMutation } from "@tanstack/react-query";
 import { deleteAppointment } from "@/app/backend/actions/appointmentActions";
 import { toast } from "sonner";
+import EditAppointmentWrapper from "@/app/ui/components/appointment-details/EditAppointmentWrapper";
 
 interface IAppointmentDetailsProps {
   appointment?: IAppointment;
-  onClose?: () => void;
+  onClose: () => void;
 }
 export default function AppointmentDetails({
   appointment,
@@ -38,12 +38,14 @@ export default function AppointmentDetails({
   }
 
   return editMode ? (
-    <AppointmentInfoForm
+    <EditAppointmentWrapper
       appointment={appointment}
       onCancel={() => {
         setEditMode(false);
       }}
-      onSave={() => setEditMode(false)}
+      onSave={() => {
+        props.onClose();
+      }}
     />
   ) : (
     <AppointmentInfo

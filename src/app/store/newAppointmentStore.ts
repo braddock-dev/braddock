@@ -5,6 +5,9 @@ import {
   ITreatment,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/data/AppointmentData";
+import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
+import { removePhoneNumberPrefix } from "@/app/utils/functions";
+import { Constants } from "@/app/utils/Constants";
 
 export interface INewAppointmentStore {
   treatments: ITreatment[];
@@ -20,6 +23,7 @@ export interface INewAppointmentStore {
   setTreatments: (treatments: ITreatment[]) => void;
   setCustomerInfo: (name: string, phone: string, email: string) => void;
   resetState: () => void;
+  setAppointmentStore: (appointment: IAppointment) => void;
 }
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
@@ -61,6 +65,16 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       phoneNumber: "",
       customerName: "",
     }),
+  setAppointmentStore: (appointment: IAppointment) => {
+    set({
+      selectedTreatments: appointment.treatments,
+      phoneNumber: removePhoneNumberPrefix(
+        appointment.clientPhoneNumber,
+        Constants.UI.PHONE_PREFIX.PT,
+      ),
+      customerName: appointment.clientName,
+    });
+  },
 }));
 
 export const newAppointmentSelectors = {
@@ -81,6 +95,15 @@ export const newAppointmentSelectors = {
     customerName: state.customerName,
     customerEmail: state.customerEmail,
   }),
+  isAppointmentValid: (state: INewAppointmentStore) => {
+    return (
+      state.selectedTreatments.length > 0 &&
+      !!state.selectedDaySlot &&
+      !!state.selectedTimeSlot &&
+      !!state.customerName &&
+      !!state.phoneNumber
+    );
+  },
 };
 
 export const newAppointmentActions = {
@@ -92,4 +115,6 @@ export const newAppointmentActions = {
     state.setSelectedTimeSlot,
   resetState: (state: INewAppointmentStore) => state.resetState,
   setCustomerInfo: (state: INewAppointmentStore) => state.setCustomerInfo,
+  setAppointmentStore: (state: INewAppointmentStore) =>
+    state.setAppointmentStore,
 };
