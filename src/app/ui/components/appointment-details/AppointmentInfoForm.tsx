@@ -49,7 +49,6 @@ export default function AppointmentInfoForm({
         <FirstStep
           selectionMode={SelectionMode.SELECT}
           isValidChange={() => {}}
-          onError={() => {}}
         />
       </SectionInfo>
 

@@ -11,12 +11,17 @@ import AvatarUser from "@/app/ui/images/avatarFallback.png";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import React from "react";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
+import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
 
 interface IAppointmentInfoProps {
   appointment: IAppointment;
   onEdit: () => void;
+  onDelete: () => void;
+  isDeleting?: boolean;
 }
 function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
   return (
     <div className="p-4 flex flex-col gap-6">
       <SectionInfo title={"Quando?"}>
@@ -88,8 +93,10 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
           <Button
             color={ButtonColors.BLACK}
             onClick={() => {
-              //
+              setDeleteDialogOpen(true);
             }}
+            isLoading={props.isDeleting}
+            disabled={props.isDeleting}
           >
             ELIMINAR
           </Button>
@@ -99,6 +106,15 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
           </Button>
         </div>
       </SectionInfo>
+
+      <AlertDialogWrapper
+        isOpen={deleteDialogOpen}
+        title={"Remover Agendamento?"}
+        description={"Deseja realmente remover este agendamento?"}
+        onOpenChange={setDeleteDialogOpen}
+        onCancel={() => setDeleteDialogOpen(false)}
+        onConfirm={props.onDelete}
+      />
     </div>
   );
 }

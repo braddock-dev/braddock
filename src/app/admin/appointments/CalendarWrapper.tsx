@@ -96,7 +96,11 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
           variant={"outline"}
           size={"lg"}
           defaultValue={viewMode}
-          onValueChange={(value) => setViewMode(value)}
+          onValueChange={(value) => {
+            if (value) {
+              setViewMode(value);
+            }
+          }}
         >
           {viewModeOptions.map((option) => (
             <ToggleGroupItem key={option.value} value={option.value}>

@@ -1,13 +1,15 @@
+import dayjs from "dayjs";
+
 export const APPOINTMENTS = [
   {
     day: "Monday, October 21",
-    dayInMillis: 1729468800000,
+    dayInMillis: dayjs().valueOf(),
     appointments: [
       {
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "bee104f7-c54c-4a9d-b217-3323847950f7",
         id: "9639f0cc-e364-409f-b935-14197b40de11",
-        startTimeInMillis: 1729501200000,
+        startTimeInMillis: dayjs().add(1, "hour").valueOf(),
         createdAt: 1729365356434,
         durationInMinutes: 120,
         startTime: "09:00",
@@ -38,13 +40,13 @@ export const APPOINTMENTS = [
   },
   {
     day: "Tuesday, October 22",
-    dayInMillis: 1729555200000,
+    dayInMillis: dayjs().add(1, "day").valueOf(),
     appointments: [
       {
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "005412f2-842f-47fa-b193-cf77fd2bf6c5",
-        startTimeInMillis: 1729589400000,
+        startTimeInMillis: dayjs().add(1, "day").add(1, "hour").valueOf(),
         createdAt: 1729374896032,
         durationInMinutes: 60,
         startTime: "09:30",
@@ -63,7 +65,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "f10ded1b-c024-4c8e-a4e0-e2519e29ef5f",
         id: "1c8e55d7-1bb6-4c04-897b-6a969d386180",
-        startTimeInMillis: 1729591200000,
+        startTimeInMillis: dayjs().add(1, "day").add(2, "hour").valueOf(),
         createdAt: 1729019254450,
         durationInMinutes: 360,
         startTime: "10:00",
@@ -100,7 +102,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "06b50fa0-966a-458d-a642-37492f9918b1",
-        startTimeInMillis: 1729612800000,
+        startTimeInMillis: dayjs().add(1, "day").add(3, "hour").valueOf(),
         createdAt: 1729391954586,
         durationInMinutes: 60,
         startTime: "16:00",
@@ -119,7 +121,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "7285d01e-75cd-4241-b5ec-8ffaaf338589",
-        startTimeInMillis: 1729616400000,
+        startTimeInMillis: dayjs().add(1, "day").add(4, "hour").valueOf(),
         createdAt: 1729392572353,
         durationInMinutes: 60,
         startTime: "17:00",
@@ -138,7 +140,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "25c5dce0-d939-4ed1-a99b-338d88a79e3c",
-        startTimeInMillis: 1729618200000,
+        startTimeInMillis: dayjs().add(1, "day").add(5, "hour").valueOf(),
         createdAt: 1729374690358,
         durationInMinutes: 60,
         startTime: "17:30",
@@ -157,7 +159,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "7014283d-8327-4a00-bc01-3ca98844e58c",
-        startTimeInMillis: 1729621800000,
+        startTimeInMillis: dayjs().add(1, "day").add(6, "hour").valueOf(),
         createdAt: 1729440693320,
         durationInMinutes: 30,
         startTime: "18:30",
@@ -176,13 +178,13 @@ export const APPOINTMENTS = [
   },
   {
     day: "Wednesday, October 23",
-    dayInMillis: 1729641600000,
+    dayInMillis: dayjs().add(2, "day").valueOf(),
     appointments: [
       {
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "06239fc0-be8a-4499-8e8a-e34a20f12617",
-        startTimeInMillis: 1729675800000,
+        startTimeInMillis: dayjs().add(2, "day").add(1, "hour").valueOf(),
         createdAt: 1729442500541,
         durationInMinutes: 60,
         startTime: "09:30",
@@ -201,7 +203,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "00b902d9-c541-4a2a-941f-c68735e8372b",
-        startTimeInMillis: 1729677600000,
+        startTimeInMillis: dayjs().add(2, "day").add(2, "hour").valueOf(),
         createdAt: 1729392636722,
         durationInMinutes: 30,
         startTime: "10:00",
@@ -220,7 +222,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "20b254d9-f3ed-4795-8c0a-38a35ba8af28",
-        startTimeInMillis: 1729679400000,
+        startTimeInMillis: dayjs().add(2, "day").add(3, "hour").valueOf(),
         createdAt: 1729457042104,
         durationInMinutes: 60,
         startTime: "10:30",
@@ -239,7 +241,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "ea26c869-7d96-4f71-9618-227f0d447cd1",
-        startTimeInMillis: 1729684800000,
+        startTimeInMillis: dayjs().add(2, "day").add(4, "hour").valueOf(),
         createdAt: 1729392544355,
         durationInMinutes: 60,
         startTime: "12:00",
@@ -258,7 +260,7 @@ export const APPOINTMENTS = [
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "8b7203a8-a44c-4552-9f9c-753561492a11",
-        startTimeInMillis: 1729695600000,
+        startTimeInMillis: dayjs().add(2, "day").add(5, "hour").valueOf(),
         createdAt: 1729456986667,
         durationInMinutes: 30,
         startTime: "15:00",
@@ -277,13 +279,13 @@ export const APPOINTMENTS = [
   },
   {
     day: "Thursday, October 24",
-    dayInMillis: 1729728000000,
+    dayInMillis: dayjs().add(3, "day").valueOf(),
     appointments: [
       {
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "94d6c07f-7713-4ead-807a-a341178497d1",
-        startTimeInMillis: 1729769400000,
+        startTimeInMillis: dayjs().add(3, "day").add(1, "hour").valueOf(),
         createdAt: 1729442605996,
         durationInMinutes: 60,
         startTime: "11:30",
@@ -302,13 +304,13 @@ export const APPOINTMENTS = [
   },
   {
     day: "Friday, October 25",
-    dayInMillis: 1729814400000,
+    dayInMillis: dayjs().add(4, "day").valueOf(),
     appointments: [
       {
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "1501dec3-26d3-4040-8055-5d1b9d3ec49c",
-        startTimeInMillis: 1729854000000,
+        startTimeInMillis: dayjs().add(4, "day").add(1, "hour").valueOf(),
         createdAt: 1729365290542,
         durationInMinutes: 60,
         startTime: "11:00",
@@ -327,13 +329,13 @@ export const APPOINTMENTS = [
   },
   {
     day: "Saturday, October 26",
-    dayInMillis: 1729900800000,
+    dayInMillis: dayjs().add(5, "day").valueOf(),
     appointments: [
       {
         businessId: "6808c318-d694-41b9-a77a-900ddb754ab5",
         customerId: "a8744984-8296-4aa9-a88b-e526708d5885",
         id: "3c287ac9-17d0-45c0-8e9a-c702cafbb73b",
-        startTimeInMillis: 1729951200000,
+        startTimeInMillis: dayjs().add(5, "day").add(1, "hour").valueOf(),
         createdAt: 1729442589862,
         durationInMinutes: 60,
         startTime: "14:00",

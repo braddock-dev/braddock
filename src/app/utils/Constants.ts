@@ -45,6 +45,8 @@ export const Constants = {
     VERIFY_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/checkVerificationCode`,
     UPDATE_CUSTOMER: () => `${EXTERNAL_CONFIGS.BASE_URL}/customers`,
     GET_USER_INFO: () => `${EXTERNAL_CONFIGS.BASE_URL}/identity`,
+    DELETE_APPOINTMENT: (appointmentId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/appointments/${appointmentId}`,
   },
   APP_ROUTES: {
     HOME: "/",

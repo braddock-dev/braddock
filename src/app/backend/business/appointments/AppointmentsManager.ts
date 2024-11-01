@@ -54,6 +54,22 @@ class AppointmentsManager {
       throw error;
     }
   }
+
+  public async deleteAppointment(appointmentId: string): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start deleting appointment", [appointmentId]);
+
+    try {
+      const response =
+        await AppointmentsService.deleteAppointment(appointmentId);
+
+      Logger.debug(this.LOG_TAG, "Delete appointment response", [response]);
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error deleting appointment", error);
+      throw error;
+    }
+  }
 }
 
 export default new AppointmentsManager();

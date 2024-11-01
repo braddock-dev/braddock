@@ -1,9 +1,5 @@
 "use client";
 
-import {
-  responsivenessSelectors,
-  useResponsiveness,
-} from "@/app/store/responsivenessStore";
 import { useMemo, useRef, useState } from "react";
 import {
   IAppointment,
@@ -16,13 +12,13 @@ import { convertAppointmentsToEvents } from "@/app/admin/appointments/utils";
 import { toast } from "sonner";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import CalendarWrapper from "@/app/admin/appointments/CalendarWrapper";
-import SidePanel from "@/app/ui/components/side-panel/SidePanel";
 import AppointmentDetails from "@/app/ui/components/appointment-details/AppointmentDetails";
+import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
 
 export default function AppointmentsPageContent() {
-  const isMobile = useResponsiveness(
-    responsivenessSelectors.isSmallTabletOrLess,
-  );
+  const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] =
+    useState(false);
+
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
   const [selectedAppointment, setSelectedAppointment] =
@@ -59,7 +55,7 @@ export default function AppointmentsPageContent() {
   }
 
   function openOverlay(appointmentId: string) {
-    if (overlayButtonRef.current?.click && data) {
+    if (data) {
       const appointment = data.find(
         (appointment) => appointment.id === appointmentId,
       );
@@ -70,7 +66,7 @@ export default function AppointmentsPageContent() {
       }
 
       setSelectedAppointment(appointment);
-      overlayButtonRef.current?.click();
+      setAppointmentDetailsModalOpen(true);
     }
   }
 
@@ -102,18 +98,22 @@ export default function AppointmentsPageContent() {
         Open offcanvas
       </button>
 
-      <SidePanel
-        onClose={() => {}}
+      <SidePanelWrapper
+        onClose={() => {
+          setSelectedAppointment(undefined);
+          setAppointmentDetailsModalOpen(false);
+        }}
         title={"Detalhes do Agendamento"}
-        isOpen={true}
+        isOpen={appointmentDetailsModalOpen}
       >
         <AppointmentDetails
           appointment={selectedAppointment}
           onClose={() => {
             setSelectedAppointment(undefined);
+            setAppointmentDetailsModalOpen(false);
           }}
         />
-      </SidePanel>
+      </SidePanelWrapper>
     </div>
   );
 }

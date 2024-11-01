@@ -78,6 +78,32 @@ class AppointmentsService {
       throw error;
     }
   }
+
+  public deleteAppointment(appointmentId: string): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Deleting appointment...", [appointmentId]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.DELETE_APPOINTMENT(appointmentId),
+        httpMethod: HttpMethods.DELETE,
+      };
+
+      return ApiInterface.send(request).then((response) => {
+        Logger.debug(this.LOG_TAG, "Delete appointment response success", [
+          response,
+        ]);
+
+        if (!response || response.status !== HttpStatus.OK) {
+          return Promise.reject("Failed to delete appointment");
+        }
+
+        return response.data;
+      });
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to delete appointment.", error);
+      return Promise.reject(error);
+    }
+  }
 }
 
 export default new AppointmentsService();

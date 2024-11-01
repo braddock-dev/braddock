@@ -40,6 +40,10 @@ export const handlers = [
     return HttpResponse.json(APPOINTMENTS, { status: HttpStatus.OK });
   }),
 
+  http.delete(Constants.API_ROUTES.DELETE_APPOINTMENT(":appointmentId"), () => {
+    return HttpResponse.json({}, { status: HttpStatus.OK });
+  }),
+
   http.get(Constants.API_ROUTES.GET_USER_INFO(), (info) => {
     const authToken = info.request.headers.get("Token");
 

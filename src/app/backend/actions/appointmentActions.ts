@@ -18,3 +18,7 @@ export async function scheduleAppointment(
 ): Promise<void> {
   return AppointmentsManager.scheduleAppointment(appointmentData);
 }
+
+export async function deleteAppointment(appointmentId: string): Promise<void> {
+  return AppointmentsManager.deleteAppointment(appointmentId);
+}
