@@ -42,15 +42,17 @@ export default function AppointmentInfoForm({
         />
       </SectionInfo>
 
-      <SectionInfo title={"Quando?"}>
-        <SecondStep
-          isValidChange={() => {}}
-          onError={() => {}}
-          noPadding
-          theme={Theme.LIGHT}
-        />
-      </SectionInfo>
       <hr className={"border-neutral-200"} />
+      {!!selectedTreatments.length && (
+        <SectionInfo title={"Quando?"}>
+          <SecondStep
+            isValidChange={() => {}}
+            onError={() => {}}
+            noPadding
+            theme={Theme.LIGHT}
+          />
+        </SectionInfo>
+      )}
 
       <SectionInfo title={"Acções"}>
         <div className={"grid grid-cols-2 gap-3"}>
