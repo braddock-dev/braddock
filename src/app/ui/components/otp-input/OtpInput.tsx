@@ -17,6 +17,7 @@ export function OtpInput(props: IOTPStepProps) {
       containerClassName="group flex items-center has-[:disabled]:opacity-30"
       onComplete={props.onComplete}
       disabled={props.disabled}
+      autoFocus
       value={props.value}
       onChange={props.onChange}
       render={({ slots }) => (

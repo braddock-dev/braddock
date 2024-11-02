@@ -65,9 +65,10 @@ class AppointmentsManager {
     ]);
 
     try {
-      await this.deleteAppointment(appointmentId);
       const createdAppointment =
         await this.scheduleAppointment(appointmentData);
+
+      await this.deleteAppointment(appointmentId);
 
       Logger.debug(this.LOG_TAG, "Edit appointment response", [
         createdAppointment,

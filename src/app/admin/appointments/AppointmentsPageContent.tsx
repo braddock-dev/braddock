@@ -18,13 +18,20 @@ import {
   newAppointmentActions,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
+import NewAppointment from "@/app/ui/components/new-appointment/NewAppointment";
 
 export default function AppointmentsPageContent() {
   const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] =
     useState(false);
 
+  const [newAppointmentModalOpen, setNewAppointmentModalOpen] = useState(false);
+
   const resetNewAppointmentStore = useNewAppointmentStore(
     newAppointmentActions.resetState,
+  );
+
+  const setRecommendedDate = useNewAppointmentStore(
+    newAppointmentActions.setRecommendedDate,
   );
 
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -83,12 +90,19 @@ export default function AppointmentsPageContent() {
   };
 
   const handleSelectDateTime = (event: SelectDateTimeInfo) => {
-    console.log("event", event);
+    setRecommendedDate(event.start);
+    setNewAppointmentModalOpen(true);
   };
 
   const handleCloseDetailsSidePanel = () => {
     setSelectedAppointment(undefined);
     setAppointmentDetailsModalOpen(false);
+    resetNewAppointmentStore();
+    refetch();
+  };
+
+  const handleCloseNewAppointmentSidePanel = () => {
+    setNewAppointmentModalOpen(false);
     resetNewAppointmentStore();
     refetch();
   };
@@ -122,6 +136,14 @@ export default function AppointmentsPageContent() {
           appointment={selectedAppointment}
           onClose={handleCloseDetailsSidePanel}
         />
+      </SidePanelWrapper>
+
+      <SidePanelWrapper
+        onClose={handleCloseNewAppointmentSidePanel}
+        title={"Novo Agendamento"}
+        isOpen={newAppointmentModalOpen}
+      >
+        <NewAppointment onClose={handleCloseNewAppointmentSidePanel} />
       </SidePanelWrapper>
     </div>
   );

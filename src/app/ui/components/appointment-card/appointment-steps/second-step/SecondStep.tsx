@@ -46,6 +46,10 @@ export default function SecondStep(props: ITimeSlot) {
     newAppointmentActions.setSelectedTimeSlot,
   );
 
+  const recommendedDate = useNewAppointmentStore(
+    newAppointmentSelectors.recommendedDate,
+  );
+
   useEffect(() => {
     props.isValidChange(!!selectedDaySlot && !!selectedTimeSlot);
   }, [selectedDaySlot, selectedTimeSlot]);
@@ -94,6 +98,30 @@ export default function SecondStep(props: ITimeSlot) {
     });
   }, [selectedDaySlot]);
 
+  useEffect(() => {
+    if (recommendedDate && treatmentTimeslots?.length) {
+      const dateSlot = treatmentTimeslots.find((dateSlot) =>
+        dayjs(dateSlot.dayInMillis).isSame(recommendedDate, "day"),
+      );
+
+      if (dateSlot) {
+        setSelectedDaySlot(dateSlot);
+      }
+    }
+  }, [recommendedDate, treatmentTimeslots]);
+
+  useEffect(() => {
+    if (selectedDaySlot && selectedDaySlot.timeslots.length) {
+      const timeSlot = selectedDaySlot.timeslots.find((timeSlot) =>
+        dayjs(timeSlot.timeInMillis).isSame(recommendedDate, "minute"),
+      );
+
+      if (timeSlot) {
+        setSelectedTimeSlot(timeSlot);
+      }
+    }
+  }, [selectedDaySlot, recommendedDate]);
+
   if (isLoading) {
     return (
       <div className={styles.container} data-loading-state={true}>
@@ -110,19 +138,21 @@ export default function SecondStep(props: ITimeSlot) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.item} key={"DAY_SELECTION"}>
-        <ButtonGroup
-          buttonItems={dateSlots}
-          title={"DATA"}
-          defaultSelectedKey={selectedDaySlot?.dayInMillis}
-          displayMode={DISPLAY_MODE.SWIPER}
-          onSelectedButtonsChange={(_, [daySlot]) =>
-            setSelectedDaySlot(daySlot)
-          }
-          theme={props.theme}
-          noPadding={props.noPadding}
-        />
-      </div>
+      {selectedTreatmentIds?.length > 0 && (
+        <div className={styles.item} key={"DAY_SELECTION"}>
+          <ButtonGroup
+            buttonItems={dateSlots}
+            title={"DATA"}
+            defaultSelectedKey={selectedDaySlot?.dayInMillis}
+            displayMode={DISPLAY_MODE.SWIPER}
+            onSelectedButtonsChange={(_, [daySlot]) =>
+              setSelectedDaySlot(daySlot)
+            }
+            theme={props.theme}
+            noPadding={props.noPadding}
+          />
+        </div>
+      )}
 
       {!!selectedDaySlot && (
         <div className={styles.item} key={"TIME_SELECTION"}>

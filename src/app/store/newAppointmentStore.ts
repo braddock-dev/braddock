@@ -24,6 +24,8 @@ export interface INewAppointmentStore {
   setCustomerInfo: (name: string, phone: string, email: string) => void;
   resetState: () => void;
   setAppointmentStore: (appointment: IAppointment) => void;
+  recommendedDate?: Date;
+  setRecommendedDate: (date: Date) => void;
 }
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
@@ -31,9 +33,11 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   selectedTreatments: [],
   selectedDaySlot: undefined,
   selectedTimeSlot: undefined,
+  recommendedDate: undefined,
   phoneNumber: "",
   customerName: "",
   customerEmail: "",
+  setRecommendedDate: (date: Date) => set({ recommendedDate: date }),
   setCustomerInfo: (name: string, phone: string, email: string) =>
     set({ customerName: name, phoneNumber: phone, customerEmail: email }),
   setSelectedTreatment: (treatment?: ITreatment[]) =>
@@ -64,6 +68,8 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       selectedTimeSlot: undefined,
       phoneNumber: "",
       customerName: "",
+      customerEmail: "",
+      recommendedDate: undefined,
     }),
   setAppointmentStore: (appointment: IAppointment) => {
     set({
@@ -86,6 +92,7 @@ export const newAppointmentSelectors = {
   selectedTimeSlot: (state: INewAppointmentStore) => state.selectedTimeSlot,
   customerName: (state: INewAppointmentStore) => state.customerName,
   phoneNumber: (state: INewAppointmentStore) => state.phoneNumber,
+  recommendedDate: (state: INewAppointmentStore) => state.recommendedDate,
   appointmentStore: (state: INewAppointmentStore): IBaseNewAppointmentInfo => ({
     treatments: state.treatments,
     selectedTreatments: state.selectedTreatments,
@@ -104,6 +111,14 @@ export const newAppointmentSelectors = {
       !!state.phoneNumber
     );
   },
+
+  isAppointmentValidWithoutCustomer: (state: INewAppointmentStore) => {
+    return (
+      state.selectedTreatments.length > 0 &&
+      !!state.selectedDaySlot &&
+      !!state.selectedTimeSlot
+    );
+  },
 };
 
 export const newAppointmentActions = {
@@ -117,4 +132,5 @@ export const newAppointmentActions = {
   setCustomerInfo: (state: INewAppointmentStore) => state.setCustomerInfo,
   setAppointmentStore: (state: INewAppointmentStore) =>
     state.setAppointmentStore,
+  setRecommendedDate: (state: INewAppointmentStore) => state.setRecommendedDate,
 };

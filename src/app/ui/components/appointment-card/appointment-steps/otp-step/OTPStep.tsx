@@ -9,6 +9,8 @@ import Logger from "@/app/utils/Logger";
 import { useState } from "react";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 import { toast } from "sonner";
+import { formatPhoneNumber } from "@/app/utils/functions";
+import { Constants } from "@/app/utils/Constants";
 
 const LOG_TAG = "OTPStep";
 interface IOTPStepProps {
@@ -61,8 +63,14 @@ export default function OTPStep(props: IOTPStepProps) {
           Insira o código de verificação
         </h1>
         <p className={"text-white/80 text-sm"}>
-          Enviamos um código de verificação para o número de telefone
-          cadastrado. Insira o código abaixo.
+          Enviamos um código de verificação para o seguinte número de telefone
+          <span className={"font-bold text-white"}>
+            {formatPhoneNumber(
+              ` (${Constants.UI.PHONE_PREFIX.PT}${phoneNumber})`,
+            )}
+          </span>
+          . <br />
+          Insira o código abaixo.
         </p>
 
         <div className={"mt-5 flex justify-center items-center flex-col gap-5"}>

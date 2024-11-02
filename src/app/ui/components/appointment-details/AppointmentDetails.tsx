@@ -18,6 +18,7 @@ export default function AppointmentDetails({
 
   const { mutate: deleteAppointmentMutation, isPending: isPendingDeletion } =
     useMutation({
+      mutationKey: ["deleteAppointment"],
       mutationFn: () => deleteAppointment(appointment?.id ?? ""),
       onError: () => {
         toast.error("Erro ao deletar o agendamento");

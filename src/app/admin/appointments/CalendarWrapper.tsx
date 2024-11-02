@@ -130,7 +130,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
         usageStatistics={false}
         onSelectDateTime={props.onSelectDateTime}
         onClickEvent={props.onSelectEvent}
-        gridSelection={false}
+        gridSelection={{ enableClick: true, enableDblClick: true }}
       />
     </div>
   );

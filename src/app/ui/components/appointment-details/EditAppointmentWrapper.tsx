@@ -32,6 +32,7 @@ export default function EditAppointmentWrapper(
   );
 
   const { mutate: editAppointmentMutation, isPending } = useMutation({
+    mutationKey: ["editAppointment"],
     mutationFn: (data: {
       id: string;
       appointmentData: INewAppointmentRequestData;

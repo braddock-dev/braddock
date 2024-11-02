@@ -42,7 +42,7 @@ class TreatmentManager {
     ]);
 
     try {
-      if (!treatmentsId) {
+      if (!treatmentsId.length) {
         return [];
       }
 
