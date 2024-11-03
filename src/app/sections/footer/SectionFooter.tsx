@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "./SectionFooter.module.scss";
 import BaseSection from "@/app/ui/components/base-section/BaseSection";
 import HorizontalLogo from "@/app/ui/vectors/horizontal-logo.svg";
@@ -8,6 +10,7 @@ import Link from "next/link";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import CalendarIcon from "@/app/ui/vectors/calendar.svg";
 import { Constants } from "@/app/utils/Constants";
+import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
 
 const socialMediaLinks = [
   {
@@ -25,6 +28,8 @@ const socialMediaLinks = [
 ];
 
 export default function SectionFooter() {
+  const setHeroCardType = useUIStore(uiActions.setHeroCardType);
+
   return (
     <BaseSection
       containerClassName={styles.sectionContainer}
@@ -49,9 +54,11 @@ export default function SectionFooter() {
         <div className={styles.right}>
           <Button
             color={ButtonColors.LIGHT_BROWN}
-            target={"_self"}
-            href={"#home"}
             className={styles.button}
+            onClick={() => {
+              window.scroll(0, 0);
+              setHeroCardType(HeroCardType.NEW_APPOINTMENT);
+            }}
           >
             <div className={styles.buttonContainer}>
               <CalendarIcon className={styles.icon} />
