@@ -25,6 +25,7 @@ class AppointmentDataAdapter {
       id: data.id,
       clientName: data.customerName || "",
       clientPhoneNumber: data.customerMsisdn || "",
+      clientEmail: data.customerEmail || "",
       startTimeInMillis: data.startTimeInMillis,
       createdAt: data.createdAt,
       durationInMinutes: data.durationInMinutes,

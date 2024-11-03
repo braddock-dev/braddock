@@ -12,6 +12,7 @@ import NotificationsIcon from "@/app/ui/vectors/notifications-icon.svg";
 import UserIcon from "@/app/ui/vectors/user-icon.svg";
 import LogoutIcon from "@/app/ui/vectors/logout-icon.svg";
 import CalendarIcon from "@/app/ui/vectors/calendar-icon.svg";
+import PlusIcon from "@/app/ui/vectors/plus-icon.svg";
 import { useMutation } from "@tanstack/react-query";
 import { logout } from "@/app/backend/actions/authActions";
 import { useAuthStore } from "@/app/store/authStore";
@@ -79,6 +80,13 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
       }
       case AuthRoles.CUSTOMER: {
         return [
+          {
+            label: "Agendar",
+            icon: <PlusIcon className="shrink-0 size-4 stroke-black" />,
+            onClick: () => {
+              setHeroCardType(HeroCardType.NEW_APPOINTMENT);
+            },
+          },
           {
             label: "Meus Agendamentos",
             icon: <CalendarIcon className="shrink-0 size-4" />,

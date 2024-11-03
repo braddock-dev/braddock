@@ -4,7 +4,7 @@ import MainLogo from "@/app/ui/vectors/main-logo.svg";
 import MenuItems from "@/app/ui/components/menu-items/MenuItems";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { useScrollPosition } from "@/app/utils/CustomHooks";
-import { useMemo } from "react";
+import { ReactElement, useMemo } from "react";
 import { motion } from "framer-motion";
 import { defaultAppearAnimation } from "@/app/utils/animations";
 import AvatarOptions from "@/app/ui/components/avatar-options/AvatarOptions";
@@ -12,10 +12,18 @@ import { useAuthStore } from "@/app/store/authStore";
 import { useRouter } from "next/navigation";
 import { Constants } from "@/app/utils/Constants";
 import Link from "next/link";
+import {
+  HeroCardType,
+  uiActions,
+  uiSelectors,
+  useUIStore,
+} from "@/app/store/uiStore";
 
 const START_STICKY_POSITION = 10;
 
 export default function Header() {
+  const heroCardType = useUIStore(uiSelectors.heroCardType);
+  const setHeroCardType = useUIStore(uiActions.setHeroCardType);
   const router = useRouter();
   const userInfo = useAuthStore((state) => state.userInfo);
 
@@ -24,6 +32,29 @@ export default function Header() {
   const isSticky = useMemo(() => {
     return scrollPosition > START_STICKY_POSITION;
   }, [scrollPosition]);
+
+  const actionButtonByHeroCardType: Record<HeroCardType, ReactElement> = {
+    [HeroCardType.NEW_APPOINTMENT]: (
+      <Button
+        color={ButtonColors.BROWN}
+        onClick={() => {
+          setHeroCardType(HeroCardType.APPOINTMENTS_LIST);
+        }}
+      >
+        VER AGENDAMENTOS
+      </Button>
+    ),
+    [HeroCardType.APPOINTMENTS_LIST]: (
+      <Button
+        color={ButtonColors.BLACK}
+        onClick={() => {
+          setHeroCardType(HeroCardType.NEW_APPOINTMENT);
+        }}
+      >
+        AGENDAR AGORA
+      </Button>
+    ),
+  };
 
   return (
     <div className={styles.container} data-is-sticky={isSticky}>
@@ -50,10 +81,13 @@ export default function Header() {
               </Button>
             </motion.div>
           ) : (
-            <></>
+            <>
+              <motion.div {...defaultAppearAnimation}>
+                {actionButtonByHeroCardType[heroCardType]}
+              </motion.div>
+              <AvatarOptions userInfo={userInfo} />
+            </>
           )}
-
-          {userInfo && <AvatarOptions userInfo={userInfo} />}
         </div>
       </div>
     </div>

@@ -79,6 +79,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
         Constants.UI.PHONE_PREFIX.PT,
       ),
       customerName: appointment.clientName,
+      customerEmail: appointment.clientEmail,
     });
   },
 }));

@@ -8,12 +8,14 @@ import React, { useState } from "react";
 import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
 import AppointmentListLoadingState from "@/app/ui/components/appointments-list-card/AppointmentListLoadingState";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
+import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
 
 interface IAppointmentCardProps {
   className?: string;
 }
 export default function AppointmentsListCard(props: IAppointmentCardProps) {
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
+  const setHeroCardType = useUIStore(uiActions.setHeroCardType);
 
   const { data, error, isPending, refetch } = useQuery({
     queryKey: ["appointments", filter],
@@ -62,9 +64,17 @@ export default function AppointmentsListCard(props: IAppointmentCardProps) {
         <div
           className={"flex flex-col gap-4 pr-2  justify-center items-center"}
         >
-          <p className={"w-[85%] text-center text-xl"}>
+          <p className={"w-[95%] text-center text-xl text-white"}>
             Você ainda não possui agendamentos
           </p>
+          <Button
+            color={ButtonColors.BROWN}
+            onClick={() => {
+              setHeroCardType(HeroCardType.NEW_APPOINTMENT);
+            }}
+          >
+            AGENDAR AGORA
+          </Button>
         </div>
       )}
     </motion.div>

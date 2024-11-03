@@ -6,6 +6,7 @@ export interface IAppointment {
   id: string;
   clientName: string;
   clientPhoneNumber: string;
+  clientEmail: string;
   startTimeInMillis: number;
   endTimeInMillis: number;
   createdAt: number;
