@@ -9,6 +9,7 @@ import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/app/store/authStore";
 import { Constants } from "@/app/utils/Constants";
+import { formatPhoneNumber } from "@/app/utils/functions";
 
 enum LoginSteps {
   PHONE_NUMBER,
@@ -81,9 +82,21 @@ export default function LoginForm() {
               >
                 Entrar na plataforma
               </h1>
-              <p className={"text-gray-100 text-sm"}>
-                Bem-vindo ao sistema de gestão de agendamentos online.
-              </p>
+
+              {currentStep === LoginSteps.OTP && phoneNumber ? (
+                <p className={"text-gray-100 text-sm"}>
+                  Foi enviado um código de verificação para o número de telefone
+                  <span className={"font-bold text-lightBrown01"}>
+                    {formatPhoneNumber(
+                      ` (${Constants.UI.PHONE_PREFIX.PT}${phoneNumber})`,
+                    )}
+                  </span>
+                </p>
+              ) : (
+                <p className={"text-gray-100 text-sm"}>
+                  Bem-vindo ao sistema de gestão de agendamentos online.
+                </p>
+              )}
             </div>
 
             {currentStepComponent[currentStep]}
