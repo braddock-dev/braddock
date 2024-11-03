@@ -38,6 +38,7 @@ export default function Header() {
       <Button
         color={ButtonColors.BROWN}
         onClick={() => {
+          window.scroll(0, 0);
           setHeroCardType(HeroCardType.APPOINTMENTS_LIST);
         }}
       >
@@ -48,6 +49,7 @@ export default function Header() {
       <Button
         color={ButtonColors.BLACK}
         onClick={() => {
+          window.scroll(0, 0);
           setHeroCardType(HeroCardType.NEW_APPOINTMENT);
         }}
       >

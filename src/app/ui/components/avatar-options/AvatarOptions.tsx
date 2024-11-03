@@ -84,6 +84,7 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
             label: "Agendar",
             icon: <PlusIcon className="shrink-0 size-4 stroke-black" />,
             onClick: () => {
+              window.scroll(0, 0);
               setHeroCardType(HeroCardType.NEW_APPOINTMENT);
             },
           },
@@ -91,6 +92,7 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
             label: "Meus Agendamentos",
             icon: <CalendarIcon className="shrink-0 size-4" />,
             onClick: () => {
+              window.scroll(0, 0);
               setHeroCardType(HeroCardType.APPOINTMENTS_LIST);
             },
           },
