@@ -102,7 +102,9 @@ export default function AppointmentItem(props: IAppointmentItemProps) {
           className={"bg-brown w-full"}
           size={"sm"}
           disabled={isPendingDeletion || isPendingStartSchedule}
-          onClick={startReschedule}
+          onClick={() => {
+            startReschedule();
+          }}
         >
           Reagendar
         </Button>
