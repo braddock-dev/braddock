@@ -9,7 +9,10 @@ import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/Ap
 import AppointmentListLoadingState from "@/app/ui/components/appointments-list-card/AppointmentListLoadingState";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 
-export default function AppointmentsListCard() {
+interface IAppointmentCardProps {
+  className?: string;
+}
+export default function AppointmentsListCard(props: IAppointmentCardProps) {
   const [filter, setFilter] = useState<IAppointmentQueryData>({});
 
   const { data, error, isPending, refetch } = useQuery({
@@ -22,7 +25,7 @@ export default function AppointmentsListCard() {
   };
 
   return (
-    <motion.div className={`${styles.container}`}>
+    <motion.div className={`${styles.container} ${props.className}`}>
       <h1 className={styles.title}>MEUS AGENDAMENTOS</h1>
 
       {isPending ? (

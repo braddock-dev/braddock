@@ -26,11 +26,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
 
 interface AvatarOptionsProps {
   userInfo: IUserInfo;
 }
 export default function AvatarOptions(props: AvatarOptionsProps) {
+  const setHeroCardType = useUIStore(uiActions.setHeroCardType);
   const router = useRouter();
   const removeUserInfo = useAuthStore((state) => state.removeUserInfo);
   const resetNewAppointment = useNewAppointmentStore(
@@ -81,7 +83,7 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
             label: "Meus Agendamentos",
             icon: <CalendarIcon className="shrink-0 size-4" />,
             onClick: () => {
-              toast.info("Em desenvolvimento");
+              setHeroCardType(HeroCardType.APPOINTMENTS_LIST);
             },
           },
           {

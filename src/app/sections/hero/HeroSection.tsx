@@ -6,8 +6,22 @@ import HeroImage from "@/app/ui/images/hero-image.jpg";
 import Header from "@/app/ui/components/header/Header";
 import AppointmentCard from "@/app/ui/components/appointment-card/AppointmentCard";
 import AnimatedText from "@/app/ui/components/animated-text/AnimatedText";
+import AppointmentsListCard from "@/app/ui/components/appointments-list-card/AppointmentsListCard";
+import { HeroCardType, uiSelectors, useUIStore } from "@/app/store/uiStore";
+import { ReactElement } from "react";
 
 export default function HeroSection() {
+  const heroCardType = useUIStore(uiSelectors.heroCardType);
+
+  const renderCard: Record<HeroCardType, ReactElement> = {
+    [HeroCardType.NEW_APPOINTMENT]: (
+      <AppointmentCard className={styles.appointmentCard} />
+    ),
+    [HeroCardType.APPOINTMENTS_LIST]: (
+      <AppointmentsListCard className={styles.appointmentCard} />
+    ),
+  };
+
   return (
     <BaseSection>
       <Image
@@ -28,7 +42,7 @@ export default function HeroSection() {
             once
           />
 
-          <AppointmentCard className={styles.appointmentCard} />
+          {renderCard[heroCardType]}
         </div>
       </div>
     </BaseSection>

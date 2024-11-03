@@ -7,6 +7,11 @@ import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDi
 import { useMutation } from "@tanstack/react-query";
 import { deleteAppointment } from "@/app/backend/actions/appointmentActions";
 import { toast } from "sonner";
+import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
+import {
+  newAppointmentActions,
+  useNewAppointmentStore,
+} from "@/app/store/newAppointmentStore";
 
 interface IAppointmentItemProps {
   appointment: IAppointment;
@@ -14,17 +19,34 @@ interface IAppointmentItemProps {
 }
 export default function AppointmentItem(props: IAppointmentItemProps) {
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const setHeroCardType = useUIStore(uiActions.setHeroCardType);
+  const setAppointmentStore = useNewAppointmentStore(
+    newAppointmentActions.setAppointmentStore,
+  );
 
   const { mutate: deleteAppointmentMutation, isPending: isPendingDeletion } =
     useMutation({
       mutationKey: ["deleteAppointment"],
-      mutationFn: () => deleteAppointment(props.appointment.id ?? ""),
+      mutationFn: () => deleteAppointment(props.appointment.id),
       onError: () => {
         toast.error("Erro ao cancelar este agendamento");
       },
       onSuccess: () => {
         toast.success("Agendamento cancelado com sucesso");
         props.onCancelSuccess?.();
+      },
+    });
+
+  const { mutate: startReschedule, isPending: isPendingStartSchedule } =
+    useMutation({
+      mutationKey: ["startReschedule"],
+      mutationFn: () => deleteAppointment(props.appointment.id),
+      onError: () => {
+        toast.error("Erro ao iniciar o reagendamento");
+      },
+      onSuccess: () => {
+        setAppointmentStore(props.appointment);
+        setHeroCardType(HeroCardType.NEW_APPOINTMENT);
       },
     });
 
@@ -72,14 +94,15 @@ export default function AppointmentItem(props: IAppointmentItemProps) {
           onClick={() => {
             setShowCancelModal(true);
           }}
-          disabled={isPendingDeletion}
+          disabled={isPendingDeletion || isPendingStartSchedule}
         >
           Cancelar
         </Button>
         <Button
           className={"bg-brown w-full"}
           size={"sm"}
-          disabled={isPendingDeletion}
+          disabled={isPendingDeletion || isPendingStartSchedule}
+          onClick={startReschedule}
         >
           Reagendar
         </Button>

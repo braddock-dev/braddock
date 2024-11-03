@@ -11,6 +11,7 @@ import AvatarOptions from "@/app/ui/components/avatar-options/AvatarOptions";
 import { useAuthStore } from "@/app/store/authStore";
 import { useRouter } from "next/navigation";
 import { Constants } from "@/app/utils/Constants";
+import Link from "next/link";
 
 const START_STICKY_POSITION = 10;
 
@@ -28,7 +29,9 @@ export default function Header() {
     <div className={styles.container} data-is-sticky={isSticky}>
       <div className={styles.headerContent}>
         <motion.div {...defaultAppearAnimation}>
-          <MainLogo className={styles.logo} />
+          <Link href={Constants.APP_ROUTES.HOME}>
+            <MainLogo className={styles.logo} />
+          </Link>
         </motion.div>
 
         <motion.div {...defaultAppearAnimation}>
