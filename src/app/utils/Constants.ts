@@ -29,8 +29,11 @@ export const Constants = {
   DATE_FORMAT: {
     DAY: "DD",
     WEEKDAY: "ddd",
+    SHORT_MONTH: "MMM",
+    FULL_MONTH: "MMMM",
     TIME: "HH:mm",
     CUSTOM_FULL_DATE_TIME: "DD [de] MMMM [às] HH:mm",
+    TIME_INTERVAL: "HH:mm [até] HH:mm",
     CUSTOM_DATE: "dddd, DD [de] MMMM",
   },
   API_ROUTES: {

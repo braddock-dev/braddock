@@ -1,0 +1,11 @@
+@import "src/app/ui/components/appointment-card/AppointmentCard.module.scss";
+@import "src/app/ui/styles/mixins.scss";
+
+.container{
+  padding-bottom: toRem(16);
+
+  .content{
+    overflow: scroll;
+    @include hide-scrollbar();
+  }
+}

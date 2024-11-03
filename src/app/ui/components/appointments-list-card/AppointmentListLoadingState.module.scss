@@ -1,0 +1,8 @@
+@import "@/app/ui/styles/vars";
+@import "@/app/ui/styles/functions";
+@import "@/app/ui/styles/mixins";
+
+
+.loadingContainer{
+   @include loadingContainer();
+}
