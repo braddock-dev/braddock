@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
 import TestimonialCard from "@/app/ui/components/testimonial-card/TestimonialCard";
 import BasePricesTable from "@/app/ui/components/base-price-table/BasePricesTable";
+import { Constants } from "@/app/utils/Constants";
 
 interface IImages {
   image: any;
@@ -55,7 +56,10 @@ export default function ServicesSection() {
   );
 
   return (
-    <BaseSection containerClassName={styles.sectionContainer}>
+    <BaseSection
+      containerClassName={styles.sectionContainer}
+      id={Constants.MENU_ITEMS.SERVICES.href}
+    >
       <div className={styles.container}>
         <div className={styles.serviceInfo}>
           <div className={styles.left}>
@@ -125,7 +129,10 @@ export default function ServicesSection() {
           </div>
         </div>
 
-        <div className={styles.basePrices}>
+        <div
+          className={styles.basePrices}
+          id={Constants.MENU_ITEMS.BASE_PRICES.href}
+        >
           <div className={styles.testimonials}>
             <TestimonialCard />
           </div>

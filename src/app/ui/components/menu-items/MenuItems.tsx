@@ -10,9 +10,12 @@ import { useEffect, useState } from "react";
 const menuItems: IMenuItem[] = [
   Constants.MENU_ITEMS.HOME,
   Constants.MENU_ITEMS.SERVICES,
-  Constants.MENU_ITEMS.ABOUT_US,
-  Constants.MENU_ITEMS.GALLERY,
-];
+  Constants.MENU_ITEMS.BASE_PRICES,
+  Constants.MENU_ITEMS.LOCATION,
+].map((menuItem) => ({
+  ...menuItem,
+  href: `#${menuItem.href}`,
+}));
 
 interface IMenuItemsProps {
   className?: string;

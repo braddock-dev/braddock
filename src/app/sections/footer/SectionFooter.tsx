@@ -7,6 +7,7 @@ import PhoneIcon from "@/app/ui/vectors/phone.svg";
 import Link from "next/link";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import CalendarIcon from "@/app/ui/vectors/calendar.svg";
+import { Constants } from "@/app/utils/Constants";
 
 const socialMediaLinks = [
   {
@@ -25,7 +26,10 @@ const socialMediaLinks = [
 
 export default function SectionFooter() {
   return (
-    <BaseSection containerClassName={styles.sectionContainer}>
+    <BaseSection
+      containerClassName={styles.sectionContainer}
+      id={Constants.MENU_ITEMS.LOCATION.href}
+    >
       <div className={styles.container}>
         <div className={styles.left}>
           <HorizontalLogo className={styles.logo} />

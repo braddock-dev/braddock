@@ -9,6 +9,7 @@ import AnimatedText from "@/app/ui/components/animated-text/AnimatedText";
 import AppointmentsListCard from "@/app/ui/components/appointments-list-card/AppointmentsListCard";
 import { HeroCardType, uiSelectors, useUIStore } from "@/app/store/uiStore";
 import { ReactElement } from "react";
+import { Constants } from "@/app/utils/Constants";
 
 export default function HeroSection() {
   const heroCardType = useUIStore(uiSelectors.heroCardType);
@@ -23,7 +24,7 @@ export default function HeroSection() {
   };
 
   return (
-    <BaseSection>
+    <BaseSection id={Constants.MENU_ITEMS.HOME.href}>
       <Image
         className={styles.backgroundImage}
         src={HeroImage}

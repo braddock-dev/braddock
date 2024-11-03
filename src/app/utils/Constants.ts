@@ -11,19 +11,19 @@ export const Constants = {
   MENU_ITEMS: {
     HOME: {
       text: "INÍCIO",
-      href: "#home",
+      href: "inicio",
     },
     SERVICES: {
       text: "SERVIÇOS",
-      href: "#services",
+      href: "servicos",
     },
-    ABOUT_US: {
-      text: "SOBRE NÓS",
-      href: "#about-us",
+    BASE_PRICES: {
+      text: "PREÇOS BASE",
+      href: "precos-base",
     },
-    GALLERY: {
-      text: "GALERIA",
-      href: "#gallery",
+    LOCATION: {
+      text: "LOCALIZAÇÃO",
+      href: "localizacao",
     },
   },
   DATE_FORMAT: {
