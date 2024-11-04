@@ -10,6 +10,7 @@ import { removePhoneNumberPrefix } from "@/app/utils/functions";
 import { Constants } from "@/app/utils/Constants";
 
 export interface INewAppointmentStore {
+  appointmentId?: string;
   treatments: ITreatment[];
   selectedTreatments: ITreatment[];
   selectedDaySlot?: IDaySlot;
@@ -29,6 +30,7 @@ export interface INewAppointmentStore {
 }
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
+  appointmentId: undefined,
   treatments: [],
   selectedTreatments: [],
   selectedDaySlot: undefined,
@@ -80,6 +82,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       ),
       customerName: appointment.clientName,
       customerEmail: appointment.clientEmail,
+      appointmentId: appointment.id,
     });
   },
 }));
@@ -94,6 +97,8 @@ export const newAppointmentSelectors = {
   customerName: (state: INewAppointmentStore) => state.customerName,
   phoneNumber: (state: INewAppointmentStore) => state.phoneNumber,
   recommendedDate: (state: INewAppointmentStore) => state.recommendedDate,
+  isRescheduleMode: (state: INewAppointmentStore) => !!state.appointmentId,
+  appointmentId: (state: INewAppointmentStore) => state.appointmentId,
   appointmentStore: (state: INewAppointmentStore): IBaseNewAppointmentInfo => ({
     treatments: state.treatments,
     selectedTreatments: state.selectedTreatments,

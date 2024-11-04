@@ -1,21 +1,41 @@
 import { useMutation } from "@tanstack/react-query";
 import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/data/AppointmentData";
-import { scheduleAppointment } from "@/app/backend/actions/appointmentActions";
+import {
+  editAppointment,
+  scheduleAppointment,
+} from "@/app/backend/actions/appointmentActions";
 import { toast } from "sonner";
 import JSConfetti from "js-confetti";
+import {
+  newAppointmentSelectors,
+  useNewAppointmentStore,
+} from "@/app/store/newAppointmentStore";
 
 export function useAppointment(onAppointmentSuccess: () => void) {
+  const isRescheduleMode = useNewAppointmentStore(
+    newAppointmentSelectors.isRescheduleMode,
+  );
+  const appointmentId = useNewAppointmentStore(
+    newAppointmentSelectors.appointmentId,
+  );
+
   const { mutate: mutateNewAppointment, isPending: isPendingNewAppointment } =
     useMutation({
       mutationKey: ["newAppointment"],
       mutationFn: (newAppointmentData: IBaseNewAppointmentInfo) => {
-        return scheduleAppointment({
+        const appointmentData = {
           selectedTreatments: newAppointmentData.selectedTreatments,
           customerName: newAppointmentData.customerName,
           phoneNumber: newAppointmentData.phoneNumber,
           customerEmail: newAppointmentData.customerEmail,
           selectedTimeSlot: newAppointmentData.selectedTimeSlot,
-        });
+        };
+
+        if (isRescheduleMode && appointmentId) {
+          return editAppointment(appointmentId, appointmentData);
+        } else {
+          return scheduleAppointment(appointmentData);
+        }
       },
       onError: () => {
         toast.error("Erro ao agendar, tente novamente");

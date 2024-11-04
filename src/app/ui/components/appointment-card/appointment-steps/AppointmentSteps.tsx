@@ -19,6 +19,7 @@ import { useCustomerInfo } from "@/app/ui/components/appointment-card/appointmen
 import { authSelectors, useAuthStore } from "@/app/store/authStore";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 import { toast } from "sonner";
+import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
 
 export enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -46,6 +47,7 @@ function AppointmentSteps() {
   const authUser = useAuthStore((state) => state.userInfo);
   const resetState = useNewAppointmentStore(newAppointmentActions.resetState);
   const isUserAuthenticated = useAuthStore(authSelectors.isAuthenticated);
+  const setHeroCardType = useUIStore(uiActions.setHeroCardType);
 
   const appointmentStore = useNewAppointmentStore(
     newAppointmentSelectors.appointmentStore,
@@ -97,6 +99,11 @@ function AppointmentSteps() {
   const handleCompleteAppointment = () => {
     resetState();
     setCurrentStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
+  };
+
+  const handleShowAppointments = () => {
+    resetState();
+    setHeroCardType(HeroCardType.APPOINTMENTS_LIST);
   };
 
   const handleSendOTP = () => {
@@ -272,9 +279,9 @@ function AppointmentSteps() {
           fullWidth
           color={ButtonColors.WHITE}
           className={styles.button}
-          onClick={handleCompleteAppointment}
+          onClick={handleShowAppointments}
         >
-          TERMINAR
+          AGENDAMENTOS
         </Button>
       </>
     ),

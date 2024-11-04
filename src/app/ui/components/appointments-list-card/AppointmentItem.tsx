@@ -37,18 +37,10 @@ export default function AppointmentItem(props: IAppointmentItemProps) {
       },
     });
 
-  const { mutate: startReschedule, isPending: isPendingStartSchedule } =
-    useMutation({
-      mutationKey: ["startReschedule"],
-      mutationFn: () => deleteAppointment(props.appointment.id),
-      onError: () => {
-        toast.error("Erro ao iniciar o reagendamento");
-      },
-      onSuccess: () => {
-        setAppointmentStore(props.appointment);
-        setHeroCardType(HeroCardType.NEW_APPOINTMENT);
-      },
-    });
+  const handleReschedule = () => {
+    setAppointmentStore(props.appointment);
+    setHeroCardType(HeroCardType.NEW_APPOINTMENT);
+  };
 
   return (
     <div
@@ -94,16 +86,16 @@ export default function AppointmentItem(props: IAppointmentItemProps) {
           onClick={() => {
             setShowCancelModal(true);
           }}
-          disabled={isPendingDeletion || isPendingStartSchedule}
+          disabled={isPendingDeletion}
         >
           Cancelar
         </Button>
         <Button
           className={"bg-brown w-full"}
           size={"sm"}
-          disabled={isPendingDeletion || isPendingStartSchedule}
+          disabled={isPendingDeletion}
           onClick={() => {
-            startReschedule();
+            handleReschedule();
           }}
         >
           Reagendar

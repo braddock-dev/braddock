@@ -10,7 +10,7 @@ export interface IUIStore {
   setHeroCardType: (heroCardType: HeroCardType) => void;
 }
 
-export const useUIStore = create<IUIStore>((set, getState) => ({
+export const useUIStore = create<IUIStore>((set) => ({
   heroCardType: HeroCardType.NEW_APPOINTMENT,
   setHeroCardType: (heroCardType: HeroCardType) => set({ heroCardType }),
 }));
