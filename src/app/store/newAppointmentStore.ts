@@ -72,6 +72,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       customerName: "",
       customerEmail: "",
       recommendedDate: undefined,
+      appointmentId: undefined,
     }),
   setAppointmentStore: (appointment: IAppointment) => {
     set({
