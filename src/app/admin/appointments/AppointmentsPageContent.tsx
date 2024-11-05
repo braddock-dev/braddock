@@ -90,6 +90,11 @@ export default function AppointmentsPageContent() {
   };
 
   const handleSelectDateTime = (event: SelectDateTimeInfo) => {
+    if (event.start.getDay() === 0) {
+      toast.warning("Não é possível agendar para domingo");
+      return;
+    }
+
     setRecommendedDate(event.start);
     setNewAppointmentModalOpen(true);
   };
