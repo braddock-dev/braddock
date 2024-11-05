@@ -25,3 +25,7 @@ export async function getUserInfo(): Promise<IUserInfo> {
 export async function logout(): Promise<void> {
   return AuthManager.logout();
 }
+
+export async function refreshGoogleCalendarToken(): Promise<string> {
+  return AuthManager.refreshGoogleCalendarToken();
+}

@@ -41,6 +41,25 @@ class AuthManager {
       throw error;
     }
   }
+
+  public async refreshGoogleCalendarToken(): Promise<string> {
+    Logger.debug(this.LOG_TAG, "Refreshing Google Calendar token");
+
+    try {
+      const response = await AuthService.refreshGoogleCalendarToken();
+
+      Logger.debug(this.LOG_TAG, "Google Calendar token refreshed");
+
+      return response;
+    } catch (error) {
+      Logger.error(
+        this.LOG_TAG,
+        "Error refreshing Google Calendar token",
+        error,
+      );
+      throw error;
+    }
+  }
 }
 
 export default new AuthManager();

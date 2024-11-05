@@ -1,8 +1,34 @@
+"use client";
+
 import AppLogo from "@/app/ui/vectors/logo-horizontal.svg";
 import Link from "next/link";
 import { Constants } from "@/app/utils/Constants";
+import MenuItem, {
+  ISideMenuItem,
+} from "@/app/ui/components/side-menu/MenuItem";
+import { useMemo } from "react";
+import HomeIcon from "@/app/ui/vectors/home.svg";
+import { usePathname } from "next/navigation";
+import { UserIcon } from "lucide-react";
 
 export default function SideMenu() {
+  const pathName = usePathname();
+
+  const menuItems = useMemo((): ISideMenuItem[] => {
+    return [
+      {
+        label: "Agendamentos",
+        icon: <HomeIcon className="shrink-0 size-4" />,
+        url: Constants.APP_ROUTES.APPOINTMENTS,
+      },
+      {
+        label: "Minha Conta",
+        icon: <UserIcon className="shrink-0 size-4" />,
+        url: Constants.APP_ROUTES.ACCOUNT,
+      },
+    ];
+  }, []);
+
   return (
     <div>
       <div
@@ -36,29 +62,13 @@ export default function SideMenu() {
               data-hs-accordion-always-open
             >
               <ul className="flex flex-col space-y-1">
-                <li>
-                  <a
-                    className="flex items-center gap-x-3.5 py-4 px-2.5 bg-gray-100 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                    href="#"
-                  >
-                    <svg
-                      className="shrink-0 size-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                      <polyline points="9 22 9 12 15 12 15 22" />
-                    </svg>
-                    Agendamentos
-                  </a>
-                </li>
+                {menuItems.map((menuItem, index) => (
+                  <MenuItem
+                    key={index}
+                    menuItem={menuItem}
+                    isActive={menuItem.url.startsWith(pathName)}
+                  />
+                ))}
               </ul>
             </nav>
           </div>

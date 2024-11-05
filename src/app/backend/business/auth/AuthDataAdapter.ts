@@ -47,6 +47,7 @@ class AuthDataAdapter {
         Constants.UI.PHONE_PREFIX.PT,
       ),
       name: data.name || "",
+      hasGoogleCalendar: data.googleCalendarIntegrationStatus === "integrated",
     };
   }
 }

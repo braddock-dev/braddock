@@ -1,5 +1,4 @@
 export const EXTERNAL_CONFIGS = {
-  GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
   BUSINESS_REFERENCE: process.env.BUSINESS_REFERENCE || "",
   BASE_URL: process.env.BASE_URL || "",
   API_REQUEST_TIMEOUT: process.env.NEXT_PUBLIC_API_REQUEST_TIMEOUT || 30000,
@@ -50,11 +49,14 @@ export const Constants = {
     GET_USER_INFO: () => `${EXTERNAL_CONFIGS.BASE_URL}/identity`,
     DELETE_APPOINTMENT: (appointmentId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/appointments/${appointmentId}`,
+    REFRESH_CALENDAR_TOKEN: () =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/refreshGoogleCalendarCredentials`,
   },
   APP_ROUTES: {
     HOME: "/",
     ADMIN: "/admin",
     APPOINTMENTS: "/admin/appointments",
+    ACCOUNT: "/admin/account",
     LOGIN: "/login",
   },
   UI: {

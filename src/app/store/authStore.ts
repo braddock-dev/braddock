@@ -15,4 +15,10 @@ export const useAuthStore = create<IAuthStore>((set, getState) => ({
 
 export const authSelectors = {
   isAuthenticated: (state: IAuthStore): boolean => !!state.userInfo,
+  userInfo: (state: IAuthStore): IUserInfo | undefined => state.userInfo,
+};
+
+export const authActions = {
+  setUserInfo: (state: IAuthStore) => state.setUserInfo,
+  removeUserInfo: (state: IAuthStore) => state.removeUserInfo,
 };

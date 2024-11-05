@@ -66,7 +66,7 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
             label: "Minha Conta",
             icon: <UserIcon className="shrink-0 size-4" />,
             onClick: () => {
-              toast.info("Em desenvolvimento");
+              router.push(Constants.APP_ROUTES.ACCOUNT);
             },
           },
           {

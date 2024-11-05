@@ -8,4 +8,5 @@ export interface IUserInfo {
   role: AuthRoles;
   phoneNumber: string;
   email: string;
+  hasGoogleCalendar: boolean;
 }
