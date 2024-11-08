@@ -19,8 +19,13 @@ import {
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
 import NewAppointment from "@/app/ui/components/new-appointment/NewAppointment";
+import dayjs from "dayjs";
+import DialogWrapper from "@/app/ui/components/dialog-wrapper/DialogWrapper";
+import AppointmentOptionsModal from "@/app/admin/appointments/AppointmentOptionsModal";
 
 export default function AppointmentsPageContent() {
+  const [showNewEventModal, setShowNewEventModal] = useState(false);
+
   const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] =
     useState(false);
 
@@ -95,8 +100,13 @@ export default function AppointmentsPageContent() {
       return;
     }
 
+    if (dayjs().isAfter(event.start)) {
+      toast.warning("Não é possível agendar para datas passadas");
+      return;
+    }
+
+    setShowNewEventModal(true);
     setRecommendedDate(event.start);
-    setNewAppointmentModalOpen(true);
   };
 
   const handleCloseDetailsSidePanel = () => {
@@ -110,6 +120,17 @@ export default function AppointmentsPageContent() {
     setNewAppointmentModalOpen(false);
     resetNewAppointmentStore();
     refetch();
+  };
+
+  const handleNewAppointment = () => {
+    setShowNewEventModal(false);
+
+    setNewAppointmentModalOpen(true);
+  };
+
+  const handleBlockTime = () => {
+    toast.warning("Funcionalidade em desenv");
+    setNewAppointmentModalOpen(false);
   };
 
   return (
@@ -150,6 +171,18 @@ export default function AppointmentsPageContent() {
       >
         <NewAppointment onClose={handleCloseNewAppointmentSidePanel} />
       </SidePanelWrapper>
+
+      <DialogWrapper
+        isOpen={showNewEventModal}
+        onOpenChange={setShowNewEventModal}
+        title={"Escolha a opção"}
+        contentClassName={"max-w-[450px]"}
+      >
+        <AppointmentOptionsModal
+          onNewAppointment={handleNewAppointment}
+          onBlockTime={handleBlockTime}
+        />
+      </DialogWrapper>
     </div>
   );
 }
