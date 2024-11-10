@@ -44,6 +44,10 @@ export const handlers = [
     return HttpResponse.json({}, { status: HttpStatus.OK });
   }),
 
+  http.post(Constants.API_ROUTES.REGISTER_TIME_OFF(), () => {
+    return HttpResponse.json({}, { status: HttpStatus.CREATED });
+  }),
+
   http.get(Constants.API_ROUTES.GET_USER_INFO(), (info) => {
     const authToken = info.request.headers.get("Token");
 

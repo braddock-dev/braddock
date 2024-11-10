@@ -6,7 +6,7 @@ import {
   IAppointmentQueryData,
   SelectDateTimeInfo,
 } from "@/app/backend/business/treatments/data/AppointmentData";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAppointments } from "@/app/backend/actions/appointmentActions";
 import { convertAppointmentsToEvents } from "@/app/admin/appointments/utils";
 import { toast } from "sonner";
@@ -22,8 +22,13 @@ import NewAppointment from "@/app/ui/components/new-appointment/NewAppointment";
 import dayjs from "dayjs";
 import DialogWrapper from "@/app/ui/components/dialog-wrapper/DialogWrapper";
 import AppointmentOptionsModal from "@/app/admin/appointments/AppointmentOptionsModal";
+import { registerTimeOff } from "@/app/backend/actions/timeOffActions";
+import { IDateInterval } from "@/app/backend/business/appointments/data/AppointmentData";
 
 export default function AppointmentsPageContent() {
+  const [selectedDateInterval, setSelectedDateInterval] =
+    useState<IDateInterval>();
+
   const [showNewEventModal, setShowNewEventModal] = useState(false);
 
   const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] =
@@ -47,6 +52,18 @@ export default function AppointmentsPageContent() {
   const { data, error, refetch } = useQuery({
     queryKey: ["appointments", filter],
     queryFn: () => getAppointments(filter),
+  });
+
+  const { mutate: mutateRegisterTimeOff } = useMutation({
+    mutationKey: ["registerTimeOff"],
+    mutationFn: registerTimeOff,
+    onError: () => {
+      toast.error("Erro ao registrar o horário de folga");
+    },
+    onSuccess: () => {
+      toast.success("Horário de folga registrado com sucesso");
+      refetch();
+    },
   });
 
   const events = useMemo(() => {
@@ -105,6 +122,11 @@ export default function AppointmentsPageContent() {
       return;
     }
 
+    setSelectedDateInterval({
+      start: event.start.getTime(),
+      end: event.end.getTime(),
+    });
+
     setShowNewEventModal(true);
     setRecommendedDate(event.start);
   };
@@ -124,13 +146,18 @@ export default function AppointmentsPageContent() {
 
   const handleNewAppointment = () => {
     setShowNewEventModal(false);
-
     setNewAppointmentModalOpen(true);
   };
 
   const handleBlockTime = () => {
-    toast.warning("Funcionalidade em desenv");
-    setNewAppointmentModalOpen(false);
+    setShowNewEventModal(false);
+
+    if (selectedDateInterval) {
+      mutateRegisterTimeOff({
+        startMillis: selectedDateInterval.start,
+        endMillis: selectedDateInterval.end,
+      });
+    }
   };
 
   return (

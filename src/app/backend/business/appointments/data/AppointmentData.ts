@@ -21,3 +21,8 @@ export interface INewAppointmentRequestData {
   customerName: string;
   customerEmail: string;
 }
+
+export interface IDateInterval {
+  start: number;
+  end: number;
+}
