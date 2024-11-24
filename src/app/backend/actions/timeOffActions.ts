@@ -15,3 +15,7 @@ export async function getTimeOffs(): Promise<ITimeOff[]> {
 export async function deleteTimeOff(id: number) {
   return TimeOffManager.deleteTimeOff(id);
 }
+
+export async function getWorkingHours() {
+  return TimeOffManager.getWorkingHours();
+}
