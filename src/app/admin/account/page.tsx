@@ -81,14 +81,12 @@ export default function Page() {
           )}
         </div>
 
-        {!userInfo.hasGoogleCalendar && (
-          <Button
-            className={"mt-2 bg-brown"}
-            onClick={() => mutateRefreshCalendarLink()}
-          >
-            Conectar
-          </Button>
-        )}
+        <Button
+          className={"mt-2 bg-brown"}
+          onClick={() => mutateRefreshCalendarLink()}
+        >
+          {userInfo.hasGoogleCalendar ? "Reconectar" : "Conectar"}
+        </Button>
       </div>
     </Card>
   );
