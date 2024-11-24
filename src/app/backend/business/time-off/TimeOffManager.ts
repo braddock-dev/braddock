@@ -6,9 +6,12 @@ import {
   IWorkingHours,
 } from "@/app/backend/business/time-off/TimeOffDtos";
 import TimeOffDataAdapter from "@/app/backend/business/time-off/TimeOffDataAdapter";
+import dayJsWrapper from "@/app/utils/dayjs";
 
 class TimeOffManager {
   private readonly LOG_TAG = "TimeOffManager";
+  private readonly TIME_OFF_START_HOUR = 7;
+  private readonly TIME_OFF_END_HOUR = 20;
 
   public constructor() {
     Logger.log(this.LOG_TAG, "Service initialized");
@@ -18,7 +21,13 @@ class TimeOffManager {
     Logger.debug(this.LOG_TAG, "Start setting time off", [data]);
 
     try {
-      await TimeOffService.registerTimeOff(data);
+      const timeOffs = this.separateTimeOffsByDay(data);
+      Logger.debug(this.LOG_TAG, "Separated time offs", [timeOffs]);
+
+      await Promise.all(
+        timeOffs.map((timeOff) => TimeOffService.registerTimeOff(timeOff)),
+      );
+
       Logger.debug(this.LOG_TAG, "Setting time off response", [data]);
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error setting time off", error);
@@ -72,6 +81,66 @@ class TimeOffManager {
       Logger.error(this.LOG_TAG, "Error deleting time off", error);
       throw error;
     }
+  }
+
+  private separateTimeOffsByDay(timeOffs: NewTimeOffRequest) {
+    const isSameDay = dayJsWrapper(timeOffs.startTimeInMillis).isSame(
+      timeOffs.endTimeInMillis,
+      "day",
+    );
+
+    if (isSameDay) {
+      return [timeOffs];
+    }
+
+    const intervals: NewTimeOffRequest[] = [];
+
+    const numberOfDays = dayJsWrapper(timeOffs.endTimeInMillis).diff(
+      timeOffs.startTimeInMillis,
+      "day",
+    );
+
+    Logger.debug(this.LOG_TAG, "Number of days", [numberOfDays]);
+
+    for (let day = 0; day <= numberOfDays; day++) {
+      if (day === 0) {
+        intervals.push({
+          startTimeInMillis: timeOffs.startTimeInMillis,
+          endTimeInMillis: dayJsWrapper(timeOffs.startTimeInMillis)
+            .set("hours", this.TIME_OFF_END_HOUR)
+            .valueOf(),
+        });
+        continue;
+      }
+
+      if (day === numberOfDays) {
+        intervals.push({
+          startTimeInMillis: dayJsWrapper(timeOffs.endTimeInMillis)
+            .set("hours", this.TIME_OFF_START_HOUR)
+            .valueOf(),
+          endTimeInMillis: timeOffs.endTimeInMillis,
+        });
+        break;
+      }
+
+      if (day !== 0 && day !== numberOfDays) {
+        const startTime = dayJsWrapper(timeOffs.startTimeInMillis)
+          .add(day, "day")
+          .set("hour", this.TIME_OFF_START_HOUR);
+
+        const endTime = dayJsWrapper(startTime).set(
+          "hour",
+          this.TIME_OFF_END_HOUR,
+        );
+
+        intervals.push({
+          startTimeInMillis: startTime.valueOf(),
+          endTimeInMillis: endTime.valueOf(),
+        });
+      }
+    }
+
+    return intervals;
   }
 }
 
