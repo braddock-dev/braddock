@@ -103,7 +103,7 @@ export default function AppointmentsPageContent() {
   }, [data, timeOffs]);
 
   if (error) {
-    toast.error("Erro ao carregar os agendamentos");
+    toast.error("Erro ao carregar os agendamentos.");
 
     return (
       <div
