@@ -1,7 +1,10 @@
 import Logger from "@/app/utils/Logger";
 import { NewTimeOffRequest } from "@/app/backend/services/data/TimeOffDaos";
 import TimeOffService from "@/app/backend/services/TimeOffService";
-import { IWorkingHours } from "@/app/backend/business/time-off/TimeOffDtos";
+import {
+  ITimeOff,
+  IWorkingHours,
+} from "@/app/backend/business/time-off/TimeOffDtos";
 import TimeOffDataAdapter from "@/app/backend/business/time-off/TimeOffDataAdapter";
 
 class TimeOffManager {
@@ -40,7 +43,36 @@ class TimeOffManager {
     }
   }
 
-  public async getBlockedHoursAsEvents(): Promise<any> {}
+  public async getTimeOffs(): Promise<ITimeOff[]> {
+    Logger.debug(this.LOG_TAG, "Start getting time offs");
+
+    try {
+      const responseData = await TimeOffService.getTimeOffs();
+      const timeOffs =
+        TimeOffDataAdapter.convertDataToTimeOffsList(responseData);
+
+      Logger.debug(this.LOG_TAG, "Time off converted...", [timeOffs]);
+
+      return timeOffs;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error getting time offs", error);
+      throw error;
+    }
+  }
+
+  public async deleteTimeOff(timeOffId: number) {
+    Logger.debug(this.LOG_TAG, "Start deleting time off", [timeOffId]);
+
+    try {
+      await TimeOffService.deleteTimeOff(timeOffId);
+      Logger.debug(this.LOG_TAG, "Time off deleted...", [timeOffId]);
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error deleting time off", error);
+      throw error;
+    }
+  }
 }
 
 export default new TimeOffManager();

@@ -7,3 +7,9 @@ export interface IWorkingHours {
   email: string;
   timezone: string;
 }
+
+export interface ITimeOff {
+  id: number;
+  startTimeInMillis: number;
+  endTimeInMillis: number;
+}

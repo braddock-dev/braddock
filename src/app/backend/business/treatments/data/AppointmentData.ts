@@ -21,6 +21,11 @@ export interface IAppointmentQueryData {
   endDate?: number;
 }
 
+export enum EventType {
+  APPOINTMENT = "APPOINTMENT",
+  TIME_OFF = "TIME_OFF",
+}
+
 export type IEvent = {
   id: string;
   calendarId: string;
@@ -29,7 +34,11 @@ export type IEvent = {
   start: TZDate;
   end: TZDate;
   isReadOnly: boolean;
+  backgroundColor?: string;
   recurrenceRule?: string; //Spec: https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10
+  raw: {
+    type: EventType;
+  };
 };
 
 export interface SelectDateTimeInfo {

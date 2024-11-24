@@ -13,3 +13,11 @@ export interface IWorkingHoursResponse {
   email: string;
   timezone: string;
 }
+
+export interface ITimeOffResponse {
+  id: number;
+  startTimeInMillis: number;
+  endTimeInMillis: number;
+  businessId: string;
+  createdAt: number;
+}

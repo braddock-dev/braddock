@@ -1,9 +1,11 @@
 import {
+  EventType,
   IAppointment,
   IEvent,
 } from "@/app/backend/business/treatments/data/AppointmentData";
 import { addMinutesToDate } from "@/app/utils/functions";
 import { Options, TZDate } from "@toast-ui/calendar";
+import { ITimeOff } from "@/app/backend/business/time-off/TimeOffDtos";
 
 const DEFAULT_CALENDAR_ID = "1";
 
@@ -21,7 +23,11 @@ export function convertAppointmentToEvent(appointment: IAppointment): IEvent {
     title: `Agendamento com ${appointment.clientName || "Cliente"}`,
     calendarId: DEFAULT_CALENDAR_ID,
     isReadOnly: false,
-  } as IEvent;
+    backgroundColor: "#b47866",
+    raw: {
+      type: EventType.APPOINTMENT,
+    },
+  };
 }
 
 export function convertAppointmentsToEvents(
@@ -30,6 +36,26 @@ export function convertAppointmentsToEvents(
   return appointments.map((appointment) =>
     convertAppointmentToEvent(appointment),
   );
+}
+
+export function convertTimeOffsToEvents(timeOffs: ITimeOff[]): IEvent[] {
+  return timeOffs.map((timeOff) => convertTimeOffToEvent(timeOff));
+}
+
+export function convertTimeOffToEvent(timeOff: ITimeOff): IEvent {
+  return {
+    id: String(timeOff.id),
+    start: new TZDate(timeOff.startTimeInMillis),
+    end: new TZDate(timeOff.endTimeInMillis),
+    category: "time",
+    backgroundColor: "#383838",
+    title: "Horário de Folga",
+    calendarId: DEFAULT_CALENDAR_ID,
+    isReadOnly: true,
+    raw: {
+      type: EventType.TIME_OFF,
+    },
+  };
 }
 
 // export function generateEventFromDaysHoursOff(

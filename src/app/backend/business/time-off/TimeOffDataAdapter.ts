@@ -1,6 +1,12 @@
 import Logger from "@/app/utils/Logger";
-import { IWorkingHoursResponse } from "@/app/backend/services/data/TimeOffDaos";
-import { IWorkingHours } from "@/app/backend/business/time-off/TimeOffDtos";
+import {
+  ITimeOffResponse,
+  IWorkingHoursResponse,
+} from "@/app/backend/services/data/TimeOffDaos";
+import {
+  ITimeOff,
+  IWorkingHours,
+} from "@/app/backend/business/time-off/TimeOffDtos";
 
 class TimeOffDataAdapter {
   private readonly LOG_TAG = "TimeOffDataAdapter";
@@ -19,6 +25,18 @@ class TimeOffDataAdapter {
       yearDaysOff: data.yearDaysOff.split(",").map((day) => parseInt(day)),
       email: data.email,
     };
+  }
+
+  public convertDataToTimeOff(dataL: ITimeOffResponse): ITimeOff {
+    return {
+      id: dataL.id,
+      endTimeInMillis: dataL.endTimeInMillis,
+      startTimeInMillis: dataL.startTimeInMillis,
+    };
+  }
+
+  public convertDataToTimeOffsList(data: ITimeOffResponse[]): ITimeOff[] {
+    return data.map((dataL) => this.convertDataToTimeOff(dataL));
   }
 }
 

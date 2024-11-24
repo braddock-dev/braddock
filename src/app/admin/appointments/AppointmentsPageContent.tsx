@@ -2,13 +2,17 @@
 
 import { useMemo, useRef, useState } from "react";
 import {
+  EventType,
   IAppointment,
   IAppointmentQueryData,
   SelectDateTimeInfo,
 } from "@/app/backend/business/treatments/data/AppointmentData";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAppointments } from "@/app/backend/actions/appointmentActions";
-import { convertAppointmentsToEvents } from "@/app/admin/appointments/utils";
+import {
+  convertAppointmentsToEvents,
+  convertTimeOffsToEvents,
+} from "@/app/admin/appointments/utils";
 import { toast } from "sonner";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import CalendarWrapper from "@/app/admin/appointments/CalendarWrapper";
@@ -22,14 +26,21 @@ import NewAppointment from "@/app/ui/components/new-appointment/NewAppointment";
 import dayjs from "dayjs";
 import DialogWrapper from "@/app/ui/components/dialog-wrapper/DialogWrapper";
 import AppointmentOptionsModal from "@/app/admin/appointments/AppointmentOptionsModal";
-import { registerTimeOff } from "@/app/backend/actions/timeOffActions";
+import {
+  deleteTimeOff,
+  getTimeOffs,
+  registerTimeOff,
+} from "@/app/backend/actions/timeOffActions";
 import { IDateInterval } from "@/app/backend/business/appointments/data/AppointmentData";
+import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
 
 export default function AppointmentsPageContent() {
   const [selectedDateInterval, setSelectedDateInterval] =
     useState<IDateInterval>();
 
   const [showNewEventModal, setShowNewEventModal] = useState(false);
+  const [removeTimeOffModalOpen, setRemoveTimeOffModalOpen] = useState(false);
+  const [selectedTimeOff, setSelectedTimeOff] = useState<string | undefined>();
 
   const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] =
     useState(false);
@@ -54,6 +65,23 @@ export default function AppointmentsPageContent() {
     queryFn: () => getAppointments(filter),
   });
 
+  const { data: timeOffs, refetch: refetchTimeOffs } = useQuery({
+    queryKey: ["timeOffs"],
+    queryFn: () => getTimeOffs(),
+  });
+
+  const { mutate: removeTimeOffMutation } = useMutation({
+    mutationKey: ["removeTimeOff"],
+    mutationFn: deleteTimeOff,
+    onError: () => {
+      toast.error("Erro ao remover o horário de folga");
+    },
+    onSuccess: () => {
+      toast.success("Horário de folga removido com sucesso");
+      refetchTimeOffs();
+    },
+  });
+
   const { mutate: mutateRegisterTimeOff } = useMutation({
     mutationKey: ["registerTimeOff"],
     mutationFn: registerTimeOff,
@@ -62,15 +90,17 @@ export default function AppointmentsPageContent() {
     },
     onSuccess: () => {
       toast.success("Horário de folga registrado com sucesso");
+      refetchTimeOffs();
       refetch();
     },
   });
 
   const events = useMemo(() => {
-    if (!data) return [];
-
-    return convertAppointmentsToEvents(data);
-  }, [data]);
+    return [
+      ...convertAppointmentsToEvents(data || []),
+      ...convertTimeOffsToEvents(timeOffs || []),
+    ];
+  }, [data, timeOffs]);
 
   if (error) {
     toast.error("Erro ao carregar os agendamentos");
@@ -91,7 +121,7 @@ export default function AppointmentsPageContent() {
     );
   }
 
-  function openOverlay(appointmentId: string) {
+  function openEventDetails(appointmentId: string) {
     if (data) {
       const appointment = data.find(
         (appointment) => appointment.id === appointmentId,
@@ -107,8 +137,20 @@ export default function AppointmentsPageContent() {
     }
   }
 
+  const openTimeOffDetails = (timeOffId: string) => {
+    setRemoveTimeOffModalOpen(true);
+    setSelectedTimeOff(timeOffId);
+  };
+
   const handleClickEvent = (event: any) => {
-    openOverlay(event.event.id);
+    switch (event.event.raw?.type) {
+      case EventType.APPOINTMENT:
+        openEventDetails(event.event.id);
+        break;
+      case EventType.TIME_OFF:
+        openTimeOffDetails(event.event.id);
+        break;
+    }
   };
 
   const handleSelectDateTime = (event: SelectDateTimeInfo) => {
@@ -157,6 +199,12 @@ export default function AppointmentsPageContent() {
         startTimeInMillis: selectedDateInterval.start,
         endTimeInMillis: selectedDateInterval.end,
       });
+    }
+  };
+
+  const handleRemoveTimeOff = () => {
+    if (selectedTimeOff) {
+      removeTimeOffMutation(Number(selectedTimeOff));
     }
   };
 
@@ -210,6 +258,16 @@ export default function AppointmentsPageContent() {
           onBlockTime={handleBlockTime}
         />
       </DialogWrapper>
+
+      <AlertDialogWrapper
+        isOpen={removeTimeOffModalOpen}
+        onOpenChange={setRemoveTimeOffModalOpen}
+        title={"Remover Horário de Folga"}
+        description={"Deseja realmente remover este horário?"}
+        onCancel={() => setRemoveTimeOffModalOpen(false)}
+        onConfirm={() => handleRemoveTimeOff()}
+        confirmText={"Remover"}
+      ></AlertDialogWrapper>
     </div>
   );
 }
