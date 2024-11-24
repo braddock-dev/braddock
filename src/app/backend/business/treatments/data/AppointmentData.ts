@@ -29,6 +29,7 @@ export type IEvent = {
   start: TZDate;
   end: TZDate;
   isReadOnly: boolean;
+  recurrenceRule?: string; //Spec: https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10
 };
 
 export interface SelectDateTimeInfo {

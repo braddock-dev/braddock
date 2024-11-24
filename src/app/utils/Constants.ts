@@ -53,6 +53,7 @@ export const Constants = {
       `${EXTERNAL_CONFIGS.BASE_URL}/refreshGoogleCalendarCredentials`,
     REGISTER_TIME_OFF: () => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff`,
     GET_TIME_OFF: () => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff`,
+    GET_WORKING_HOURS: () => `${EXTERNAL_CONFIGS.BASE_URL}/workingHours`,
   },
   APP_ROUTES: {
     HOME: "/",

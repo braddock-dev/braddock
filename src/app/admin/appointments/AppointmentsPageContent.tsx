@@ -154,8 +154,8 @@ export default function AppointmentsPageContent() {
 
     if (selectedDateInterval) {
       mutateRegisterTimeOff({
-        startMillis: selectedDateInterval.start,
-        endMillis: selectedDateInterval.end,
+        startTimeInMillis: selectedDateInterval.start,
+        endTimeInMillis: selectedDateInterval.end,
       });
     }
   };

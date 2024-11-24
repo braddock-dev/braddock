@@ -32,6 +32,23 @@ export function convertAppointmentsToEvents(
   );
 }
 
+// export function generateEventFromDaysHoursOff(
+//   daysHoursOff: number[],
+// ): IEvent[] {
+//   return daysHoursOff.map((dayHourOff) => {
+//     return {
+//       id: dayHourOff,
+//       // start: new TZDate(dayjs().set("hours", dayHourOff)),
+//       // end: new TZDate(dayjs().set("hours", dayHourOff + 1)),
+//       category: "time",
+//       title: "Horário indisponível",
+//       calendarId: DEFAULT_CALENDAR_ID,
+//       isReadOnly: true,
+//       recurrenceRule: `FREQ=DAILY;INTERVAL=1`,
+//     } as IEvent;
+//   });
+// }
+
 export const initialCalendars: Options["calendars"] = [
   {
     id: DEFAULT_CALENDAR_ID,
