@@ -3,7 +3,7 @@ import {
   IAppointment,
   IEvent,
 } from "@/app/backend/business/treatments/data/AppointmentData";
-import { addMinutesToDate } from "@/app/utils/functions";
+import { addMinutesToDate, isDateInPast } from "@/app/utils/functions";
 import { Options, TZDate } from "@toast-ui/calendar";
 import { ITimeOff } from "@/app/backend/business/time-off/TimeOffDtos";
 
@@ -22,8 +22,10 @@ export function convertAppointmentToEvent(appointment: IAppointment): IEvent {
     category: "time",
     title: `Agendamento com ${appointment.clientName || "Cliente"}`,
     calendarId: DEFAULT_CALENDAR_ID,
-    isReadOnly: false,
-    backgroundColor: "#b47866",
+    isReadOnly: true,
+    backgroundColor: isDateInPast(appointment.endTimeInMillis)
+      ? "#939090"
+      : "#b47866",
     raw: {
       type: EventType.APPOINTMENT,
     },
@@ -57,23 +59,6 @@ export function convertTimeOffToEvent(timeOff: ITimeOff): IEvent {
     },
   };
 }
-
-// export function generateEventFromDaysHoursOff(
-//   daysHoursOff: number[],
-// ): IEvent[] {
-//   return daysHoursOff.map((dayHourOff) => {
-//     return {
-//       id: dayHourOff,
-//       // start: new TZDate(dayjs().set("hours", dayHourOff)),
-//       // end: new TZDate(dayjs().set("hours", dayHourOff + 1)),
-//       category: "time",
-//       title: "Horário indisponível",
-//       calendarId: DEFAULT_CALENDAR_ID,
-//       isReadOnly: true,
-//       recurrenceRule: `FREQ=DAILY;INTERVAL=1`,
-//     } as IEvent;
-//   });
-// }
 
 export const initialCalendars: Options["calendars"] = [
   {
