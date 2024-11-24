@@ -4,6 +4,7 @@ import { Constants } from "@/app/utils/Constants";
 import {
   formatPhoneNumber,
   getFormattedHourDuration,
+  isDateInFuture,
 } from "@/app/utils/functions";
 import ServiceItem from "@/app/ui/components/appointment-details/ServiceItem";
 import Image from "next/image";
@@ -88,24 +89,26 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
 
       <hr className={"border-neutral-200"} />
 
-      <SectionInfo title={"Acções"}>
-        <div className={"grid grid-cols-2 gap-3"}>
-          <Button
-            color={ButtonColors.BLACK}
-            onClick={() => {
-              setDeleteDialogOpen(true);
-            }}
-            isLoading={props.isDeleting}
-            disabled={props.isDeleting}
-          >
-            ELIMINAR
-          </Button>
+      {isDateInFuture(appointment.endTimeInMillis) && (
+        <SectionInfo title={"Acções"}>
+          <div className={"grid grid-cols-2 gap-3"}>
+            <Button
+              color={ButtonColors.BLACK}
+              onClick={() => {
+                setDeleteDialogOpen(true);
+              }}
+              isLoading={props.isDeleting}
+              disabled={props.isDeleting}
+            >
+              ELIMINAR
+            </Button>
 
-          <Button color={ButtonColors.BROWN} onClick={props.onEdit}>
-            EDITAR
-          </Button>
-        </div>
-      </SectionInfo>
+            <Button color={ButtonColors.BROWN} onClick={props.onEdit}>
+              EDITAR
+            </Button>
+          </div>
+        </SectionInfo>
+      )}
 
       <AlertDialogWrapper
         isOpen={deleteDialogOpen}

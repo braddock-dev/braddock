@@ -61,3 +61,11 @@ export const formatPhoneNumber = (value?: string): string => {
   if (value == null) return "-";
   return value.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 };
+
+export function isDateInPast(date: number): boolean {
+  return dayjs(date).isBefore(dayjs(new Date()));
+}
+
+export function isDateInFuture(date: number): boolean {
+  return dayjs(date).isAfter(dayjs(new Date()));
+}
