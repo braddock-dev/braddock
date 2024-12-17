@@ -2,7 +2,7 @@
 
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import React, { ReactElement, useCallback, useState } from "react";
+import React, { ReactElement, useCallback, useMemo, useState } from "react";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
@@ -20,6 +20,11 @@ import { authSelectors, useAuthStore } from "@/app/store/authStore";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 import { toast } from "sonner";
 import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
+import { NotAllowedServiceModal } from "@/app/ui/components/not-allowed-service-modal/NotAllowedServiceModal";
+import {
+  isNotAllowedServiceSelected,
+  notAllowedServicesSelected,
+} from "@/app/admin/appointments/utils";
 
 export enum APPOINTMENT_STEPS {
   SERVICES_SELECTION = "SERVICES_SELECTION",
@@ -48,6 +53,15 @@ function AppointmentSteps() {
   const resetState = useNewAppointmentStore(newAppointmentActions.resetState);
   const isUserAuthenticated = useAuthStore(authSelectors.isAuthenticated);
   const setHeroCardType = useUIStore(uiActions.setHeroCardType);
+  const [isNotAllowedModalOpen, setIsNotAllowedModalOpen] = useState(false);
+
+  const selectedTreatments = useNewAppointmentStore(
+    newAppointmentSelectors.selectedTreatments,
+  );
+
+  const isNotAllowedServicesSelected = useMemo(() => {
+    return isNotAllowedServiceSelected(selectedTreatments);
+  }, [selectedTreatments]);
 
   const appointmentStore = useNewAppointmentStore(
     newAppointmentSelectors.appointmentStore,
@@ -121,6 +135,11 @@ function AppointmentSteps() {
   };
 
   const handleStartAppointmentFlow = useCallback(() => {
+    if (isNotAllowedServicesSelected) {
+      setIsNotAllowedModalOpen(true);
+      return;
+    }
+
     if (authUser?.role === AuthRoles.BUSINESS) {
       toast.info(
         "Apenas clientes podem agendar, entre com uma conta de cliente",
@@ -129,7 +148,7 @@ function AppointmentSteps() {
     }
 
     handleChangeStep(APPOINTMENT_STEPS.DATE_SELECTION);
-  }, [authUser?.role]);
+  }, [authUser?.role, isNotAllowedServicesSelected]);
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
     [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
@@ -294,6 +313,12 @@ function AppointmentSteps() {
       </div>
 
       <div className={styles.buttonContainer}>{renderButtons[currentStep]}</div>
+
+      <NotAllowedServiceModal
+        open={isNotAllowedModalOpen}
+        setOpen={setIsNotAllowedModalOpen}
+        serviceNames={notAllowedServicesSelected(selectedTreatments)}
+      />
     </div>
   );
 }

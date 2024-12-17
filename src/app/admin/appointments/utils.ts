@@ -6,6 +6,8 @@ import {
 import { addMinutesToDate, isDateInPast } from "@/app/utils/functions";
 import { Options, TZDate } from "@toast-ui/calendar";
 import { ITimeOff } from "@/app/backend/business/time-off/TimeOffDtos";
+import { Constants } from "@/app/utils/Constants";
+import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 
 const DEFAULT_CALENDAR_ID = "1";
 
@@ -70,3 +72,21 @@ export const initialCalendars: Options["calendars"] = [
     color: "#fff",
   },
 ];
+
+export const isNotAllowedServiceSelected = (
+  selectedTreatments: ITreatment[],
+) => {
+  return notAllowedServicesSelected(selectedTreatments).length > 0;
+};
+
+export const notAllowedServicesSelected = (
+  selectedTreatments: ITreatment[],
+) => {
+  return selectedTreatments
+    .filter((treatment) =>
+      Constants.NOT_ALLOWED_SERVICES.map((item) => item.toUpperCase()).includes(
+        treatment.name.toUpperCase(),
+      ),
+    )
+    .map((treatment) => treatment.name);
+};

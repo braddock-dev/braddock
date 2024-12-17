@@ -94,4 +94,5 @@ export const Constants = {
   REGEX_PATTERS: {
     PHONE_NUMBER: /^(9[1236]\d{7}|2\d{8})$/,
   },
+  NOT_ALLOWED_SERVICES: ["Platinado"],
 };
