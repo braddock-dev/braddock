@@ -101,4 +101,10 @@ export const Constants = {
   LOCALE: {
     DEFAULT_LANGUAGE: "pt",
   },
+  APPOINTMENTS: {
+    FILTER: {
+      DEFAULT_PAST_DAYS: 7,
+      DEFAULT_FUTURE_DAYS: 30,
+    },
+  },
 };

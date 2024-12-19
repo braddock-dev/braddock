@@ -24,6 +24,10 @@ class AppointmentsService {
       const request: IHttpRequestConfig = {
         url: Constants.API_ROUTES.GET_APPOINTMENTS(),
         httpMethod: HttpMethods.GET,
+        params: {
+          fromTimeInMillis: data.startDate,
+          toTimeInMillis: data.endDate,
+        },
       };
 
       const response = await ApiInterface.send(request);

@@ -8,6 +8,7 @@ import { Options, TZDate } from "@toast-ui/calendar";
 import { ITimeOff } from "@/app/backend/business/time-off/TimeOffDtos";
 import { Constants } from "@/app/utils/Constants";
 import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import dayJsWrapper from "@/app/utils/dayjs";
 
 const DEFAULT_CALENDAR_ID = "1";
 
@@ -89,4 +90,14 @@ export const notAllowedServicesSelected = (
       ),
     )
     .map((treatment) => treatment.name);
+};
+
+export const getPastXDaysDate = (days: number): number => {
+  const date = dayJsWrapper(new Date());
+  return date.subtract(days, "days").toDate().getTime();
+};
+
+export const getFutureXDaysDate = (days: number): number => {
+  const date = dayJsWrapper(new Date());
+  return date.add(days, "days").toDate().getTime();
 };

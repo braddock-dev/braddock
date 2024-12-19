@@ -12,6 +12,8 @@ import { getAppointments } from "@/app/backend/actions/appointmentActions";
 import {
   convertAppointmentsToEvents,
   convertTimeOffsToEvents,
+  getFutureXDaysDate,
+  getPastXDaysDate,
 } from "@/app/admin/appointments/utils";
 import { toast } from "sonner";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
@@ -23,7 +25,6 @@ import {
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
 import NewAppointment from "@/app/ui/components/new-appointment/NewAppointment";
-import dayjs from "dayjs";
 import DialogWrapper from "@/app/ui/components/dialog-wrapper/DialogWrapper";
 import AppointmentOptionsModal from "@/app/admin/appointments/AppointmentOptionsModal";
 import {
@@ -33,6 +34,8 @@ import {
 } from "@/app/backend/actions/timeOffActions";
 import { IDateInterval } from "@/app/backend/business/appointments/data/AppointmentData";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
+import dayjs from "dayjs";
+import { Constants } from "@/app/utils/Constants";
 
 export default function AppointmentsPageContent() {
   const [selectedDateInterval, setSelectedDateInterval] =
@@ -56,7 +59,14 @@ export default function AppointmentsPageContent() {
   );
 
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [filter, setFilter] = useState<IAppointmentQueryData>({});
+  const [filter] = useState<IAppointmentQueryData>({
+    startDate: getPastXDaysDate(
+      Constants.APPOINTMENTS.FILTER.DEFAULT_PAST_DAYS,
+    ),
+    endDate: getFutureXDaysDate(
+      Constants.APPOINTMENTS.FILTER.DEFAULT_FUTURE_DAYS,
+    ),
+  });
   const [selectedAppointment, setSelectedAppointment] =
     useState<IAppointment>();
 
