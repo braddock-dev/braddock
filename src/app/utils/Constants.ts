@@ -95,4 +95,10 @@ export const Constants = {
     PHONE_NUMBER: /^(9[1236]\d{7}|2\d{8})$/,
   },
   NOT_ALLOWED_SERVICES: ["Platinado"],
+  TIME: {
+    DEFAULT_TIME_ZONE: "Europe/Lisbon",
+  },
+  LOCALE: {
+    DEFAULT_LANGUAGE: "pt",
+  },
 };

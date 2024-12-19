@@ -47,6 +47,7 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
       removeUserInfo();
       resetNewAppointment();
       toast.info("Logout realizado com sucesso.");
+      window.location.reload();
     },
     onError: () => {
       toast.error("Erro ao sair da conta, tente novamente.");

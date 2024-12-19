@@ -1,7 +1,13 @@
 import dayjs from "dayjs";
 import "dayjs/locale/pt";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { Constants } from "@/app/utils/Constants";
 
-dayjs.locale("pt");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale(Constants.LOCALE.DEFAULT_LANGUAGE);
+
 export default function dayJsWrapper(date: any) {
-  return dayjs(date);
+  return dayjs(date).tz(Constants.TIME.DEFAULT_TIME_ZONE);
 }
