@@ -69,7 +69,7 @@ export default function AppointmentItem(props: IAppointmentItemProps) {
             Agendamento para:{" "}
             {`${dayjs(props.appointment.startTimeInMillis).format(
               Constants.DATE_FORMAT.TIME,
-            )} até ${dayjs(props.appointment.endTimeInMillis).format(Constants.DATE_FORMAT.TIME)}`}
+            )} ${props.appointment.endTimeInMillis ? "até " + dayjs(props.appointment.endTimeInMillis).format(Constants.DATE_FORMAT.TIME) : ""}`}
           </span>
           <span className={"text-sm text-neutral-400"}>
             {props.appointment.treatments
