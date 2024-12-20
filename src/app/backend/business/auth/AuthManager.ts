@@ -19,7 +19,7 @@ class AuthManager {
       const userInfoResponse = await AuthService.getUserInfo();
       const userInfo = AuthDataAdapter.convertDataToUserInfo(userInfoResponse);
 
-      Logger.debug(this.LOG_TAG, "User info response", [userInfo]);
+      Logger.debug(this.LOG_TAG, "User info converted", [userInfo]);
 
       return userInfo;
     } catch (error) {
