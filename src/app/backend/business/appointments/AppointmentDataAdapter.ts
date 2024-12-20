@@ -8,7 +8,7 @@ import {
   INewAppointmentRequest,
   IQueryAppointmentRequest,
 } from "@/app/backend/services/data/AppointmentDaos";
-import dayjs from "dayjs";
+import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import {
   getDifferenceInHours,

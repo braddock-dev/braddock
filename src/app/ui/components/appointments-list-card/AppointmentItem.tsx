@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
-import dayjs from "dayjs";
+import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import React, { useState } from "react";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";

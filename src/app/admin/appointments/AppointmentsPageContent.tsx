@@ -32,7 +32,7 @@ import {
 } from "@/app/backend/actions/timeOffActions";
 import { IDateInterval } from "@/app/backend/business/appointments/data/AppointmentData";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
-import dayjs from "dayjs";
+import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import { getFutureXDaysDate, getPastXDaysDate } from "@/app/utils/functions";
 
