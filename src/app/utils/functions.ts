@@ -69,3 +69,11 @@ export function isDateInPast(date: number): boolean {
 export function isDateInFuture(date: number): boolean {
   return dayjs(date).isAfter(dayjs(new Date()));
 }
+
+export function getDifferenceInMinutes(date1: number, date2: number): number {
+  return Math.abs(dayjs(date1).diff(dayjs(date2), "minutes"));
+}
+
+export function getDifferenceInHours(date1: number, date2: number): number {
+  return Math.abs(dayjs(date1).diff(dayjs(date2), "hours"));
+}

@@ -10,7 +10,10 @@ import {
 } from "@/app/backend/services/data/AppointmentDaos";
 import dayjs from "dayjs";
 import { Constants } from "@/app/utils/Constants";
-import { addMinutesToDate, minutesToHour } from "@/app/utils/functions";
+import {
+  getDifferenceInHours,
+  getDifferenceInMinutes,
+} from "@/app/utils/functions";
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 
 class AppointmentDataAdapter {
@@ -20,6 +23,8 @@ class AppointmentDataAdapter {
   };
 
   public convertDataToAppointment(data: any): IAppointment {
+    console.log({ myData: data });
+
     return {
       businessId: data.businessId,
       id: data.id,
@@ -27,14 +32,17 @@ class AppointmentDataAdapter {
       clientPhoneNumber: data.customerMsisdn || "",
       clientEmail: data.customerEmail || "",
       startTimeInMillis: data.startTimeInMillis,
-      createdAt: data.createdAt,
-      durationInMinutes: data.durationInMinutes,
-      durationInHours: minutesToHour(data.durationInMinutes),
-      endTimeInMillis: addMinutesToDate(
+      endTimeInMillis: data.endTimeInMillis,
+      durationInHours: getDifferenceInHours(
         data.startTimeInMillis,
-        data.durationInMinutes,
-      ).valueOf(),
+        data.endTimeInMillis,
+      ),
+      durationInMinutes: getDifferenceInMinutes(
+        data.startTimeInMillis,
+        data.endTimeInMillis,
+      ),
       startTime: data.startTime,
+      createdAt: data.createdAt,
       treatments: TreatmentsDataAdapter.convertDataToTreatments(
         data.treatments || [],
       ),
