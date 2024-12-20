@@ -102,8 +102,12 @@ export const Constants = {
     DEFAULT_LANGUAGE: "pt",
   },
   APPOINTMENTS: {
-    FILTER: {
+    BUSINESS_FILTER: {
       DEFAULT_PAST_DAYS: 7,
+      DEFAULT_FUTURE_DAYS: 30,
+    },
+    CUSTOMER_FILTER: {
+      DEFAULT_PAST_DAYS: 30,
       DEFAULT_FUTURE_DAYS: 30,
     },
   },

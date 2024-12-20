@@ -9,12 +9,21 @@ import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/Ap
 import AppointmentListLoadingState from "@/app/ui/components/appointments-list-card/AppointmentListLoadingState";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
+import { getFutureXDaysDate, getPastXDaysDate } from "@/app/utils/functions";
+import { Constants } from "@/app/utils/Constants";
 
 interface IAppointmentCardProps {
   className?: string;
 }
 export default function AppointmentsListCard(props: IAppointmentCardProps) {
-  const [filter, setFilter] = useState<IAppointmentQueryData>({});
+  const [filter] = useState<IAppointmentQueryData>({
+    startDate: getPastXDaysDate(
+      Constants.APPOINTMENTS.CUSTOMER_FILTER.DEFAULT_PAST_DAYS,
+    ),
+    endDate: getFutureXDaysDate(
+      Constants.APPOINTMENTS.CUSTOMER_FILTER.DEFAULT_FUTURE_DAYS,
+    ),
+  });
   const setHeroCardType = useUIStore(uiActions.setHeroCardType);
 
   const { data, error, isPending, refetch } = useQuery({

@@ -61,13 +61,13 @@ export default function ThirdStep(props: IThirdStepProps) {
   }, [customerName, email, isValid, phoneNumber]);
 
   useEffect(() => {
-    if (authUser && !customerName) {
+    if (authUser) {
       setValue("name", authUser.name);
       setValue("email", authUser.email);
       setValue("phoneNumber", authUser.phoneNumber);
       trigger();
     }
-  }, [authUser, customerName]);
+  }, [authUser]);
 
   return (
     <div className={styles.container}>

@@ -60,10 +60,10 @@ export default function AppointmentsPageContent() {
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [filter] = useState<IAppointmentQueryData>({
     startDate: getPastXDaysDate(
-      Constants.APPOINTMENTS.FILTER.DEFAULT_PAST_DAYS,
+      Constants.APPOINTMENTS.BUSINESS_FILTER.DEFAULT_PAST_DAYS,
     ),
     endDate: getFutureXDaysDate(
-      Constants.APPOINTMENTS.FILTER.DEFAULT_FUTURE_DAYS,
+      Constants.APPOINTMENTS.BUSINESS_FILTER.DEFAULT_FUTURE_DAYS,
     ),
   });
   const [selectedAppointment, setSelectedAppointment] =
