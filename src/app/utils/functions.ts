@@ -1,5 +1,5 @@
 import dayjs from "@/app/utils/dayjs";
-import { Dayjs } from "dayjs";
+import dayJsWrapper from "@/app/utils/dayjs";
 import { NextURL } from "next/dist/server/web/next-url";
 import { NextResponse } from "next/server";
 
@@ -8,10 +8,6 @@ export function getPageScrollPosition() {
     x: window.pageXOffset || document.documentElement.scrollLeft,
     y: window.pageYOffset || document.documentElement.scrollTop,
   };
-}
-
-export function addMinutesToDate(date: number, minutes: number): Dayjs {
-  return dayjs(date).add(minutes, "minutes");
 }
 
 export function minutesToHour(minutes: number): number {
@@ -77,3 +73,13 @@ export function getDifferenceInMinutes(date1: number, date2: number): number {
 export function getDifferenceInHours(date1: number, date2: number): number {
   return Math.abs(dayjs(date1).diff(dayjs(date2), "hours"));
 }
+
+export const getPastXDaysDate = (days: number): number => {
+  const date = dayJsWrapper(new Date());
+  return date.subtract(days, "days").toDate().getTime();
+};
+
+export const getFutureXDaysDate = (days: number): number => {
+  const date = dayJsWrapper(new Date());
+  return date.add(days, "days").toDate().getTime();
+};

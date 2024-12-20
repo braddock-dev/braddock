@@ -1,14 +1,15 @@
+"use client";
+
 import {
   EventType,
   IAppointment,
   IEvent,
 } from "@/app/backend/business/treatments/data/AppointmentData";
-import { addMinutesToDate, isDateInPast } from "@/app/utils/functions";
+import { isDateInPast } from "@/app/utils/functions";
 import { Options, TZDate } from "@toast-ui/calendar";
 import { ITimeOff } from "@/app/backend/business/time-off/TimeOffDtos";
 import { Constants } from "@/app/utils/Constants";
 import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
-import dayJsWrapper from "@/app/utils/dayjs";
 
 const DEFAULT_CALENDAR_ID = "1";
 
@@ -16,12 +17,7 @@ export function convertAppointmentToEvent(appointment: IAppointment): IEvent {
   return {
     id: appointment.id,
     start: new TZDate(appointment.startTimeInMillis),
-    end: new TZDate(
-      addMinutesToDate(
-        appointment.startTimeInMillis,
-        appointment.durationInMinutes,
-      ).toDate(),
-    ),
+    end: new TZDate(appointment.endTimeInMillis),
     category: "time",
     title: `Agendamento com ${appointment.clientName || "Cliente"}`,
     calendarId: DEFAULT_CALENDAR_ID,
@@ -90,14 +86,4 @@ export const notAllowedServicesSelected = (
       ),
     )
     .map((treatment) => treatment.name);
-};
-
-export const getPastXDaysDate = (days: number): number => {
-  const date = dayJsWrapper(new Date());
-  return date.subtract(days, "days").toDate().getTime();
-};
-
-export const getFutureXDaysDate = (days: number): number => {
-  const date = dayJsWrapper(new Date());
-  return date.add(days, "days").toDate().getTime();
 };

@@ -12,8 +12,6 @@ import { getAppointments } from "@/app/backend/actions/appointmentActions";
 import {
   convertAppointmentsToEvents,
   convertTimeOffsToEvents,
-  getFutureXDaysDate,
-  getPastXDaysDate,
 } from "@/app/admin/appointments/utils";
 import { toast } from "sonner";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
@@ -36,6 +34,7 @@ import { IDateInterval } from "@/app/backend/business/appointments/data/Appointm
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
 import dayjs from "dayjs";
 import { Constants } from "@/app/utils/Constants";
+import { getFutureXDaysDate, getPastXDaysDate } from "@/app/utils/functions";
 
 export default function AppointmentsPageContent() {
   const [selectedDateInterval, setSelectedDateInterval] =
