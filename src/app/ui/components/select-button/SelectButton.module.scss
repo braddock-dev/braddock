@@ -17,6 +17,10 @@
   text-transform: uppercase;
   text-align: center;
 
+  &:hover span{
+    color: $white !important;
+  }
+
   &[data-is-selected="true"]{
     background-color: $brown;
     border-color: transparent;

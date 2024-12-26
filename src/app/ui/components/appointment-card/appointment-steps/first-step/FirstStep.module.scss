@@ -44,12 +44,33 @@
 }
 
 .buttonText{
-  font-size: toRem(12);
-  font-weight: 700;
-  color: $white;
-  text-align: center;
+  display: flex;
+  align-items: flex-start;
+  gap: toRem(5);
 
-  @include max-sm {
+  .treatment{
     font-size: toRem(12);
+    font-weight: 700;
+    color: $white;
+    @include max-sm {
+      font-size: toRem(12);
+    }
+
   }
+
+
+  .duration{
+    font-size: toRem(10);
+    color: $light-brown;
+    display: none; // Hide duration for now
+  }
+
+  &:hover{
+    color: $white;
+
+    .duration{
+      color: $white;
+    }
+  }
+
 }

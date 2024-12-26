@@ -70,7 +70,14 @@ export default function FirstStep({
 
     return treatments.map((treatment): ISelectButton => {
       return {
-        text: <span className={styles.buttonText}>{treatment.name}</span>,
+        text: (
+          <span className={styles.buttonText}>
+            <span className={styles.treatment}>{treatment.name}</span>
+            <span className={styles.duration}>
+              - {treatment.durationInMinutes} MIN
+            </span>
+          </span>
+        ),
         type: ButtonType.horizontal,
         value: treatment.id,
         data: treatment,
