@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { ConfigType, OptionType } from "dayjs";
 import "dayjs/locale/pt";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -9,6 +9,6 @@ dayjs.extend(timezone);
 dayjs.locale(Constants.LOCALE.DEFAULT_LANGUAGE);
 dayjs.tz.setDefault(Constants.TIME.DEFAULT_TIME_ZONE);
 
-export default function dayJsWrapper(date: any) {
-  return dayjs(date).tz(Constants.TIME.DEFAULT_TIME_ZONE);
+export default function dayJsWrapper(date?: ConfigType, format?: OptionType) {
+  return dayjs(date, format).tz(Constants.TIME.DEFAULT_TIME_ZONE);
 }
