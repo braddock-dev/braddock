@@ -9,4 +9,6 @@ dayjs.extend(timezone);
 dayjs.locale(Constants.LOCALE.DEFAULT_LANGUAGE);
 dayjs.tz.setDefault(Constants.TIME.DEFAULT_TIME_ZONE);
 
-export default dayjs;
+export default function dayJsWrapper(date: any) {
+  return dayjs(date).tz(Constants.TIME.DEFAULT_TIME_ZONE);
+}
