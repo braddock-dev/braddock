@@ -11,6 +11,7 @@ import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
 import { getFutureXDaysDate, getPastXDaysDate } from "@/app/utils/functions";
 import { Constants } from "@/app/utils/Constants";
+import ArrowRight from "@/app/ui/vectors/arrow-right-circle.svg";
 
 interface IAppointmentCardProps {
   className?: string;
@@ -37,7 +38,17 @@ export default function AppointmentsListCard(props: IAppointmentCardProps) {
 
   return (
     <motion.div className={`${styles.container} ${props.className}`}>
-      <h1 className={styles.title}>MEUS AGENDAMENTOS</h1>
+      <div
+        className={"flex items-center gap-2"}
+        onClick={() => {
+          setHeroCardType(HeroCardType.NEW_APPOINTMENT);
+        }}
+      >
+        <div className={styles.backButton}>
+          <ArrowRight className={styles.icon} />
+        </div>
+        <h1 className={styles.title}>MEUS AGENDAMENTOS</h1>
+      </div>
 
       {isPending ? (
         <AppointmentListLoadingState />
@@ -68,6 +79,15 @@ export default function AppointmentsListCard(props: IAppointmentCardProps) {
               }}
             />
           ))}
+
+          <Button
+            color={ButtonColors.BROWN}
+            onClick={() => {
+              setHeroCardType(HeroCardType.NEW_APPOINTMENT);
+            }}
+          >
+            VOLTAR
+          </Button>
         </div>
       ) : (
         <div

@@ -27,4 +27,21 @@
       font-size: toRem(18);
     }
   }
+
+  .backButton{
+    background-color: $brown;
+    padding: toRem(5);
+    border-radius: toRem(5);
+
+    .icon{
+      width: toRem(20);
+      height: toRem(20);
+      transform: rotate(180deg);
+
+      path{
+        stroke: $white
+      }
+    }
+  }
+
 }
