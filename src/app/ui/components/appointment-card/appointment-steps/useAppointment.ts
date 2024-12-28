@@ -10,6 +10,7 @@ import {
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
+import { useMemo } from "react";
 
 export function useAppointment(onAppointmentSuccess: () => void) {
   const isRescheduleMode = useNewAppointmentStore(
@@ -51,5 +52,25 @@ export function useAppointment(onAppointmentSuccess: () => void) {
   return {
     isPendingNewAppointment,
     mutateNewAppointment,
+  };
+}
+
+export function useAppointmentInfo() {
+  const selectedTreatments = useNewAppointmentStore(
+    newAppointmentSelectors.selectedTreatments,
+  );
+
+  const totalDurationInMinutes = useMemo(() => {
+    return selectedTreatments.reduce(
+      (acc, treatment) => acc + treatment.durationInMinutes,
+      0,
+    );
+  }, [selectedTreatments]);
+
+  const totalDurationInHours = totalDurationInMinutes / 60;
+
+  return {
+    totalDurationInHours,
+    totalDurationInMinutes,
   };
 }
