@@ -22,7 +22,7 @@ class AppointmentsManager {
         appointmentData,
       ]);
 
-      return appointmentData;
+      return appointmentData.reverse();
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to fetch appointments.", error);
       throw error;
