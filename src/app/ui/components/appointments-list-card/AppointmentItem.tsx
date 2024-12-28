@@ -12,6 +12,7 @@ import {
   newAppointmentActions,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
+import { isDateInFuture } from "@/app/utils/functions";
 
 interface IAppointmentItemProps {
   appointment: IAppointment;
@@ -79,28 +80,30 @@ export default function AppointmentItem(props: IAppointmentItemProps) {
         </div>
       </div>
 
-      <div className={"grid grid-cols-2 gap-3 w-full"}>
-        <Button
-          className={"bg-red-500 w-full"}
-          size={"sm"}
-          onClick={() => {
-            setShowCancelModal(true);
-          }}
-          disabled={isPendingDeletion}
-        >
-          Cancelar
-        </Button>
-        <Button
-          className={"bg-brown w-full"}
-          size={"sm"}
-          disabled={isPendingDeletion}
-          onClick={() => {
-            handleReschedule();
-          }}
-        >
-          Reagendar
-        </Button>
-      </div>
+      {isDateInFuture(props.appointment.startTimeInMillis) && (
+        <div className={"grid grid-cols-2 gap-3 w-full"}>
+          <Button
+            className={"bg-red-500 w-full"}
+            size={"sm"}
+            onClick={() => {
+              setShowCancelModal(true);
+            }}
+            disabled={isPendingDeletion}
+          >
+            Cancelar
+          </Button>
+          <Button
+            className={"bg-brown w-full"}
+            size={"sm"}
+            disabled={isPendingDeletion}
+            onClick={() => {
+              handleReschedule();
+            }}
+          >
+            Reagendar
+          </Button>
+        </div>
+      )}
 
       <AlertDialogWrapper
         isOpen={showCancelModal}
