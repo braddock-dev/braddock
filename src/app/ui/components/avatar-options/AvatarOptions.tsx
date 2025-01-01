@@ -115,9 +115,8 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className={"flex"}>
         <div className="hs-dropdown [--placement:bottom-right] relative inline-flex">
-          <button
+          <div
             id="hs-dropdown-account"
-            type="button"
             className="size-[38px] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none dark:text-white  mr-3"
             aria-haspopup="menu"
             aria-expanded="false"
@@ -129,7 +128,7 @@ export default function AvatarOptions(props: AvatarOptionsProps) {
               src={AvatarUser}
               alt="Avatar"
             />
-          </button>
+          </div>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"min-w-[15rem] mr-5"}>
