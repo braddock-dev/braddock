@@ -72,11 +72,13 @@ export default function AppointmentsPageContent() {
   const { data, error, refetch } = useQuery({
     queryKey: ["appointments", filter],
     queryFn: () => getAppointments(filter),
+    refetchInterval: Constants.APPOINTMENTS.REFETCH_INTERVAL,
   });
 
   const { data: timeOffs, refetch: refetchTimeOffs } = useQuery({
     queryKey: ["timeOffs"],
     queryFn: () => getTimeOffs(),
+    refetchInterval: Constants.APPOINTMENTS.REFETCH_INTERVAL,
   });
 
   const { mutate: removeTimeOffMutation } = useMutation({
