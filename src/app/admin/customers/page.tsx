@@ -20,7 +20,6 @@ export default function Page() {
     mutationFn: (data: { searchValue: string }) =>
       getCustomers(data.searchValue, data.searchValue),
     onError: () => {
-      debugger;
       toast.error("Erro ao buscar clientes");
     },
   });
@@ -32,7 +31,7 @@ export default function Page() {
   return (
     <Card className={"p-5"}>
       {isPendingCustomerList ? (
-        <div className="flex items-center justify-center h-40 w-full">
+        <div className="flex items-center justify-center w-full h-[100vh]">
           <Spinner />
         </div>
       ) : errorCustomerList ? (

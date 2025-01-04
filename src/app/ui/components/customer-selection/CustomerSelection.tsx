@@ -30,7 +30,6 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
     mutationFn: (data: { searchValue: string }) =>
       getCustomers(data.searchValue, data.searchValue),
     onError: () => {
-      debugger;
       toast.error("Erro ao buscar clientes");
     },
   });

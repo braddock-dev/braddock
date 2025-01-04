@@ -63,8 +63,8 @@ class AppointmentsService {
         httpMethod: HttpMethods.POST,
         data: {
           treatmentsIds: appointmentData.treatmentsId,
-          // customerName: appointmentData.customerName,
-          // phoneNumber: appointmentData.customerPhone,
+          customerName: appointmentData.customerName,
+          phoneNumber: appointmentData.customerPhone,
         },
       };
 
