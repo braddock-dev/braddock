@@ -6,12 +6,21 @@ import React, { useCallback, useMemo } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { getCustomers } from "@/app/backend/actions/customerActions";
 import { toast } from "sonner";
+import CustomerForm, {
+  ICustomerForm,
+} from "@/app/ui/components/customer-form/CustomerForm";
+import DialogWrapper from "@/app/ui/components/dialog-wrapper/DialogWrapper";
+import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
 
 interface ICustomerSelectionProps {
   onSelectCustomer: (customer: any) => void;
   selectedCustomerNumber?: string;
+  onAddNewCustomer: (customer: ICustomerForm) => void;
 }
 export default function CustomerSelection(props: ICustomerSelectionProps) {
+  const [showNewCustomerModal, setShowNewCustomerModal] = React.useState(false);
+  const [newCustomer, setNewCustomer] = React.useState<ICustomerForm>();
+
   const {
     data: customersList,
     isPending: isPendingCustomerList,
@@ -26,7 +35,7 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
     },
   });
 
-  const handleSelectCustomer = (customer: any) => {
+  const handleSelectCustomer = (customer: ICustomer) => {
     props.onSelectCustomer(customer);
   };
 
@@ -55,8 +64,21 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
 
     customersOptionsList.push(addNewCustomerOption);
 
+    if (newCustomer) {
+      customersOptionsList.unshift({
+        label: newCustomer.name,
+        value: newCustomer.phoneNumber,
+        type: ItemType.SIMPLE,
+        selectedDisplay: newCustomer.name,
+        data: {
+          name: newCustomer.name,
+          msisdn: newCustomer.phoneNumber,
+        },
+      });
+    }
+
     return customersOptionsList;
-  }, [customersList]);
+  }, [customersList, newCustomer]);
 
   const handleSearchCustomerChange = useCallback(
     (value: string) => {
@@ -82,9 +104,30 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
         maxHeight={500}
         searchable
         onSearchChange={handleSearchCustomerChange}
-        handleAddNew={() => {}}
+        handleAddNew={() => {
+          setShowNewCustomerModal(true);
+        }}
         isLoading={isPendingCustomerList}
       />
+
+      <DialogWrapper
+        isOpen={showNewCustomerModal}
+        onOpenChange={setShowNewCustomerModal}
+        title={"Adicionar Cliente"}
+        description={"Criar um novo cliente"}
+        contentClassName={"max-w-[450px]"}
+      >
+        <CustomerForm
+          onSubmit={(customerForm) => {
+            setNewCustomer(customerForm);
+            props.onAddNewCustomer(customerForm);
+            setShowNewCustomerModal(false);
+          }}
+          onCancel={() => {
+            setShowNewCustomerModal(false);
+          }}
+        />
+      </DialogWrapper>
     </div>
   );
 }

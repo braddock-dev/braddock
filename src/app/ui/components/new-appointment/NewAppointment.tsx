@@ -38,6 +38,7 @@ export default function NewAppointment(props: INewAppointmentProps) {
     <AppointmentInfoForm
       onCancel={props.onClose}
       onSave={() => {
+        debugger;
         newAppointmentMutation({
           appointmentData: {
             customerEmail: appointmentStore.customerEmail,

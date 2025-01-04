@@ -15,6 +15,7 @@ import {
 import { Theme } from "@/app/ui/components/button-group/ButtonGroup";
 import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
 import CustomerSelection from "@/app/ui/components/customer-selection/CustomerSelection";
+import { ICustomerForm } from "@/app/ui/components/customer-form/CustomerForm";
 
 interface IAppointmentInfoFormProps {
   onCancel: () => void;
@@ -52,6 +53,10 @@ export default function AppointmentInfoForm({
     }
   };
 
+  const handleAddNewCustomer = (customer: ICustomerForm) => {
+    setSelectedCustomerInfo(customer.name, customer.phoneNumber, "");
+  };
+
   return (
     <div className="p-4 flex flex-col gap-4">
       <SectionInfo title={`Serviços (Duração: ${totalDuration} Min)`}>
@@ -68,6 +73,7 @@ export default function AppointmentInfoForm({
             <CustomerSelection
               onSelectCustomer={handleSelectCustomer}
               selectedCustomerNumber={selectedCustomerInfo.phoneNumber}
+              onAddNewCustomer={handleAddNewCustomer}
             />
           </SectionInfo>
         </Fragment>
