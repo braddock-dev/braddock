@@ -7,6 +7,7 @@ import {
 } from "@radix-ui/react-icons";
 import AddIcon from "@/app/ui/vectors/plus-icon.svg";
 import { useOutsideClick } from "@/app/utils/CustomHooks";
+import Spinner, { SpinnerColor } from "@/app/ui/components/spinner/Spinner";
 
 const SELECT_BOTTOM_OFFSET = 20;
 
@@ -31,6 +32,10 @@ export enum ItemsPlacement {
 const DEFAULT_MAX_HEIGHT = 250;
 
 interface ISelectProps {
+  searchable?: boolean;
+  onSearchChange?: (value: string) => void;
+  handleAddNew?: () => void;
+  emptyListMessage?: string;
   items: ISelectItem[];
   defaultValue?: (string | number)[];
   className?: string;
@@ -42,12 +47,14 @@ interface ISelectProps {
   itemsPlacement?: ItemsPlacement;
   disabled?: boolean;
   maxHeight?: number;
+  isLoading?: boolean;
 }
 
 export default function SelectComponent(props: ISelectProps) {
   const [selectedItems, setSelectedItems] = React.useState<ISelectItem[]>([]);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const optionsRef = useRef<HTMLUListElement | null>(null);
+  const [searchValue, setSearchValue] = React.useState<string>("");
 
   const selectContainerRef = useRef<HTMLDivElement | null>(null);
   useOutsideClick(selectContainerRef, () => setIsOpen(false));
@@ -61,8 +68,19 @@ export default function SelectComponent(props: ISelectProps) {
       itemsTobeSelected = selectedItems.filter(
         (selectedItem) => selectedItem.value !== item.value,
       );
+
+      if (props.searchable) {
+        setSearchValue("");
+        setIsOpen(false);
+      }
     } else {
       itemsTobeSelected = [...selectedItems, item];
+
+      if (props.searchable) {
+        setSearchValue(item.label);
+        setIsOpen(false);
+        itemsTobeSelected = [item];
+      }
     }
 
     setSelectedItems(itemsTobeSelected);
@@ -76,13 +94,13 @@ export default function SelectComponent(props: ISelectProps) {
   };
 
   useEffect(() => {
-    if (!props.defaultValue) return;
+    if (!props.defaultValue?.length) return;
 
     const defaultItems = props.items.filter((item) =>
       props.defaultValue?.includes(item.value),
     );
 
-    if (!defaultItems) return;
+    if (!defaultItems.length) return;
 
     setSelectedItems(defaultItems);
     setIsOpen(false);
@@ -126,6 +144,10 @@ export default function SelectComponent(props: ISelectProps) {
     };
   }, [isOpen, props.scrollableParent]);
 
+  useEffect(() => {
+    props.onSearchChange && props.onSearchChange(searchValue);
+  }, [searchValue, props.onSearchChange]);
+
   return (
     <div
       className={`${styles.container} ${props.className}`}
@@ -148,21 +170,35 @@ export default function SelectComponent(props: ISelectProps) {
           disabled={props.disabled}
         />
 
-        <div className={styles.selectButton}>
-          <span className={styles.selectedValue}>
-            {selectedItems.map((item) => item.selectedDisplay).join(", ") ||
-              props.placeholder}
-          </span>
+        {props.searchable ? (
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder={props.placeholder || "Pesquisar"}
+            value={searchValue}
+            onChange={(e) => {
+              setIsOpen(true);
+              setSearchValue(e.target.value);
+            }}
+            onClick={() => setIsOpen(!isOpen)}
+          />
+        ) : (
+          <div className={styles.selectButton}>
+            <span className={styles.selectedValue}>
+              {selectedItems.map((item) => item.selectedDisplay).join(", ") ||
+                props.placeholder}
+            </span>
 
-          <div>
-            <ChevronDownIcon
-              className={`${styles.chevronDown} ${styles.arrowIcon}`}
-            />
-            <ChevronUpIcon
-              className={`${styles.chevronUp} ${styles.arrowIcon}`}
-            />
+            <div>
+              <ChevronDownIcon
+                className={`${styles.chevronDown} ${styles.arrowIcon}`}
+              />
+              <ChevronUpIcon
+                className={`${styles.chevronUp} ${styles.arrowIcon}`}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {isOpen && (
@@ -172,32 +208,58 @@ export default function SelectComponent(props: ISelectProps) {
           data-items-placement={props.itemsPlacement}
           style={{ maxHeight: `${optionsMaxHeight}px` }}
         >
-          {props.items.map((item, index) => (
+          {props.isLoading ? (
             <li
-              className={styles.option}
-              key={`${item.value} - ${index}`}
-              data-selected={isItemSelected(item)}
-              data-item-type={item.type}
+              className={`${styles.option} ${styles.loadingOption}`}
+              data-item-type={ItemType.SIMPLE}
+              key={"LoadingOption"}
             >
-              <input
-                type="radio"
-                name="option"
-                data-label={item.label}
-                value={item.value}
-                checked={isItemSelected(item)}
-                onClick={() => handleSelectItem(item)}
-                onChange={() => {}}
-              />
-              <span className={styles.optionLabel}>
-                {item.type === ItemType.ADD_NEW ? (
-                  <AddIcon className={styles.addIcon} />
-                ) : null}
-
-                {item.label}
-              </span>
-              <CheckIcon className={styles.checkIcon} />
+              <Spinner color={SpinnerColor.BLACK} className={styles.spinner} />
             </li>
-          ))}
+          ) : !props.items.length ? (
+            <li
+              className={`${styles.option} ${styles.noItemsFound}`}
+              data-item-type={ItemType.SIMPLE}
+              key={"NoItemsFoundItem"}
+            >
+              {props.emptyListMessage || "Nenhum item encontrado"}
+            </li>
+          ) : (
+            props.items.map((item, index) => (
+              <li
+                className={styles.option}
+                key={`${item.value} - ${index}`}
+                data-selected={isItemSelected(item)}
+                data-item-type={item.type}
+              >
+                <input
+                  type="radio"
+                  name="option"
+                  data-label={item.label}
+                  value={item.value}
+                  checked={isItemSelected(item)}
+                  onClick={() => {
+                    if (item.type === ItemType.ADD_NEW) {
+                      setIsOpen(false);
+                      props.handleAddNew && props.handleAddNew();
+                      return;
+                    }
+
+                    handleSelectItem(item);
+                  }}
+                  onChange={() => {}}
+                />
+                <span className={styles.optionLabel}>
+                  {item.type === ItemType.ADD_NEW ? (
+                    <AddIcon className={styles.addIcon} />
+                  ) : null}
+
+                  {item.label}
+                </span>
+                <CheckIcon className={styles.checkIcon} />
+              </li>
+            ))
+          )}
         </ul>
       )}
     </div>

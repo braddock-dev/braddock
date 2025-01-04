@@ -79,6 +79,16 @@ $activeColor: $black;
     }
 
 
+    .searchInput{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      padding: toRem(10) toRem(16);
+      border: 2px solid $inactiveColor;
+      border-radius: $border-radius-sm;
+      height: toRem(54);
+      z-index: 4;
+    }
 
   }
 
@@ -110,6 +120,22 @@ $activeColor: $black;
       border-bottom: 1px solid $lightGray02;
       cursor: pointer;
       @include defaultTransition;
+
+      &.loadingOption{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .spinner{
+          width: toRem(20);
+          height: toRem(20);
+        }
+      }
+
+      &.noItemsFound{
+        font-size: toRem(14);
+        color: $gray02;
+      }
 
       .optionLabel{
         font-size: toRem(15);
@@ -150,7 +176,7 @@ $activeColor: $black;
 
         .optionLabel{
           color: $brown;
-          font-weight: bold;
+          font-weight: 600;
           display: flex;
           align-items: center;
           gap: toRem(5);
@@ -159,6 +185,7 @@ $activeColor: $black;
             width: toRem(20);
             height: toRem(20);
             margin-left: auto;
+            stroke: $brown;
           }
 
         }

@@ -1,17 +1,20 @@
 "use client";
 
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
-import React, { useMemo } from "react";
+import React, { Fragment, useMemo } from "react";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import FirstStep, {
   SelectionMode,
 } from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import {
+  newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
 import { Theme } from "@/app/ui/components/button-group/ButtonGroup";
+import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
+import CustomerSelection from "@/app/ui/components/customer-selection/CustomerSelection";
 
 interface IAppointmentInfoFormProps {
   onCancel: () => void;
@@ -22,6 +25,14 @@ interface IAppointmentInfoFormProps {
 export default function AppointmentInfoForm({
   ...props
 }: IAppointmentInfoFormProps) {
+  const selectedCustomerInfo = useNewAppointmentStore(
+    newAppointmentSelectors.selectedCustomerInfo,
+  );
+
+  const setSelectedCustomerInfo = useNewAppointmentStore(
+    newAppointmentActions.setCustomerInfo,
+  );
+
   const selectedTreatments = useNewAppointmentStore(
     newAppointmentSelectors.selectedTreatments,
   );
@@ -33,8 +44,16 @@ export default function AppointmentInfoForm({
     );
   }, [selectedTreatments]);
 
+  const handleSelectCustomer = (customer?: ICustomer) => {
+    if (customer) {
+      setSelectedCustomerInfo(customer.name, customer.msisdn, customer.email);
+    } else {
+      setSelectedCustomerInfo("", "", "");
+    }
+  };
+
   return (
-    <div className="p-4 flex flex-col gap-6">
+    <div className="p-4 flex flex-col gap-4">
       <SectionInfo title={`Serviços (Duração: ${totalDuration} Min)`}>
         <FirstStep
           selectionMode={SelectionMode.SELECT}
@@ -42,34 +61,48 @@ export default function AppointmentInfoForm({
         />
       </SectionInfo>
 
-      <hr className={"border-neutral-200"} />
       {!!selectedTreatments.length && (
-        <SectionInfo title={"Quando?"}>
-          <SecondStep
-            isValidChange={() => {}}
-            onError={() => {}}
-            noPadding
-            theme={Theme.LIGHT}
-          />
-        </SectionInfo>
+        <Fragment>
+          <hr className={"border-neutral-200"} />
+          <SectionInfo title={"Selecione o Cliente"}>
+            <CustomerSelection
+              onSelectCustomer={handleSelectCustomer}
+              selectedCustomerNumber={selectedCustomerInfo.phoneNumber}
+            />
+          </SectionInfo>
+        </Fragment>
       )}
 
-      <SectionInfo title={"Acções"}>
-        <div className={"grid grid-cols-2 gap-3"}>
-          <Button color={ButtonColors.BLACK} onClick={props.onCancel}>
-            CANCELAR
-          </Button>
+      {!!selectedCustomerInfo.phoneNumber && (
+        <Fragment>
+          <hr className={"border-neutral-200"} />
+          <SectionInfo title={"Quando?"}>
+            <SecondStep
+              isValidChange={() => {}}
+              onError={() => {}}
+              noPadding
+              theme={Theme.LIGHT}
+            />
+          </SectionInfo>
 
-          <Button
-            color={ButtonColors.BROWN}
-            onClick={props.onSave}
-            disabled={props.isSaving || !props.isValid}
-            isLoading={props.isSaving}
-          >
-            SALVAR
-          </Button>
-        </div>
-      </SectionInfo>
+          <SectionInfo title={"Acções"}>
+            <div className={"grid grid-cols-2 gap-3"}>
+              <Button color={ButtonColors.BLACK} onClick={props.onCancel}>
+                CANCELAR
+              </Button>
+
+              <Button
+                color={ButtonColors.BROWN}
+                onClick={props.onSave}
+                disabled={props.isSaving || !props.isValid}
+                isLoading={props.isSaving}
+              >
+                SALVAR
+              </Button>
+            </div>
+          </SectionInfo>
+        </Fragment>
+      )}
     </div>
   );
 }

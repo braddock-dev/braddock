@@ -41,7 +41,11 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   customerEmail: "",
   setRecommendedDate: (date: Date) => set({ recommendedDate: date }),
   setCustomerInfo: (name: string, phone: string, email: string) =>
-    set({ customerName: name, phoneNumber: phone, customerEmail: email }),
+    set({
+      customerName: name,
+      phoneNumber: phone,
+      customerEmail: email,
+    }),
   setSelectedTreatment: (treatment?: ITreatment[]) =>
     set({
       selectedTreatments: treatment,
@@ -96,6 +100,11 @@ export const newAppointmentSelectors = {
   selectedDaySlot: (state: INewAppointmentStore) => state.selectedDaySlot,
   selectedTimeSlot: (state: INewAppointmentStore) => state.selectedTimeSlot,
   customerName: (state: INewAppointmentStore) => state.customerName,
+  selectedCustomerInfo: (state: INewAppointmentStore) => ({
+    customerName: state.customerName,
+    phoneNumber: state.phoneNumber,
+    customerEmail: state.customerEmail,
+  }),
   phoneNumber: (state: INewAppointmentStore) => state.phoneNumber,
   recommendedDate: (state: INewAppointmentStore) => state.recommendedDate,
   isRescheduleMode: (state: INewAppointmentStore) => !!state.appointmentId,

@@ -1,5 +1,8 @@
 import Logger from "@/app/utils/Logger";
-import { UpdateCustomerRequest } from "@/app/backend/services/data/CustomerData";
+import {
+  ICustomerResponse,
+  UpdateCustomerRequest,
+} from "@/app/backend/services/data/CustomerData";
 import {
   HttpMethods,
   HttpStatus,
@@ -41,6 +44,38 @@ class CustomerService {
       return Promise.resolve();
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error updating customer info", error);
+      throw error;
+    }
+  }
+
+  public async getCustomers(
+    name?: string,
+    phoneNumber?: string,
+  ): Promise<ICustomerResponse[]> {
+    Logger.info(this.LOG_TAG, "Getting customers...");
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.GET_CUSTOMERS(),
+        httpMethod: HttpMethods.GET,
+        params: {
+          name: name,
+          phoneNumber: phoneNumber,
+        },
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.info(this.LOG_TAG, "Get customers response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK) {
+        Logger.error(this.LOG_TAG, "Error getting customers", [response]);
+        throw new Error("Failed to get customers");
+      }
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error getting customers", error);
       throw error;
     }
   }

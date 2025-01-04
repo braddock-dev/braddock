@@ -262,6 +262,7 @@ export default function AppointmentsPageContent() {
         isOpen={showNewEventModal}
         onOpenChange={setShowNewEventModal}
         title={"Escolha a opção"}
+        description={"Criar um Novo Agendamento ou Bloquear o Horário?"}
         contentClassName={"max-w-[450px]"}
       >
         <AppointmentOptionsModal

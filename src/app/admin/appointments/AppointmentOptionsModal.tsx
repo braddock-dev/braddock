@@ -1,3 +1,5 @@
+"use client";
+
 import { CalendarIcon, CircleX } from "lucide-react";
 
 interface IAppointmentOptionsModalProps {

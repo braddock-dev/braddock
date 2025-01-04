@@ -1,7 +1,8 @@
 export interface ICustomer {
-  phoneNumber: string;
-  customerName: string;
-  customerEmail: string;
+  id: string;
+  name: string;
+  msisdn: string;
+  email: string;
 }
 
 export interface IUpdateCustomerRequest {
