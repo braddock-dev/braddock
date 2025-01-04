@@ -6,6 +6,8 @@ import {
   ICustomerResponse,
   UpdateCustomerRequest,
 } from "@/app/backend/services/data/CustomerData";
+import { removePhoneNumberPrefix } from "@/app/utils/functions";
+import { Constants } from "@/app/utils/Constants";
 
 class CustomerDataAdapter {
   public convertCustomerToDataRequest(
@@ -22,7 +24,10 @@ class CustomerDataAdapter {
       id: customerData.id,
       name: customerData.name,
       email: customerData.email,
-      msisdn: customerData.msisdn,
+      msisdn: removePhoneNumberPrefix(
+        customerData.msisdn,
+        Constants.UI.PHONE_PREFIX.PT,
+      ),
     };
   }
 

@@ -148,6 +148,10 @@ export default function SelectComponent(props: ISelectProps) {
     props.onSearchChange && props.onSearchChange(searchValue);
   }, [searchValue, props.onSearchChange]);
 
+  const placeholder =
+    selectedItems.map((item) => item.selectedDisplay).join(", ") ||
+    props.placeholder;
+
   return (
     <div
       className={`${styles.container} ${props.className}`}
@@ -174,7 +178,7 @@ export default function SelectComponent(props: ISelectProps) {
           <input
             type="text"
             className={styles.searchInput}
-            placeholder={props.placeholder || "Pesquisar"}
+            placeholder={placeholder || "Pesquisar"}
             value={searchValue}
             onChange={(e) => {
               setIsOpen(true);
@@ -184,10 +188,7 @@ export default function SelectComponent(props: ISelectProps) {
           />
         ) : (
           <div className={styles.selectButton}>
-            <span className={styles.selectedValue}>
-              {selectedItems.map((item) => item.selectedDisplay).join(", ") ||
-                props.placeholder}
-            </span>
+            <span className={styles.selectedValue}>{placeholder}</span>
 
             <div>
               <ChevronDownIcon
