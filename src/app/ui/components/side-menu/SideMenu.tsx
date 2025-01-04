@@ -9,7 +9,7 @@ import MenuItem, {
 import { useMemo } from "react";
 import HomeIcon from "@/app/ui/vectors/home.svg";
 import { usePathname } from "next/navigation";
-import { UserIcon } from "lucide-react";
+import { UserIcon, Users } from "lucide-react";
 
 export default function SideMenu() {
   const pathName = usePathname();
@@ -20,6 +20,11 @@ export default function SideMenu() {
         label: "Agendamentos",
         icon: <HomeIcon className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.APPOINTMENTS,
+      },
+      {
+        label: "Clientes",
+        icon: <Users className="shrink-0 size-4" />,
+        url: Constants.APP_ROUTES.CUSTOMERS,
       },
       {
         label: "Minha Conta",

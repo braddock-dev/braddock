@@ -62,6 +62,7 @@ export const Constants = {
     HOME: "/",
     ADMIN: "/admin",
     APPOINTMENTS: "/admin/appointments",
+    CUSTOMERS: "/admin/customers",
     ACCOUNT: "/admin/account",
     LOGIN: "/login",
   },
