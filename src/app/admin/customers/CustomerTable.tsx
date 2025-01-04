@@ -69,6 +69,7 @@ export function CustomersTable(props: ICustomersTableProps) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
+        <h1 className="text-2xl font-bold text-brown">Clientes</h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
