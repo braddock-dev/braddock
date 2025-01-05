@@ -11,6 +11,7 @@ import {
   IQueryAppointmentRequest,
 } from "@/app/backend/services/data/AppointmentDaos";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
 class AppointmentsService {
   private readonly LOG_TAG = "AppointmentsService";
@@ -55,18 +56,36 @@ class AppointmentsService {
     Logger.log(this.LOG_TAG, "Start scheduling appointment", [appointmentData]);
 
     try {
-      const request: IHttpRequestConfig = {
-        url: Constants.API_ROUTES.SCHEDULE_APPOINTMENT(
-          Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
-          appointmentData.timeSlotId.toString(),
-        ),
-        httpMethod: HttpMethods.POST,
-        data: {
-          treatmentsIds: appointmentData.treatmentsId,
-          customerName: appointmentData.customerName,
-          phoneNumber: appointmentData.customerPhone,
-        },
-      };
+      let request: IHttpRequestConfig;
+
+      if (appointmentData.requestedBy === AuthRoles.CUSTOMER) {
+        request = {
+          url: Constants.API_ROUTES.SCHEDULE_APPOINTMENT_CUSTOMER(
+            Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
+            appointmentData.timeSlotId.toString(),
+          ),
+          httpMethod: HttpMethods.POST,
+          data: {
+            treatmentsIds: appointmentData.treatmentsId,
+            customerName: appointmentData.customerName,
+            customerPhoneNumber: appointmentData.customerPhone,
+          },
+        };
+      } else if (appointmentData.requestedBy === AuthRoles.BUSINESS) {
+        request = {
+          url: Constants.API_ROUTES.SCHEDULE_APPOINTMENT_BUSINESS(
+            appointmentData.timeSlotId.toString(),
+          ),
+          httpMethod: HttpMethods.POST,
+          data: {
+            treatmentsIds: appointmentData.treatmentsId,
+            customerName: appointmentData.customerName,
+            phoneNumber: appointmentData.customerPhone,
+          },
+        };
+      } else {
+        return Promise.reject("Invalid requestedBy");
+      }
 
       const response = await ApiInterface.send(request);
 

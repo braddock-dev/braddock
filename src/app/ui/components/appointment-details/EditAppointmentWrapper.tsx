@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { editAppointment } from "@/app/backend/actions/appointmentActions";
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 import { toast } from "sonner";
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
 interface IAppointmentInfoFormProps {
   appointment: IAppointment;
@@ -30,6 +31,14 @@ export default function EditAppointmentWrapper(
   const isAppointmentValid = useNewAppointmentStore(
     newAppointmentSelectors.isAppointmentValid,
   );
+
+  const setRequestedBy = useNewAppointmentStore(
+    newAppointmentActions.setRequestedBy,
+  );
+
+  useEffect(() => {
+    setRequestedBy(AuthRoles.BUSINESS);
+  }, [setRequestedBy]);
 
   const { mutate: editAppointmentMutation, isPending } = useMutation({
     mutationKey: ["editAppointment"],

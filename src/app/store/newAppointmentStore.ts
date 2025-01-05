@@ -8,6 +8,7 @@ import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/dat
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
 import { removePhoneNumberPrefix } from "@/app/utils/functions";
 import { Constants } from "@/app/utils/Constants";
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
 export interface INewAppointmentStore {
   appointmentId?: string;
@@ -15,6 +16,7 @@ export interface INewAppointmentStore {
   selectedTreatments: ITreatment[];
   selectedDaySlot?: IDaySlot;
   selectedTimeSlot?: ITimeSlot;
+  requestedBy?: AuthRoles;
   phoneNumber: string;
   customerName: string;
   customerEmail: string;
@@ -22,6 +24,7 @@ export interface INewAppointmentStore {
   setSelectedTimeSlot: (timeSlot?: ITimeSlot) => void;
   setSelectedTreatment: (treatment?: ITreatment[]) => void;
   setTreatments: (treatments: ITreatment[]) => void;
+  setRequestedBy: (requestedBy: AuthRoles) => void;
   setCustomerInfo: (name: string, phone: string, email: string) => void;
   resetState: () => void;
   setAppointmentStore: (appointment: IAppointment) => void;
@@ -31,6 +34,7 @@ export interface INewAppointmentStore {
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   appointmentId: undefined,
+  requestedBy: undefined,
   treatments: [],
   selectedTreatments: [],
   selectedDaySlot: undefined,
@@ -64,6 +68,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       };
     });
   },
+  setRequestedBy: (requestedBy: AuthRoles) => set({ requestedBy }),
   setSelectedTimeSlot: (timeSlot?: ITimeSlot) =>
     set({ selectedTimeSlot: timeSlot }),
   setTreatments: (treatments: ITreatment[]) => set({ treatments }),
@@ -117,6 +122,7 @@ export const newAppointmentSelectors = {
     phoneNumber: state.phoneNumber,
     customerName: state.customerName,
     customerEmail: state.customerEmail,
+    requestedBy: state.requestedBy,
   }),
   isAppointmentValid: (state: INewAppointmentStore) => {
     return (
@@ -149,4 +155,5 @@ export const newAppointmentActions = {
   setAppointmentStore: (state: INewAppointmentStore) =>
     state.setAppointmentStore,
   setRecommendedDate: (state: INewAppointmentStore) => state.setRecommendedDate,
+  setRequestedBy: (state: INewAppointmentStore) => state.setRequestedBy,
 };

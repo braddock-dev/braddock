@@ -2,7 +2,13 @@
 
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import React, { ReactElement, useCallback, useMemo, useState } from "react";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
@@ -59,6 +65,10 @@ function AppointmentSteps() {
     newAppointmentSelectors.selectedTreatments,
   );
 
+  const setRequestedBy = useNewAppointmentStore(
+    newAppointmentActions.setRequestedBy,
+  );
+
   const isNotAllowedServicesSelected = useMemo(() => {
     return isNotAllowedServiceSelected(selectedTreatments);
   }, [selectedTreatments]);
@@ -82,6 +92,10 @@ function AppointmentSteps() {
   const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
 
   const { mutateUpdateCustomer } = useCustomerInfo();
+
+  useEffect(() => {
+    setRequestedBy(AuthRoles.CUSTOMER);
+  }, [setRequestedBy]);
 
   function handleChangeStep(goTo: APPOINTMENT_STEPS) {
     setCurrentStep(goTo);

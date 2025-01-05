@@ -40,8 +40,10 @@ export const Constants = {
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
     GET_TIMESLOTS: (businessId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots`,
-    SCHEDULE_APPOINTMENT: (businessId: string, timeSlotId: string) =>
+    SCHEDULE_APPOINTMENT_CUSTOMER: (businessId: string, timeSlotId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots/${timeSlotId}/schedule`,
+    SCHEDULE_APPOINTMENT_BUSINESS: (timeSlotId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/timeslots/${timeSlotId}/schedule`,
     GET_APPOINTMENTS: () => `${EXTERNAL_CONFIGS.BASE_URL}/appointments`,
     SEND_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/sendVerificationCode`,
     VERIFY_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/checkVerificationCode`,

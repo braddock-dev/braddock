@@ -18,7 +18,10 @@ export const handlers = [
   }),
 
   http.post(
-    Constants.API_ROUTES.SCHEDULE_APPOINTMENT(":businessId", ":timeSlotId"),
+    Constants.API_ROUTES.SCHEDULE_APPOINTMENT_CUSTOMER(
+      ":businessId",
+      ":timeSlotId",
+    ),
     (info) => {
       return HttpResponse.json({}, { status: HttpStatus.CREATED });
     },

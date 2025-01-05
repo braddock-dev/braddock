@@ -100,6 +100,7 @@ class AppointmentDataAdapter {
         "",
       ),
       customerEmail: newAppointment.customerEmail,
+      requestedBy: newAppointment.requestedBy,
     };
   }
 }

@@ -1,13 +1,15 @@
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 import AppointmentInfoForm from "@/app/ui/components/appointment-details/AppointmentInfoForm";
-import React from "react";
+import React, { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { scheduleAppointment } from "@/app/backend/actions/appointmentActions";
 import {
+  newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
 import { toast } from "sonner";
+import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
 interface INewAppointmentProps {
   onClose: () => void;
@@ -20,6 +22,14 @@ export default function NewAppointment(props: INewAppointmentProps) {
   const isAppointmentValid = useNewAppointmentStore(
     newAppointmentSelectors.isAppointmentValidWithoutCustomer,
   );
+
+  const setRequestedBy = useNewAppointmentStore(
+    newAppointmentActions.setRequestedBy,
+  );
+
+  useEffect(() => {
+    setRequestedBy(AuthRoles.BUSINESS);
+  }, [setRequestedBy]);
 
   const { mutate: newAppointmentMutation, isPending } = useMutation({
     mutationKey: ["newAppointment"],
