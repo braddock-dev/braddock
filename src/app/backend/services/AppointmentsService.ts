@@ -35,7 +35,7 @@ class AppointmentsService {
       Logger.log(this.LOG_TAG, "Get appointments response success", [response]);
 
       if (!response || response.status !== HttpStatus.OK || !response?.data) {
-        return Promise.reject("Failed to get treatments");
+        return Promise.reject("Failed to get appointments");
       }
 
       Logger.log(this.LOG_TAG, "Get appointments response success", [
