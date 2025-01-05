@@ -52,7 +52,7 @@ class AppointmentsService {
   public async scheduleAppointment(
     appointmentData: INewAppointmentRequest,
   ): Promise<any> {
-    Logger.log(this.LOG_TAG, "Start scheduling appointment");
+    Logger.log(this.LOG_TAG, "Start scheduling appointment", [appointmentData]);
 
     try {
       const request: IHttpRequestConfig = {
