@@ -53,10 +53,10 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
 
     const customersOptionsList: ISelectItem[] = customersList.map(
       (customer) => ({
-        label: customer.name,
+        label: customer.name || customer.msisdn,
         value: customer.msisdn,
         type: ItemType.SIMPLE,
-        selectedDisplay: customer.name,
+        selectedDisplay: customer.name || customer.msisdn,
         data: customer,
       }),
     );
@@ -65,10 +65,10 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
 
     if (newCustomer) {
       customersOptionsList.unshift({
-        label: newCustomer.name,
+        label: newCustomer.name || newCustomer.phoneNumber,
         value: newCustomer.phoneNumber,
         type: ItemType.SIMPLE,
-        selectedDisplay: newCustomer.name,
+        selectedDisplay: newCustomer.name || newCustomer.phoneNumber,
         data: {
           name: newCustomer.name,
           msisdn: newCustomer.phoneNumber,
