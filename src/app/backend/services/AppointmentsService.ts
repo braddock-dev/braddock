@@ -67,8 +67,6 @@ class AppointmentsService {
           httpMethod: HttpMethods.POST,
           data: {
             treatmentsIds: appointmentData.treatmentsId,
-            customerName: appointmentData.customerName,
-            customerPhoneNumber: appointmentData.customerPhone,
           },
         };
       } else if (appointmentData.requestedBy === AuthRoles.BUSINESS) {
