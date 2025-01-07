@@ -9,7 +9,7 @@ import { z } from "zod";
 
 export const treatmentInfoFormSchema = z.object({
   name: z.string().min(3, "Mínimo 3 Caracteres").max(255),
-  duration: z.number().int().min(1, "Mínimo 1 Minuto"),
+  duration: z.number().int().min(0, "Mínimo 0"),
   price: z.string().optional(),
 });
 
