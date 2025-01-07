@@ -19,7 +19,7 @@ export default function MenuItem(props: MenuItemProps) {
         className={clsx(
           "flex items-center gap-x-3.5 py-4 px-2.5 bg-gray-50/10 text-white border border-transparent  text-sm  rounded-lg hover:border-white",
           {
-            "!bg-lightBrown01 text-gray-700": props.isActive,
+            "!bg-brown01 text-gray-700": props.isActive,
           },
         )}
         href={props.menuItem.url}

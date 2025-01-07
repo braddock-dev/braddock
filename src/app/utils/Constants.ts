@@ -34,6 +34,7 @@ export const Constants = {
     CUSTOM_FULL_DATE_TIME: "DD [de] MMMM [às] HH:mm",
     TIME_INTERVAL: "HH:mm [até] HH:mm",
     CUSTOM_DATE: "dddd, DD [de] MMMM",
+    FULL_DATE: "DD [de] MMMM [de] YYYY",
   },
   API_ROUTES: {
     GET_TREATMENTS: (businessId: string) =>
@@ -65,6 +66,7 @@ export const Constants = {
     ADMIN: "/admin",
     APPOINTMENTS: "/admin/appointments",
     CUSTOMERS: "/admin/customers",
+    SERVICES: "/admin/services",
     ACCOUNT: "/admin/account",
     LOGIN: "/login",
   },

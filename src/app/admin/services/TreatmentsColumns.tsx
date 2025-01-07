@@ -11,9 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import * as React from "react";
-import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
+import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import { Constants } from "@/app/utils/Constants";
+import dayJsWrapper from "@/app/utils/dayjs";
 
-export const customerColumns: ColumnDef<ICustomer>[] = [
+export const TreatmentColumns: ColumnDef<ITreatment>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -38,27 +40,32 @@ export const customerColumns: ColumnDef<ICustomer>[] = [
   },
   {
     accessorKey: "name",
-    header: "Nome",
+    header: "Nome do serviço",
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
-    accessorKey: "msisdn",
-    header: "Número de Telefone",
+    accessorKey: "durationInMinutes",
+    header: "Duração",
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("msisdn")}</div>
+      <div className="lowercase">
+        {row.getValue("durationInMinutes")} Minutos
+      </div>
     ),
   },
   {
-    accessorKey: "email",
-    header: () => <div className="">Email</div>,
-    cell: ({ row }) => row.getValue("email"),
+    accessorKey: "createdAt",
+    header: () => <div className="">Data de Criação</div>,
+    cell: ({ row }) =>
+      dayJsWrapper(row.getValue("createdAt")).format(
+        Constants.DATE_FORMAT.FULL_DATE,
+      ),
   },
   {
     id: "actions",
     header: "Acções",
     enableHiding: false,
     cell: ({ row }) => {
-      const customer = row.original;
+      const treatment = row.original;
 
       return (
         <DropdownMenu>
@@ -71,7 +78,7 @@ export const customerColumns: ColumnDef<ICustomer>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Acções</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem disabled>Editar</DropdownMenuItem>
+            <DropdownMenuItem>Editar</DropdownMenuItem>
             <DropdownMenuItem className={"text-red-600"}>
               Remover
             </DropdownMenuItem>
