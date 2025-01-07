@@ -95,6 +95,41 @@ class TreatmentManager {
       throw error;
     }
   }
+
+  public async deleteTreatment(treatmentId: string): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start deleting treatment", [treatmentId]);
+
+    try {
+      await TreatmentsService.deleteTreatment(treatmentId);
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error deleting treatment", error);
+      throw error;
+    }
+  }
+
+  public async updateTreatment(
+    treatmentId: string,
+    treatment: ITreatmentFormData,
+  ): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start updating treatment", [treatment]);
+
+    try {
+      const treatmentRequestData =
+        TreatmentsDataAdapter.convertTreatmentToRequest(treatment);
+
+      await TreatmentsService.updateTreatment(
+        treatmentId,
+        treatmentRequestData,
+      );
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error updating treatment", error);
+      throw error;
+    }
+  }
 }
 
 export default new TreatmentManager();

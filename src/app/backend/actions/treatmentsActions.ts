@@ -25,3 +25,14 @@ export async function createTreatment(
 ): Promise<void> {
   return TreatmentManager.createTreatment(treatmentId);
 }
+
+export async function deleteTreatment(treatmentId: string): Promise<void> {
+  return TreatmentManager.deleteTreatment(treatmentId);
+}
+
+export async function updateTreatment(
+  treatmentId: string,
+  treatmentData: ITreatmentFormData,
+): Promise<void> {
+  return TreatmentManager.updateTreatment(treatmentId, treatmentData);
+}

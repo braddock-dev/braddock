@@ -55,7 +55,10 @@ export default function TreatmentsTable(props: TreatmentsTableProps) {
 
   const table = useReactTable({
     data: props.treatments,
-    columns: TreatmentColumns,
+    columns: TreatmentColumns({
+      onEditTreatment: props.onEditTreatment,
+      onDeleteTreatment: props.onDeleteTreatment,
+    }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

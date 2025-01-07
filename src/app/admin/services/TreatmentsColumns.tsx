@@ -15,7 +15,13 @@ import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsDat
 import { Constants } from "@/app/utils/Constants";
 import dayJsWrapper from "@/app/utils/dayjs";
 
-export const TreatmentColumns: ColumnDef<ITreatment>[] = [
+interface ITreatmentColumnsProps {
+  onEditTreatment: (treatment: ITreatment) => void;
+  onDeleteTreatment: (treatment: ITreatment) => void;
+}
+export const TreatmentColumns = (
+  props: ITreatmentColumnsProps,
+): ColumnDef<ITreatment>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -78,8 +84,14 @@ export const TreatmentColumns: ColumnDef<ITreatment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Acções</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar</DropdownMenuItem>
-            <DropdownMenuItem className={"text-red-600"}>
+            <DropdownMenuItem onClick={() => props.onEditTreatment(treatment)}>
+              Editar
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className={"text-red-600"}
+              onClick={() => props.onDeleteTreatment(treatment)}
+            >
               Remover
             </DropdownMenuItem>
           </DropdownMenuContent>

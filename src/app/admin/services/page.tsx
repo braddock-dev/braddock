@@ -14,12 +14,12 @@ import {
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
 import NewTreatment from "@/app/ui/components/treatments/new-treatment/NewTreatment";
+import EditTreatment from "@/app/ui/components/treatments/edit-treatment/EditTreatment";
 
 export default function Page() {
   const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
-  const [showEditTreatmentModal, setShowEditTreatmentModal] =
-    useState<ITreatment>();
-  const [showDeleteTreatmentModal, setShowDeleteTreatmentModal] =
+  const [treatmentToBeEdited, setTreatmentToBeEdited] = useState<ITreatment>();
+  const [treatmentToBeDeleted, setTreatmentToBeDeleted] =
     useState<ITreatment>();
 
   const {
@@ -49,10 +49,10 @@ export default function Page() {
               treatments={treatmentsList}
               onAddTreatment={() => setShowAddTreatmentModal(true)}
               onDeleteTreatment={(tratment) => {
-                setShowDeleteTreatmentModal(tratment);
+                setTreatmentToBeDeleted(tratment);
               }}
               onEditTreatment={(treatment) => {
-                setShowEditTreatmentModal(treatment);
+                setTreatmentToBeEdited(treatment);
               }}
             />
 
@@ -68,6 +68,23 @@ export default function Page() {
                   refetch();
                 }}
               />
+            </SidePanelWrapper>
+
+            <SidePanelWrapper
+              onClose={() => setTreatmentToBeEdited(undefined)}
+              title={"Actualizar Serviço"}
+              isOpen={!!treatmentToBeEdited}
+            >
+              {treatmentToBeEdited && (
+                <EditTreatment
+                  onClose={() => setTreatmentToBeEdited(undefined)}
+                  onCreated={() => {
+                    setTreatmentToBeEdited(undefined);
+                    refetch();
+                  }}
+                  treatment={treatmentToBeEdited}
+                />
+              )}
             </SidePanelWrapper>
           </Fragment>
         )
