@@ -2,6 +2,7 @@ import Logger from "@/app/utils/Logger";
 import {
   ITreatment,
   ITreatmentFormData,
+  SortOrder,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 import TreatmentsService from "@/app/backend/services/TreatmentsService";
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
@@ -13,7 +14,7 @@ class TreatmentManager {
     Logger.log(this.LOG_TAG, "Service initialized");
   }
 
-  public async getTreatments(): Promise<ITreatment[]> {
+  public async getTreatments(dir: SortOrder): Promise<ITreatment[]> {
     Logger.debug(this.LOG_TAG, "Start getting treatments");
 
     try {
@@ -31,6 +32,10 @@ class TreatmentManager {
         TreatmentsDataAdapter.convertDataToTreatments(flatternedTreatments);
 
       Logger.debug(this.LOG_TAG, "Get treatments response", [treatments]);
+
+      if (dir === SortOrder.DESC) {
+        return treatments.reverse();
+      }
 
       return treatments;
     } catch (error) {

@@ -5,10 +5,13 @@ import {
   IDaySlot,
   ITreatment,
   ITreatmentFormData,
+  SortOrder,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 
-export async function getTreatmentsList(): Promise<ITreatment[]> {
-  return TreatmentManager.getTreatments();
+export async function getTreatmentsList(
+  dir: SortOrder = SortOrder.ASC,
+): Promise<ITreatment[]> {
+  return TreatmentManager.getTreatments(dir);
 }
 
 export async function getTreatmentTimeslots(

@@ -23,3 +23,8 @@ export interface ITreatmentFormData {
   duration: number;
   price?: number;
 }
+
+export enum SortOrder {
+  ASC = "asc",
+  DESC = "desc",
+}

@@ -8,7 +8,10 @@ import { Fragment, useState } from "react";
 import TreatmentsTable from "@/app/admin/services/TreatmentsTable";
 import { useQuery } from "@tanstack/react-query";
 import { getTreatmentsList } from "@/app/backend/actions/treatmentsActions";
-import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import {
+  ITreatment,
+  SortOrder,
+} from "@/app/backend/business/treatments/data/TreatmentsData";
 import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
 import NewTreatment from "@/app/ui/components/treatments/new-treatment/NewTreatment";
 
@@ -26,7 +29,7 @@ export default function Page() {
     refetch,
   } = useQuery({
     queryKey: ["treatments"],
-    queryFn: () => getTreatmentsList(),
+    queryFn: () => getTreatmentsList(SortOrder.DESC),
   });
 
   return (
