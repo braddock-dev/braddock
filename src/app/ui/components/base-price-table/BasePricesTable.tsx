@@ -7,7 +7,7 @@ const prices = [
   },
   {
     name: "Barba",
-    price: "5€",
+    price: "6€",
   },
   {
     name: "Corte de cabelo + Barba",
@@ -15,7 +15,7 @@ const prices = [
   },
   {
     name: "Corte de cabelo + Barba + Cera",
-    price: "20€",
+    price: "21€",
   },
 ];
 
