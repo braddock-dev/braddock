@@ -6,8 +6,11 @@ import { Card } from "@/components/ui/card";
 import * as React from "react";
 import { Fragment, useState } from "react";
 import TreatmentsTable from "@/app/admin/services/TreatmentsTable";
-import { useQuery } from "@tanstack/react-query";
-import { getTreatmentsList } from "@/app/backend/actions/treatmentsActions";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  deleteTreatment,
+  getTreatmentsList,
+} from "@/app/backend/actions/treatmentsActions";
 import {
   ITreatment,
   SortOrder,
@@ -15,6 +18,8 @@ import {
 import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
 import NewTreatment from "@/app/ui/components/treatments/new-treatment/NewTreatment";
 import EditTreatment from "@/app/ui/components/treatments/edit-treatment/EditTreatment";
+import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
+import { toast } from "sonner";
 
 export default function Page() {
   const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
@@ -31,6 +36,26 @@ export default function Page() {
     queryKey: ["treatments"],
     queryFn: () => getTreatmentsList(SortOrder.DESC),
   });
+
+  const { mutate: deleteServiceMutation, isPending } = useMutation({
+    mutationKey: ["removeTreatment"],
+    mutationFn: (serviceId: string) => deleteTreatment(serviceId),
+    onError: () => {
+      toast.error("Erro ao remover o serviço, tente novamente");
+    },
+    onSuccess: () => {
+      toast.success("Serviço removido com sucesso");
+      refetch();
+    },
+  });
+
+  const handleRemoveService = (serviceId?: string) => {
+    if (serviceId) {
+      deleteServiceMutation(serviceId);
+    } else {
+      toast.error("Erro ao remover o serviço, ID do serviço não encontrado");
+    }
+  };
 
   return (
     <Card className={"p-5"}>
@@ -86,6 +111,20 @@ export default function Page() {
                 />
               )}
             </SidePanelWrapper>
+
+            <AlertDialogWrapper
+              isOpen={!!treatmentToBeDeleted}
+              onOpenChange={(isOpen) => {
+                if (!isOpen) {
+                  setTreatmentToBeDeleted(undefined);
+                }
+              }}
+              title={"Remover Serviço"}
+              description={"Tem a certeza que deseja remover este serviço?"}
+              onCancel={() => setTreatmentToBeDeleted(undefined)}
+              onConfirm={() => handleRemoveService(treatmentToBeDeleted?.id)}
+              confirmText={"Remover"}
+            ></AlertDialogWrapper>
           </Fragment>
         )
       )}
