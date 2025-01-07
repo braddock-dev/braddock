@@ -39,6 +39,7 @@ export const Constants = {
   API_ROUTES: {
     GET_TREATMENTS: (businessId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
+    CREATE_TREATMENT: `${EXTERNAL_CONFIGS.BASE_URL}/treatments`,
     GET_TIMESLOTS: (businessId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots`,
     SCHEDULE_APPOINTMENT_CUSTOMER: (businessId: string, timeSlotId: string) =>

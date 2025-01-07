@@ -17,3 +17,9 @@ export interface IDaySlot {
   day: string;
   timeslots: ITimeSlot[];
 }
+
+export interface ITreatmentFormData {
+  name: string;
+  duration: number;
+  price?: number;
+}

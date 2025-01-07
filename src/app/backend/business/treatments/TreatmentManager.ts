@@ -1,5 +1,8 @@
 import Logger from "@/app/utils/Logger";
-import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
+import {
+  ITreatment,
+  ITreatmentFormData,
+} from "@/app/backend/business/treatments/data/TreatmentsData";
 import TreatmentsService from "@/app/backend/services/TreatmentsService";
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
 
@@ -63,6 +66,27 @@ class TreatmentManager {
       return timeslots;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error getting treatment timeslots", error);
+      throw error;
+    }
+  }
+
+  public async createTreatment(treatment: ITreatmentFormData): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start creating treatment", [treatment]);
+
+    try {
+      const treatmentRequestData =
+        TreatmentsDataAdapter.convertTreatmentToRequest(treatment);
+
+      const createdTreatment =
+        await TreatmentsService.createTreatment(treatmentRequestData);
+
+      Logger.debug(this.LOG_TAG, "Create treatment response", [
+        createdTreatment,
+      ]);
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error creating treatment", error);
       throw error;
     }
   }

@@ -2,7 +2,9 @@ import {
   IDaySlot,
   ITimeSlot,
   ITreatment,
+  ITreatmentFormData,
 } from "@/app/backend/business/treatments/data/TreatmentsData";
+import { ITreatmentRequest } from "@/app/backend/services/data/TreatmentsDaos";
 
 class TreatmentsDataAdapter {
   public convertDataToTreatment(data: any): ITreatment {
@@ -41,6 +43,16 @@ class TreatmentsDataAdapter {
 
   public convertDataToDaySlots(data: any[]): IDaySlot[] {
     return data.map(this.convertDataToDaySlot.bind(this));
+  }
+
+  public convertTreatmentToRequest(
+    treatment: ITreatmentFormData,
+  ): ITreatmentRequest {
+    return {
+      name: treatment.name,
+      durationInMinutes: treatment.duration,
+      type: "Treatments",
+    };
   }
 }
 

@@ -40,6 +40,9 @@ const columnIdToLabelMap = {
 
 interface TreatmentsTableProps {
   treatments: ITreatment[];
+  onAddTreatment: () => void;
+  onEditTreatment: (treatment: ITreatment) => void;
+  onDeleteTreatment: (treatment: ITreatment) => void;
 }
 export default function TreatmentsTable(props: TreatmentsTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -71,9 +74,9 @@ export default function TreatmentsTable(props: TreatmentsTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-2">
         <h1 className="text-2xl font-bold text-brown">Serviços</h1>
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Colunas <ChevronDown />
@@ -99,6 +102,10 @@ export default function TreatmentsTable(props: TreatmentsTableProps) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <Button variant={"primary"} onClick={props.onAddTreatment}>
+          Adicionar
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>

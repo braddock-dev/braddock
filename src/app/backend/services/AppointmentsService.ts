@@ -36,7 +36,7 @@ class AppointmentsService {
       Logger.log(this.LOG_TAG, "Get appointments response success", [response]);
 
       if (!response || response.status !== HttpStatus.OK || !response?.data) {
-        return Promise.reject("Failed to get appointments");
+        throw new Error("Failed to get appointments");
       }
 
       Logger.log(this.LOG_TAG, "Get appointments response success", [
@@ -46,7 +46,7 @@ class AppointmentsService {
       return response.data;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to fetch appointments.", error);
-      return Promise.reject(error);
+      throw error;
     }
   }
 
@@ -82,7 +82,7 @@ class AppointmentsService {
           },
         };
       } else {
-        return Promise.reject("Invalid requestedBy");
+        throw new Error("Invalid requestedBy");
       }
 
       const response = await ApiInterface.send(request);
@@ -92,7 +92,7 @@ class AppointmentsService {
       ]);
 
       if (!response || response.status !== HttpStatus.CREATED) {
-        return Promise.reject("Failed to schedule appointment");
+        throw new Error("Failed to schedule appointment");
       }
 
       return response.data;
@@ -117,14 +117,14 @@ class AppointmentsService {
         ]);
 
         if (!response || response.status !== HttpStatus.OK) {
-          return Promise.reject("Failed to delete appointment");
+          throw new Error("Failed to delete appointment");
         }
 
         return response.data;
       });
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to delete appointment.", error);
-      return Promise.reject(error);
+      throw error;
     }
   }
 }

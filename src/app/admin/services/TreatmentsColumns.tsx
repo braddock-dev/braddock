@@ -68,7 +68,7 @@ export const TreatmentColumns: ColumnDef<ITreatment>[] = [
       const treatment = row.original;
 
       return (
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
