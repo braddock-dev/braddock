@@ -20,10 +20,10 @@ export default function EditTreatment(props: NewTreatmentProps) {
       treatmentForm: ITreatmentFormData;
     }) => updateTreatment(data.treatmentId, data.treatmentForm),
     onError: () => {
-      toast.error("Erro ao criar o serviço");
+      toast.error("Erro ao actualizar o serviço");
     },
     onSuccess: () => {
-      toast.success("Serviço criado com sucesso");
+      toast.success("Serviço actualizado com sucesso");
       props.onCreated();
     },
   });
