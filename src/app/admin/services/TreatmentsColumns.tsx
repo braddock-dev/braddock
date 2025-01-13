@@ -91,7 +91,6 @@ export const TreatmentColumns = (
             <DropdownMenuItem
               className={"text-red-600"}
               onClick={() => props.onDeleteTreatment(treatment)}
-              disabled //TODO: Enable this when the delete treatment feature is implemented
             >
               Remover
             </DropdownMenuItem>
