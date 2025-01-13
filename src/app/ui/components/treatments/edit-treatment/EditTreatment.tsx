@@ -38,6 +38,7 @@ export default function EditTreatment(props: NewTreatmentProps) {
       defaultValues={{
         name: props.treatment.name,
         duration: props.treatment.durationInMinutes,
+        price: props.treatment.price || "",
       }}
     />
   );

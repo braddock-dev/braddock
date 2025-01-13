@@ -36,6 +36,7 @@ const columnIdToLabelMap = {
   name: "Nome",
   durationInMinutes: "Duração",
   createdAt: "Criação",
+  price: "Preço",
 };
 
 interface TreatmentsTableProps {

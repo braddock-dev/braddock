@@ -83,3 +83,14 @@ export const getFutureXDaysDate = (days: number): number => {
   const date = dayJsWrapper(new Date());
   return date.add(days, "days").toDate().getTime();
 };
+
+export const formatCurrency = (price: number | String, currency: string) => {
+  if (!price) return "";
+
+  return new Intl.NumberFormat("pt-PT", {
+    style: "currency",
+    currency,
+  })
+    .format(Number(price))
+    .replace(/\s+/g, "");
+};

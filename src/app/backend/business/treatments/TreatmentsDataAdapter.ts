@@ -15,6 +15,7 @@ class TreatmentsDataAdapter {
       durationInMinutes: data.durationInMinutes,
       name: data.name,
       type: data.type,
+      price: data.cost,
     };
   }
 
@@ -52,6 +53,7 @@ class TreatmentsDataAdapter {
       name: treatment.name,
       durationInMinutes: treatment.duration,
       type: "Treatments",
+      cost: treatment.price ? Number(treatment.price) : 0,
     };
   }
 }

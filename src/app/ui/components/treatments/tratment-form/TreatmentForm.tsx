@@ -10,7 +10,7 @@ import { z } from "zod";
 export const treatmentInfoFormSchema = z.object({
   name: z.string().min(3, "Mínimo 3 Caracteres").max(255),
   duration: z.number().int().min(0, "Mínimo 0"),
-  price: z.string().optional(),
+  price: z.number().int().min(0, "Mínimo 0"),
 });
 
 interface ITreatmentFormProps {
@@ -30,8 +30,6 @@ export default function TreatmentForm(props: ITreatmentFormProps) {
     mode: "onChange",
     defaultValues: props.defaultValues,
   });
-
-  const showPrice = false;
 
   return (
     <div className="p-4 flex flex-col gap-4">
@@ -62,20 +60,18 @@ export default function TreatmentForm(props: ITreatmentFormProps) {
           themeMode={"light"}
         />
 
-        {showPrice && (
-          <Input
-            type={"number"}
-            inputMode={"numeric"}
-            placeholder={"Preço"}
-            floatingMode
-            {...register("price", { valueAsNumber: true })}
-            errorMessage={errors.price?.message}
-            touched={touchedFields.price}
-            isValid={!errors.price && !!getValues().price}
-            hasValue={!!getValues().price}
-            themeMode={"light"}
-          />
-        )}
+        <Input
+          type={"number"}
+          inputMode={"numeric"}
+          placeholder={"Preço"}
+          floatingMode
+          {...register("price", { valueAsNumber: true })}
+          errorMessage={errors.price?.message}
+          touched={touchedFields.price}
+          isValid={!errors.price && !!getValues().price}
+          hasValue={!!getValues().price}
+          themeMode={"light"}
+        />
       </form>
 
       <SectionInfo title={"Acções"}>

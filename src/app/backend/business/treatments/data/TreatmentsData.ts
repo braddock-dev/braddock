@@ -5,6 +5,7 @@ export interface ITreatment {
   durationInMinutes: number;
   type: string;
   createdAt: number;
+  price?: number;
 }
 
 export interface ITimeSlot {
@@ -21,7 +22,7 @@ export interface IDaySlot {
 export interface ITreatmentFormData {
   name: string;
   duration: number;
-  price?: number;
+  price?: number | string;
 }
 
 export enum SortOrder {

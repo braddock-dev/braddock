@@ -82,6 +82,10 @@ class TreatmentManager {
       const treatmentRequestData =
         TreatmentsDataAdapter.convertTreatmentToRequest(treatment);
 
+      Logger.debug(this.LOG_TAG, "Create treatment request data", [
+        treatmentRequestData,
+      ]);
+
       const createdTreatment =
         await TreatmentsService.createTreatment(treatmentRequestData);
 

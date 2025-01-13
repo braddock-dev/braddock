@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import * as React from "react";
 import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
-import { Constants } from "@/app/utils/Constants";
+import { Constants, Currency } from "@/app/utils/Constants";
 import dayJsWrapper from "@/app/utils/dayjs";
+import { formatCurrency } from "@/app/utils/functions";
 
 interface ITreatmentColumnsProps {
   onEditTreatment: (treatment: ITreatment) => void;
@@ -55,6 +56,17 @@ export const TreatmentColumns = (
     cell: ({ row }) => (
       <div className="lowercase">
         {row.getValue("durationInMinutes")} Minutos
+      </div>
+    ),
+  },
+  {
+    accessorKey: "price",
+    header: "Preço",
+    cell: ({ row }) => (
+      <div className="lowercase">
+        {formatCurrency(row.getValue("price"), Currency.EUR) || (
+          <span className={"text-gray-500"}>Sem Preço</span>
+        )}
       </div>
     ),
   },

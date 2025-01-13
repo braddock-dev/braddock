@@ -122,3 +122,9 @@ export const Constants = {
     },
   },
 };
+
+export enum Currency {
+  EUR = "EUR",
+  USD = "USD",
+  GBP = "GBP",
+}
