@@ -23,8 +23,6 @@ class AppointmentDataAdapter {
   };
 
   public convertDataToAppointment(data: any): IAppointment {
-    console.log({ myData: data });
-
     return {
       businessId: data.businessId,
       id: data.id,
