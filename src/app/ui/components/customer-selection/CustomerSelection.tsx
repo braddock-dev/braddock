@@ -28,7 +28,7 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
   } = useMutation({
     mutationKey: ["getCustomers"],
     mutationFn: (data: { searchValue: string }) =>
-      getCustomers(data.searchValue, data.searchValue),
+      getCustomers(data.searchValue),
     onError: () => {
       toast.error("Erro ao buscar clientes");
     },
