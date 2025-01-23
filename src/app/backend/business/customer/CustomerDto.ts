@@ -8,4 +8,5 @@ export interface ICustomer {
 export interface IUpdateCustomerRequest {
   customerName: string;
   customerEmail?: string;
+  customerPhoneNumber?: string;
 }

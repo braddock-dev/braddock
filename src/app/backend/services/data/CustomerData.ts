@@ -1,4 +1,5 @@
 export interface UpdateCustomerRequest {
+  msisdn?: string;
   name: string;
   email?: string;
 }

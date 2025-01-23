@@ -16,6 +16,7 @@ class CustomerDataAdapter {
     return {
       name: customer.customerName,
       email: customer.customerEmail,
+      msisdn: customer.customerPhoneNumber,
     };
   }
 

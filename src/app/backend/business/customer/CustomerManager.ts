@@ -15,6 +15,7 @@ class CustomerManager {
 
   public async updateCustomerInfo(
     customer: IUpdateCustomerRequest,
+    customerId?: string,
   ): Promise<void> {
     Logger.debug(this.LOG_TAG, "Updating customer info", customer);
 
@@ -22,7 +23,10 @@ class CustomerManager {
       const updateCustomerRequest =
         CustomerDataAdapter.convertCustomerToDataRequest(customer);
 
-      await CustomerService.updateCustomerInfo(updateCustomerRequest);
+      await CustomerService.updateCustomerInfo(
+        updateCustomerRequest,
+        customerId,
+      );
 
       Logger.debug(this.LOG_TAG, "Customer info updated");
 

@@ -11,12 +11,14 @@ import {
 export interface ICustomerForm {
   name: string;
   phoneNumber: string;
+  email?: string;
 }
 
 interface ICustomerFormProps {
   onSubmit: (customer: ICustomerForm) => void;
   onCancel: () => void;
   defaultValues?: ICustomerForm;
+  isLoading?: boolean;
 }
 export default function CustomerForm(props: ICustomerFormProps) {
   const {
@@ -30,6 +32,7 @@ export default function CustomerForm(props: ICustomerFormProps) {
     defaultValues: {
       name: props.defaultValues?.name || "",
       phoneNumber: props.defaultValues?.phoneNumber || "",
+      email: props.defaultValues?.email || "",
     },
   });
 
@@ -54,7 +57,7 @@ export default function CustomerForm(props: ICustomerFormProps) {
           type={"tel"}
           inputMode={"tel"}
           autoComplete={"none"}
-          placeholder={"Seu Contacto (PT)"}
+          placeholder={"Contacto (PT)"}
           floatingMode
           {...register("phoneNumber", { required: true, min: 10 })}
           touched={touchedFields.phoneNumber}
@@ -63,17 +66,36 @@ export default function CustomerForm(props: ICustomerFormProps) {
           hasValue={!!getValues().phoneNumber}
           themeMode={"light"}
         />
+
+        <Input
+          type={"email"}
+          inputMode={"email"}
+          autoComplete={"none"}
+          placeholder={"Email (Opcional)"}
+          floatingMode
+          {...register("email", { required: false })}
+          touched={touchedFields.email}
+          errorMessage={errors.email?.message}
+          isValid={!errors.email && !!getValues().email}
+          hasValue={!!getValues().email}
+          themeMode={"light"}
+        />
       </form>
 
       <div className={"grid grid-cols-2 w-full gap-2"}>
-        <Button color={ButtonColors.BLACK} onClick={props.onCancel}>
+        <Button
+          color={ButtonColors.BLACK}
+          onClick={props.onCancel}
+          disabled={props.isLoading}
+        >
           CANCELAR
         </Button>
 
         <Button
           color={ButtonColors.BROWN}
           onClick={() => props.onSubmit(getValues())}
-          disabled={!isValid}
+          disabled={!isValid || props.isLoading}
+          isLoading={props.isLoading}
         >
           SALVAR
         </Button>

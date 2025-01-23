@@ -13,7 +13,13 @@ import {
 import * as React from "react";
 import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
 
-export const customerColumns: ColumnDef<ICustomer>[] = [
+interface ICustomerColumnsProps {
+  onEditCustomer: (customer: ICustomer) => void;
+  onDeleteCustomer: (customer: ICustomer) => void;
+}
+export const customerColumns = (
+  props: ICustomerColumnsProps,
+): ColumnDef<ICustomer>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -71,8 +77,20 @@ export const customerColumns: ColumnDef<ICustomer>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Acções</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem disabled>Editar</DropdownMenuItem>
-            <DropdownMenuItem className={"text-red-600"}>
+            <DropdownMenuItem
+              onClick={() => {
+                props.onEditCustomer(customer);
+              }}
+            >
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={"text-red-600"}
+              disabled
+              onClick={() => {
+                props.onDeleteCustomer(customer);
+              }}
+            >
               Remover
             </DropdownMenuItem>
           </DropdownMenuContent>

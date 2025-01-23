@@ -37,6 +37,8 @@ const columnIdToLabelMap = {
 
 interface ICustomersTableProps {
   customers: ICustomer[];
+  onEditCustomer: (customer: ICustomer) => void;
+  onDeleteCustomer: (customer: ICustomer) => void;
 }
 export function CustomersTable(props: ICustomersTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -49,7 +51,10 @@ export function CustomersTable(props: ICustomersTableProps) {
 
   const table = useReactTable({
     data: props.customers,
-    columns: customerColumns,
+    columns: customerColumns({
+      onEditCustomer: props.onEditCustomer,
+      onDeleteCustomer: props.onDeleteCustomer,
+    }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

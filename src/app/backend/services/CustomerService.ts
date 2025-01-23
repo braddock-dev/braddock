@@ -20,12 +20,15 @@ class CustomerService {
 
   public async updateCustomerInfo(
     customerData: UpdateCustomerRequest,
+    customerId?: string,
   ): Promise<void> {
     Logger.info(this.LOG_TAG, "Updating customer info", customerData);
 
     try {
       const request: IHttpRequestConfig = {
-        url: Constants.API_ROUTES.UPDATE_CUSTOMER(),
+        url: customerId
+          ? Constants.API_ROUTES.UPDATE_CUSTOMER_BUSINESS(customerId)
+          : Constants.API_ROUTES.UPDATE_CUSTOMER(),
         httpMethod: HttpMethods.PUT,
         data: {
           ...customerData,

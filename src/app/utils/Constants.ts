@@ -52,6 +52,8 @@ export const Constants = {
     SEND_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/sendVerificationCode`,
     VERIFY_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/checkVerificationCode`,
     UPDATE_CUSTOMER: () => `${EXTERNAL_CONFIGS.BASE_URL}/customers`,
+    UPDATE_CUSTOMER_BUSINESS: (customerId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/customers/${customerId}`,
     GET_CUSTOMERS: () => `${EXTERNAL_CONFIGS.BASE_URL}/customers`,
     GET_USER_INFO: () => `${EXTERNAL_CONFIGS.BASE_URL}/identity`,
     DELETE_APPOINTMENT: (appointmentId: string) =>
