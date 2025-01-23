@@ -31,6 +31,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TreatmentColumns } from "@/app/admin/services/TreatmentsColumns";
+import Input from "@/app/ui/components/input/Input";
 
 const columnIdToLabelMap = {
   name: "Nome",
@@ -78,8 +79,21 @@ export default function TreatmentsTable(props: TreatmentsTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-2">
+      <div className="flex items-center py-4 justify-between gap-4">
         <h1 className="text-2xl font-bold text-brown">Serviços</h1>
+        <Input
+          placeholder="Pesquisar Serviços..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          classNameContainer="max-w-md mx-auto"
+          hasValue={!!table.getColumn("name")?.getFilterValue()}
+          themeMode="light"
+          withBorder
+          type="text"
+          centerText
+        />
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
