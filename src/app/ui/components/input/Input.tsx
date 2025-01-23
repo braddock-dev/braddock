@@ -20,6 +20,7 @@ interface IInputProps extends React.ComponentPropsWithoutRef<"input"> {
   isValid?: boolean;
   hasValue: boolean;
   themeMode?: "light" | "dark";
+  centerText?: boolean;
 }
 function Input(
   {
@@ -31,6 +32,7 @@ function Input(
     isValid,
     hasValue,
     themeMode = "dark",
+    centerText,
     ...rest
   }: IInputProps,
   ref?: React.Ref<HTMLInputElement>,
@@ -71,7 +73,7 @@ function Input(
     >
       <input
         ref={ref}
-        className={`${styles.input} ${getValidationClass} ${getFloatModeClass}`}
+        className={`${styles.input} ${getValidationClass} ${getFloatModeClass} ${centerText ? styles.centerText : ""}`}
         onChange={handleChange}
         {...rest}
       />

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import Input from "@/app/ui/components/input/Input";
 import {
   Table,
   TableBody,
@@ -73,8 +74,21 @@ export function CustomersTable(props: ICustomersTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 justify-between gap-4">
         <h1 className="text-2xl font-bold text-brown">Clientes</h1>
+        <Input
+          placeholder="Pesquisar Clientes..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          classNameContainer="max-w-md mx-auto"
+          hasValue={!!table.getColumn("name")?.getFilterValue()}
+          themeMode="light"
+          withBorder
+          type="text"
+          centerText
+        />
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

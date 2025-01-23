@@ -30,6 +30,10 @@
     background: $black;
     color: $white;
 
+    &.centerText{
+      text-align: center;
+    }
+
 
       &:-webkit-autofill {
       -webkit-box-shadow: 0 0 0 30px $black inset !important; /* Change 'white' to your desired background color */
