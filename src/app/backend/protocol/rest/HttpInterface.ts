@@ -38,9 +38,13 @@ class HttpInterface implements IHttpInterface {
     Logger.debug(this.LOG_TAG, "Initialized.", requestTimeout);
   }
 
-  send(request: IHttpRequestConfig): Promise<IHttpResponse> {
-    this.applyUserAuthHeader();
-    this.processRequestConfig(request);
+  send(requestData: IHttpRequestConfig): Promise<IHttpResponse> {
+    const tokenInfo = AuthStoreInterface.getAuthToken();
+
+    const request = {
+      ...requestData,
+      headers: { Token: tokenInfo?.token },
+    };
 
     Logger.debug(
       this.LOG_TAG,
@@ -159,38 +163,6 @@ class HttpInterface implements IHttpInterface {
     }
 
     return response;
-  }
-
-  private processRequestConfig(requestConfig: IHttpRequestConfig): void {
-    if (requestConfig.skipAuthentication) {
-      requestConfig.transformRequest = [
-        (data: any, headers: any) => {
-          delete headers["Authorization"];
-
-          if (data) {
-            return JSON.stringify(data);
-          }
-        },
-      ];
-    }
-  }
-
-  private applyUserAuthHeader(): void {
-    const tokenInfo = AuthStoreInterface.getAuthToken();
-
-    if (
-      this.axios.defaults &&
-      this.axios.defaults.headers &&
-      this.axios.defaults.headers.common &&
-      AuthStoreInterface.isSessionValid()
-    ) {
-      if (tokenInfo?.token) {
-        this.axios.defaults.headers.common["Token"] = tokenInfo.token;
-        Logger.debug(this.LOG_TAG, "User token set", [
-          this.axios.defaults.headers.common,
-        ]);
-      }
-    }
   }
 }
 
