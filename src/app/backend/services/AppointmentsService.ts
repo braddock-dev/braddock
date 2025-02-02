@@ -81,6 +81,7 @@ class AppointmentsService {
             treatmentsIds: appointmentData.treatmentsId,
             customerName: appointmentData.customerName,
             phoneNumber: appointmentData.customerPhone,
+            daysForward: daysForward,
           },
         };
       } else {
