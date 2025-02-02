@@ -6,8 +6,6 @@ import {
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/data/AppointmentData";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
-import { removePhoneNumberPrefix } from "@/app/utils/functions";
-import { Constants } from "@/app/utils/Constants";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
 export interface INewAppointmentStore {
@@ -86,10 +84,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   setAppointmentStore: (appointment: IAppointment) => {
     set({
       selectedTreatments: appointment.treatments,
-      phoneNumber: removePhoneNumberPrefix(
-        appointment.clientPhoneNumber,
-        Constants.UI.PHONE_PREFIX.PT,
-      ),
+      phoneNumber: appointment.clientPhoneNumber,
       customerName: appointment.clientName,
       customerEmail: appointment.clientEmail,
       appointmentId: appointment.id,

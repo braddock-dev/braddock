@@ -1,0 +1,19 @@
+@import "src/app/ui/styles/vars.scss";
+
+
+.react-tel-input {
+  .form-control {
+    background-color: $black !important;
+    border: 2px solid rgba($gray02, 0.1) !important;
+    color: #fff !important;
+  }
+
+  .flag-dropdown {
+    background-color: $black !important;
+    border: 2px solid rgba($gray02, 0.1) !important;
+  }
+
+  .selected-flag {
+    background-color: $black !important;
+  }
+}

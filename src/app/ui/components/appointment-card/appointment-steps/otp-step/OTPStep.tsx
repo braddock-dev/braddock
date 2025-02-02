@@ -10,7 +10,6 @@ import { useState } from "react";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 import { toast } from "sonner";
 import { formatPhoneNumber } from "@/app/utils/functions";
-import { Constants } from "@/app/utils/Constants";
 
 const LOG_TAG = "OTPStep";
 interface IOTPStepProps {
@@ -65,9 +64,7 @@ export default function OTPStep(props: IOTPStepProps) {
         <p className={"text-white/80 text-sm"}>
           Enviamos um código de verificação para o seguinte número de telefone
           <span className={"font-bold text-white"}>
-            {formatPhoneNumber(
-              ` (${Constants.UI.PHONE_PREFIX.PT}${phoneNumber})`,
-            )}
+            {formatPhoneNumber(` (${phoneNumber})`)}
           </span>
           . <br />
           Insira o código abaixo.

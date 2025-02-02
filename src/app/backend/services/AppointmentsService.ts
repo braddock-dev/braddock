@@ -78,7 +78,7 @@ class AppointmentsService {
           data: {
             treatmentsIds: appointmentData.treatmentsId,
             customerName: appointmentData.customerName,
-            phoneNumber: appointmentData.customerPhone,
+            customerMsisdn: `+${appointmentData.customerPhone}`,
           },
         };
       } else {

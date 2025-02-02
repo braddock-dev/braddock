@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { Constants } from "@/app/utils/Constants";
+import { PHONE_NUMBER_VALIDATION_RULE } from "@/lib/utils";
 
 export interface UserInfoForm {
   name: string;
@@ -10,9 +10,7 @@ export interface UserInfoForm {
 }
 
 export const userInfoFormSchema = z.object({
-  name: z.string().min(3, "Mínimo 3 Caracteres").max(255),
-  phoneNumber: z
-    .string()
-    .regex(Constants.REGEX_PATTERS.PHONE_NUMBER, "Número de telefone inválido"),
+  name: z.string().min(1, "Nome é obrigatório"),
   email: z.string().email("Email inválido"),
+  phoneNumber: PHONE_NUMBER_VALIDATION_RULE,
 });

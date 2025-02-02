@@ -75,11 +75,6 @@ export const Constants = {
     ACCOUNT: "/admin/account",
     LOGIN: "/login",
   },
-  UI: {
-    PHONE_PREFIX: {
-      PT: "+351",
-    },
-  },
   ERRORS: {
     GENERIC: {
       UNKNOWN: "GN_UNKNOWN",

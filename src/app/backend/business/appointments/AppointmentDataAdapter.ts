@@ -93,10 +93,7 @@ class AppointmentDataAdapter {
       treatmentsId: treatmentsId,
       timeSlotId: newAppointment.selectedTimeSlot.timeInMillis,
       customerName: newAppointment.customerName,
-      customerPhone: newAppointment.phoneNumber.replace(
-        Constants.UI.PHONE_PREFIX.PT,
-        "",
-      ),
+      customerPhone: newAppointment.phoneNumber,
       customerEmail: newAppointment.customerEmail,
       requestedBy: newAppointment.requestedBy,
     };

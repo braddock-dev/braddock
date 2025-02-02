@@ -4,19 +4,20 @@ import {
   LoginFormSchema,
 } from "@/app/login/login-form/LoginFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/app/ui/components/input/Input";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import React from "react";
 import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
+import DarkPhoneNumberInput from "@/app/ui/components/phone-number-input/DarkPhoneNumberInput";
 
 interface LoginPhoneNumberStepProps {
   onComplete: (phoneNumber: string) => void;
 }
 export default function LoginPhoneNumberStep(props: LoginPhoneNumberStepProps) {
   const {
-    register,
-    formState: { isValid, errors, touchedFields },
+    formState: { isValid, errors },
     getValues,
+    setValue,
+    trigger,
   } = useForm<LoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     reValidateMode: "onChange",
@@ -41,17 +42,13 @@ export default function LoginPhoneNumberStep(props: LoginPhoneNumberStepProps) {
 
   return (
     <form className={"flex flex-col gap-10 items-center"}>
-      <Input
-        type={"tel"}
-        inputMode={"tel"}
-        autoComplete={"none"}
-        placeholder={"Introduza o Número (PT)"}
-        floatingMode
-        {...register("phoneNumber", { required: true, min: 10 })}
-        touched={touchedFields.phoneNumber}
+      <DarkPhoneNumberInput
+        value={getValues().phoneNumber}
         errorMessage={errors.phoneNumber?.message}
-        isValid={!errors.phoneNumber && !!getValues().phoneNumber}
-        hasValue={!!getValues().phoneNumber}
+        onChange={(phoneNumber) => {
+          setValue("phoneNumber", phoneNumber);
+          trigger("phoneNumber");
+        }}
       />
 
       <Button
