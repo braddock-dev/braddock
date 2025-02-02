@@ -78,7 +78,7 @@ function AppointmentSteps() {
   );
 
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.COMPLETE_APPOINTMENT,
+    APPOINTMENT_STEPS.SERVICES_SELECTION,
   );
 
   const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
