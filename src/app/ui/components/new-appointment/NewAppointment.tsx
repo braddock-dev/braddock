@@ -10,6 +10,7 @@ import {
 } from "@/app/store/newAppointmentStore";
 import { toast } from "sonner";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
+import { Constants } from "@/app/utils/Constants";
 
 interface INewAppointmentProps {
   onClose: () => void;
@@ -34,7 +35,10 @@ export default function NewAppointment(props: INewAppointmentProps) {
   const { mutate: newAppointmentMutation, isPending } = useMutation({
     mutationKey: ["newAppointment"],
     mutationFn: (data: { appointmentData: INewAppointmentRequestData }) =>
-      scheduleAppointment(data.appointmentData),
+      scheduleAppointment(
+        data.appointmentData,
+        Constants.TIMESLOTS.DEFAULT_DAYS_FORWARD,
+      ),
     onError: () => {
       toast.error("Erro ao agendar o horário");
     },

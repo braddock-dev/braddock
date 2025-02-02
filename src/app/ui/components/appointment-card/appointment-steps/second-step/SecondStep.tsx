@@ -20,7 +20,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getTreatmentTimeslots } from "@/app/backend/actions/treatmentsActions";
 import AppointmentCardLoadingState from "@/app/ui/components/appointment-card/appointment-card-loading-state/AppointmentCardLoadingState";
 import { toast } from "sonner";
-import { getFutureXDaysDate } from "@/app/utils/functions";
 import DaySlotDatePicker from "@/app/ui/components/day-slot-date-picker/DaySlotDatePicker";
 
 interface ITimeSlot {
@@ -66,7 +65,7 @@ export default function SecondStep(props: ITimeSlot) {
     queryFn: () =>
       getTreatmentTimeslots(
         selectedTreatmentIds,
-        getFutureXDaysDate(Constants.TIMESLOTS.DEFAULT_DAYS_FORWARD),
+        Constants.TIMESLOTS.DEFAULT_DAYS_FORWARD,
       ),
   });
 

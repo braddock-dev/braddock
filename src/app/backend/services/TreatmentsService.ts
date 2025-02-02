@@ -58,7 +58,7 @@ class TreatmentsService {
         httpMethod: HttpMethods.POST,
         data: {
           treatmentsIds: treatmentsId,
-          // daysForward: daysForward,
+          daysForward: daysForward,
         },
       };
 

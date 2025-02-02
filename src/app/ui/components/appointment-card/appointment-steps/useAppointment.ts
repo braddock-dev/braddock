@@ -11,6 +11,7 @@ import {
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
 import { useMemo } from "react";
+import { Constants } from "@/app/utils/Constants";
 
 export function useAppointment(onAppointmentSuccess: () => void) {
   const isRescheduleMode = useNewAppointmentStore(
@@ -36,7 +37,10 @@ export function useAppointment(onAppointmentSuccess: () => void) {
         if (isRescheduleMode && appointmentId) {
           return editAppointment(appointmentId, appointmentData);
         } else {
-          return scheduleAppointment(appointmentData);
+          return scheduleAppointment(
+            appointmentData,
+            Constants.TIMESLOTS.DEFAULT_DAYS_FORWARD,
+          );
         }
       },
       onError: () => {
