@@ -44,9 +44,13 @@ class TreatmentManager {
     }
   }
 
-  public async getTreatmentTimeslots(treatmentsId: string[]): Promise<any[]> {
+  public async getTreatmentTimeslots(
+    treatmentsId: string[],
+    daysForward?: number,
+  ): Promise<any[]> {
     Logger.debug(this.LOG_TAG, "Start getting treatment timeslots", [
       treatmentsId,
+      daysForward,
     ]);
 
     try {
@@ -54,8 +58,10 @@ class TreatmentManager {
         return [];
       }
 
-      const timeslotsResponse =
-        await TreatmentsService.getTreatmentTimeslots(treatmentsId);
+      const timeslotsResponse = await TreatmentsService.getTreatmentTimeslots(
+        treatmentsId,
+        daysForward,
+      );
 
       Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [
         timeslotsResponse,

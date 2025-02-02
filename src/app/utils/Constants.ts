@@ -123,6 +123,9 @@ export const Constants = {
       DEFAULT_FUTURE_DAYS: 30,
     },
   },
+  TIMESLOTS: {
+    DEFAULT_DAYS_FORWARD: 90,
+  },
 };
 
 export enum Currency {
