@@ -31,6 +31,7 @@ class AppointmentsManager {
 
   public async scheduleAppointment(
     appointment: INewAppointmentRequestData,
+    daysForward?: number,
   ): Promise<void> {
     Logger.debug(this.LOG_TAG, "Start scheduling appointment", [appointment]);
 
@@ -44,6 +45,7 @@ class AppointmentsManager {
 
       const response = await AppointmentsService.scheduleAppointment(
         appointmentRequestData,
+        daysForward,
       );
 
       Logger.debug(this.LOG_TAG, "Schedule appointment response", [response]);

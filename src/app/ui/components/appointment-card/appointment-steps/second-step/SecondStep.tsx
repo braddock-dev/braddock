@@ -20,6 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getTreatmentTimeslots } from "@/app/backend/actions/treatmentsActions";
 import AppointmentCardLoadingState from "@/app/ui/components/appointment-card/appointment-card-loading-state/AppointmentCardLoadingState";
 import { toast } from "sonner";
+import DaySlotDatePicker from "@/app/ui/components/day-slot-date-picker/DaySlotDatePicker";
 
 interface ITimeSlot {
   onError: () => void;
@@ -61,7 +62,11 @@ export default function SecondStep(props: ITimeSlot) {
     error,
   } = useQuery({
     queryKey: ["getTreatmentTimeslots", selectedTreatmentIds.join()],
-    queryFn: () => getTreatmentTimeslots(selectedTreatmentIds),
+    queryFn: () =>
+      getTreatmentTimeslots(
+        selectedTreatmentIds,
+        Constants.TIMESLOTS.DEFAULT_DAYS_FORWARD,
+      ),
   });
 
   const dateSlots = useMemo(() => {
@@ -140,16 +145,11 @@ export default function SecondStep(props: ITimeSlot) {
     <div className={styles.container}>
       {selectedTreatmentIds?.length > 0 && (
         <div className={styles.item} key={"DAY_SELECTION"}>
-          <ButtonGroup
-            buttonItems={dateSlots}
-            title={"DATA"}
-            defaultSelectedKey={selectedDaySlot?.dayInMillis}
-            displayMode={DISPLAY_MODE.SWIPER}
-            onSelectedButtonsChange={(_, [daySlot]) =>
-              setSelectedDaySlot(daySlot)
-            }
+          <DaySlotDatePicker
+            onSetSelectedDaySlot={setSelectedDaySlot}
+            selectedDaySlot={selectedDaySlot}
+            treatmentTimeslots={treatmentTimeslots}
             theme={props.theme}
-            noPadding={props.noPadding}
           />
         </div>
       )}

@@ -41,9 +41,13 @@ class TreatmentsService {
     }
   }
 
-  public async getTreatmentTimeslots(treatmentsId: string[]): Promise<any[]> {
+  public async getTreatmentTimeslots(
+    treatmentsId: string[],
+    daysForward?: number,
+  ): Promise<any[]> {
     Logger.log(this.LOG_TAG, "Start getting treatment timeslots", [
       treatmentsId,
+      daysForward,
     ]);
 
     try {
@@ -54,6 +58,7 @@ class TreatmentsService {
         httpMethod: HttpMethods.POST,
         data: {
           treatmentsIds: treatmentsId,
+          daysForward: daysForward,
         },
       };
 

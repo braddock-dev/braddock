@@ -94,3 +94,7 @@ export const formatCurrency = (price: number | String, currency: string) => {
     .format(Number(price))
     .replace(/\s+/g, "");
 };
+
+export const convertDaysToMilliseconds = (days: number): number => {
+  return days * 24 * 60 * 60 * 1000;
+};
