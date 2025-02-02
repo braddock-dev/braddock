@@ -111,11 +111,11 @@ export const Constants = {
     REFETCH_INTERVAL: 300000, // 5 minutes
     BUSINESS_FILTER: {
       DEFAULT_PAST_DAYS: 7,
-      DEFAULT_FUTURE_DAYS: 30,
+      DEFAULT_FUTURE_DAYS: 180,
     },
     CUSTOMER_FILTER: {
       DEFAULT_PAST_DAYS: 30,
-      DEFAULT_FUTURE_DAYS: 30,
+      DEFAULT_FUTURE_DAYS: 180,
     },
   },
   TIMESLOTS: {
