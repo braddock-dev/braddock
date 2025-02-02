@@ -7,6 +7,7 @@ import {
   UserInfoForm,
   userInfoFormSchema,
 } from "@/app/ui/components/customer-form/FormSchema";
+import LightPhoneNumberInput from "@/app/ui/components/phone-number-input/LightPhoneNumberInput";
 
 export interface ICustomerForm {
   name: string;
@@ -25,6 +26,8 @@ export default function CustomerForm(props: ICustomerFormProps) {
     register,
     formState: { isValid, errors, touchedFields },
     getValues,
+    setValue,
+    trigger,
   } = useForm<UserInfoForm>({
     resolver: zodResolver(userInfoFormSchema),
     reValidateMode: "onChange",
@@ -53,18 +56,13 @@ export default function CustomerForm(props: ICustomerFormProps) {
           themeMode={"light"}
         />
 
-        <Input
-          type={"tel"}
-          inputMode={"tel"}
-          autoComplete={"none"}
-          placeholder={"Contacto (PT)"}
-          floatingMode
-          {...register("phoneNumber", { required: true, min: 10 })}
-          touched={touchedFields.phoneNumber}
+        <LightPhoneNumberInput
+          value={getValues().phoneNumber}
           errorMessage={errors.phoneNumber?.message}
-          isValid={!errors.phoneNumber && !!getValues().phoneNumber}
-          hasValue={!!getValues().phoneNumber}
-          themeMode={"light"}
+          onChange={(phoneNumber) => {
+            setValue("phoneNumber", phoneNumber);
+            trigger("phoneNumber");
+          }}
         />
 
         <Input

@@ -87,9 +87,7 @@ export default function LoginForm() {
                 <p className={"text-gray-100 text-sm"}>
                   Foi enviado um código de verificação para o número de telefone
                   <span className={"font-bold text-lightBrown01"}>
-                    {formatPhoneNumber(
-                      ` (${Constants.UI.PHONE_PREFIX.PT}${phoneNumber})`,
-                    )}
+                    {formatPhoneNumber(` (${phoneNumber})`)}
                   </span>
                 </p>
               ) : (

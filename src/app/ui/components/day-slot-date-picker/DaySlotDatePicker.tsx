@@ -10,7 +10,7 @@ import { CalendarIcon } from "lucide-react";
 import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import { Calendar } from "@/components/ui/calendar";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { IDaySlot } from "@/app/backend/business/treatments/data/TreatmentsData";
 import { Theme } from "@/app/ui/components/button-group/ButtonGroup";
 
@@ -20,7 +20,7 @@ interface ITreatmentTimeslot {
   onSetSelectedDaySlot: (daySlot: IDaySlot) => void;
   theme?: Theme;
 }
-export default function DaySlotDatePicker({
+function DaySlotDatePicker({
   treatmentTimeslots,
   selectedDaySlot,
   onSetSelectedDaySlot,
@@ -33,11 +33,14 @@ export default function DaySlotDatePicker({
     return treatmentTimeslots.map((slot) => new Date(slot.dayInMillis));
   }, [treatmentTimeslots]);
 
-  const isDateAvailable = (date: Date) => {
-    return availableDates.some((availableDate) =>
-      dayjs(availableDate).isSame(date, "day"),
-    );
-  };
+  const isDateAvailable = useCallback(
+    (date: Date) => {
+      return availableDates.some((availableDate) =>
+        dayjs(availableDate).isSame(date, "day"),
+      );
+    },
+    [availableDates],
+  );
 
   return (
     <div className={styles.container} data-theme={theme}>
@@ -88,3 +91,5 @@ export default function DaySlotDatePicker({
     </div>
   );
 }
+
+export default React.memo(DaySlotDatePicker);

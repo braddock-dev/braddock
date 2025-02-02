@@ -16,7 +16,6 @@ import CustomerForm, {
 } from "@/app/ui/components/customer-form/CustomerForm";
 import DialogWrapper from "@/app/ui/components/dialog-wrapper/DialogWrapper";
 import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
-import { Constants } from "@/app/utils/Constants";
 
 export default function Page() {
   const [customerToUpdate, setCustomerToUpdate] = useState<ICustomer>();
@@ -43,7 +42,7 @@ export default function Page() {
           {
             customerEmail: data.form.email,
             customerName: data.form.name,
-            customerPhoneNumber: `${Constants.UI.PHONE_PREFIX.PT}${data.form.phoneNumber}`,
+            customerPhoneNumber: `${data.form.phoneNumber}`,
           },
           data.customerId,
         ),

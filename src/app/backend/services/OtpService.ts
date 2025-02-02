@@ -10,7 +10,6 @@ import { IOtpRequestData } from "@/app/backend/business/auth/data/OtpData";
 
 class OtpService {
   private readonly LOG_TAG = "OtpService";
-  private readonly DEFAULT_COUNTRY_CODE = "pt";
 
   constructor() {
     Logger.info(this.LOG_TAG, "Service initialized");
@@ -24,8 +23,7 @@ class OtpService {
         url: Constants.API_ROUTES.SEND_OTP(),
         httpMethod: HttpMethods.POST,
         data: {
-          phoneNumber: phoneNumber,
-          countryCode: this.DEFAULT_COUNTRY_CODE,
+          msisdn: `+${phoneNumber}`,
         },
       };
 

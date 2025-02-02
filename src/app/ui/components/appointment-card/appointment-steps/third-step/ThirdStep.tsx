@@ -13,6 +13,7 @@ import {
   userInfoFormSchema,
 } from "@/app/ui/components/appointment-card/appointment-steps/third-step/FormSchema";
 import { useAuthStore } from "@/app/store/authStore";
+import DarkPhoneNumberInput from "@/app/ui/components/phone-number-input/DarkPhoneNumberInput";
 
 interface IThirdStepProps {
   isValidChange: (isValid: boolean) => void;
@@ -100,17 +101,13 @@ export default function ThirdStep(props: IThirdStepProps) {
             hasValue={!!getValues().email}
           />
 
-          <Input
-            type={"tel"}
-            inputMode={"tel"}
-            autoComplete={"none"}
-            placeholder={"Seu Contacto (PT)"}
-            floatingMode
-            {...register("phoneNumber", { required: true, min: 10 })}
-            touched={touchedFields.phoneNumber}
+          <DarkPhoneNumberInput
+            value={getValues().phoneNumber}
             errorMessage={errors.phoneNumber?.message}
-            isValid={!errors.phoneNumber && !!getValues().phoneNumber}
-            hasValue={!!getValues().phoneNumber}
+            onChange={(phoneNumber) => {
+              setValue("phoneNumber", phoneNumber);
+              trigger("phoneNumber");
+            }}
           />
         </form>
       </div>

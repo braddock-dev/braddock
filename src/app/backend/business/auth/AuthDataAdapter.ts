@@ -7,8 +7,6 @@ import {
   AuthRoles,
   IUserInfo,
 } from "@/app/backend/business/auth/data/AuthDtos";
-import { removePhoneNumberPrefix } from "@/app/utils/functions";
-import { Constants } from "@/app/utils/Constants";
 
 type OTP_DATA_MAPPING = {
   USER_ROLES: Record<AuthRoleValues, AuthRoles>;
@@ -42,10 +40,7 @@ class AuthDataAdapter {
     return {
       email: data.email || "",
       role: this.convertDataToUserRole(data.role),
-      phoneNumber: removePhoneNumberPrefix(
-        data.msisdn || "",
-        Constants.UI.PHONE_PREFIX.PT,
-      ),
+      phoneNumber: data.msisdn,
       name: data.name || "",
       hasGoogleCalendar: data.googleCalendarIntegrationStatus === "integrated",
     };
