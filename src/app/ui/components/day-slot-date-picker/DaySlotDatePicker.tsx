@@ -83,7 +83,7 @@ function DaySlotDatePicker({
                 }
               }
             }}
-            disabled={(date) => !isDateAvailable(date) || date < new Date()}
+            // disabled={(date) => !isDateAvailable(date) || date < new Date()}
             initialFocus
           />
         </PopoverContent>
