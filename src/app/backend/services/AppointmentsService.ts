@@ -52,6 +52,7 @@ class AppointmentsService {
 
   public async scheduleAppointment(
     appointmentData: INewAppointmentRequest,
+    daysForward?: number,
   ): Promise<any> {
     Logger.log(this.LOG_TAG, "Start scheduling appointment", [appointmentData]);
 
@@ -67,6 +68,7 @@ class AppointmentsService {
           httpMethod: HttpMethods.POST,
           data: {
             treatmentsIds: appointmentData.treatmentsId,
+            daysForward: daysForward,
           },
         };
       } else if (appointmentData.requestedBy === AuthRoles.BUSINESS) {

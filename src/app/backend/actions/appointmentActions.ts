@@ -15,8 +15,9 @@ export const getAppointments = async (
 
 export async function scheduleAppointment(
   appointmentData: INewAppointmentRequestData,
+  daysForward?: number,
 ): Promise<void> {
-  return AppointmentsManager.scheduleAppointment(appointmentData);
+  return AppointmentsManager.scheduleAppointment(appointmentData, daysForward);
 }
 
 export async function deleteAppointment(appointmentId: string): Promise<void> {
