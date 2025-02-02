@@ -150,6 +150,7 @@ export default function SecondStep(props: ITimeSlot) {
             onSetSelectedDaySlot={setSelectedDaySlot}
             selectedDaySlot={selectedDaySlot}
             treatmentTimeslots={treatmentTimeslots}
+            theme={props.theme}
           />
         </div>
       )}

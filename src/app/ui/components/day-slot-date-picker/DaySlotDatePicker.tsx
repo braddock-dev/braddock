@@ -12,16 +12,19 @@ import { Constants } from "@/app/utils/Constants";
 import { Calendar } from "@/components/ui/calendar";
 import React, { useMemo, useState } from "react";
 import { IDaySlot } from "@/app/backend/business/treatments/data/TreatmentsData";
+import { Theme } from "@/app/ui/components/button-group/ButtonGroup";
 
 interface ITreatmentTimeslot {
   treatmentTimeslots?: IDaySlot[];
   selectedDaySlot?: IDaySlot;
   onSetSelectedDaySlot: (daySlot: IDaySlot) => void;
+  theme?: Theme;
 }
 export default function DaySlotDatePicker({
   treatmentTimeslots,
   selectedDaySlot,
   onSetSelectedDaySlot,
+  theme = Theme.DARK,
 }: ITreatmentTimeslot) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
@@ -37,7 +40,7 @@ export default function DaySlotDatePicker({
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-theme={theme}>
       <h3 className={styles.title}>DATA</h3>
       <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
         <PopoverTrigger asChild>

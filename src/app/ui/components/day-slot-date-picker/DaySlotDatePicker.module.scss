@@ -19,5 +19,16 @@
     }
   }
 
+  &[data-theme="DARK"] {
+    .title {
+      color: $white;
+    }
+  }
+
+  &[data-theme="LIGHT"] {
+    .title {
+      color: $gray01;
+    }
+  }
 
 }
