@@ -28,18 +28,34 @@ function DaySlotDatePicker({
 }: ITreatmentTimeslot) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-  const availableDates = useMemo(() => {
-    if (!treatmentTimeslots) return [];
-    return treatmentTimeslots.map((slot) => new Date(slot.dayInMillis));
+  // Memoize today's timestamp for faster comparison
+  const todayTimestamp = useMemo(() => {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+  }, []);
+
+  // Create a Set of available date timestamps for O(1) lookup
+  const availableDatesSet = useMemo(() => {
+    if (!treatmentTimeslots) return new Set<number>();
+    return new Set(
+      treatmentTimeslots.map((slot) => {
+        const date = new Date(slot.dayInMillis);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+      })
+    );
   }, [treatmentTimeslots]);
 
-  const isDateAvailable = useCallback(
+  // Optimized disabled function using timestamp comparison
+  const isDateDisabled = useCallback(
     (date: Date) => {
-      return availableDates.some((availableDate) =>
-        dayjs(availableDate).isSame(date, "day"),
-      );
+      const timestamp = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      ).getTime();
+      return timestamp < todayTimestamp || !availableDatesSet.has(timestamp);
     },
-    [availableDates],
+    [availableDatesSet, todayTimestamp]
   );
 
   return (
@@ -83,7 +99,7 @@ function DaySlotDatePicker({
                 }
               }
             }}
-            // disabled={(date) => !isDateAvailable(date) || date < new Date()}
+            disabled={isDateDisabled}
             initialFocus
           />
         </PopoverContent>

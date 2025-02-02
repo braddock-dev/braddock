@@ -119,7 +119,7 @@ export const Constants = {
     },
   },
   TIMESLOTS: {
-    DEFAULT_DAYS_FORWARD: 90,
+    DEFAULT_DAYS_FORWARD: 180,
   },
 };
 
