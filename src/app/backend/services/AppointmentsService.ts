@@ -80,7 +80,7 @@ class AppointmentsService {
           data: {
             treatmentsIds: appointmentData.treatmentsId,
             customerName: appointmentData.customerName,
-            customerMsisdn: `+${appointmentData.customerPhone}`,
+            customerMsisdn: `${appointmentData.customerPhone}`,
             daysForward: daysForward,
           },
         };
