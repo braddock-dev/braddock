@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "env-cmd -f .env.dev next dev",
     "prod": "env-cmd -f .env.prod next dev",
+    "prod-railway": "env-cmd -f .env.prod-railway next dev",
     "mock": "env-cmd -f .env.mock next dev",
     "build": "next build",
     "start": "next start",

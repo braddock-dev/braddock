@@ -121,6 +121,7 @@ export const Constants = {
   TIMESLOTS: {
     DEFAULT_DAYS_FORWARD: 180,
   },
+  FALLBACK_APPOINTMENT_URL: "https://calendly.com/luyzferrnando2/30min",
 };
 
 export enum Currency {

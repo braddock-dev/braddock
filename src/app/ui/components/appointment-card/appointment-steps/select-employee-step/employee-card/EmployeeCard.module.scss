@@ -1,0 +1,81 @@
+@import "@/app/ui/styles/vars";
+@import "@/app/ui/styles/breakpoints";
+@import "@/app/ui/styles/functions";
+@import "@/app/ui/styles/mixins";
+
+@mixin selected() {
+  box-shadow: 0 toRem(8) toRem(16) rgba(0, 0, 0, 0.2);
+  background-color: $brown;
+  border-color: $brown;
+
+  .image{
+    filter: brightness(1.1);
+  }
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  padding: toRem(10);
+  border-radius: toRem(8);
+  border: 1px solid #E0E0E0;
+  box-shadow: 0 toRem(4) toRem(8) rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  @include defaultTransition;
+
+  &:hover{
+    @include selected;
+    background-color: rgba($brown, 0.6);
+  }
+
+  &[data-selected="true"]{
+    @include selected;
+  }
+
+  .image{
+    width: 100%;
+    height: toRem(200);
+    border-radius: toRem(8);
+    object-fit: cover;
+    object-position: top;
+    @include defaultTransition;
+  }
+
+  .content{
+    display: flex;
+    flex-direction: column;
+    gap: toRem(2);
+    margin-top: toRem(10);
+
+    .name{
+      font-size: toRem(18);
+      font-weight: bold;
+      color: $white;
+    }
+
+    .position{
+      font-size: toRem(14);
+      color: $gray02;
+      opacity: 0.8;
+    }
+  }
+
+  @include max-md {
+    background-color: $black01;
+
+    .image{
+      height: toRem(150);
+    }
+
+    .content{
+      .name{
+        font-size: toRem(16);
+      }
+
+      .position{
+        font-size: toRem(12);
+      }
+    }
+  }
+
+}

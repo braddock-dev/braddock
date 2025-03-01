@@ -1,0 +1,22 @@
+@import "src/app/ui/styles/vars.scss";
+@import "src/app/ui/styles/functions.scss";
+
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .title{
+    font-size: toRem(17);
+    font-weight: 700;
+    color: $brown01;
+    text-align: left;
+  }
+
+  .employeeList{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+}

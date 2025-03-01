@@ -31,8 +31,11 @@ import {
   isNotAllowedServiceSelected,
   notAllowedServicesSelected,
 } from "@/app/admin/appointments/utils";
+import SelectEmployeeStep from "@/app/ui/components/appointment-card/appointment-steps/select-employee-step/SelectEmployeeStep";
+import { Constants } from "@/app/utils/Constants";
 
 export enum APPOINTMENT_STEPS {
+  SELECT_EMPLOYEE = "SELECT_EMPLOYEE",
   SERVICES_SELECTION = "SERVICES_SELECTION",
   DATE_SELECTION = "DATE_SELECTION",
   COMPLETE_APPOINTMENT = "COMPLETE_APPOINTMENT",
@@ -47,6 +50,7 @@ interface IAvailableSteps {
 type IAvailableStepsMap = Record<APPOINTMENT_STEPS, IAvailableSteps>;
 
 const defaultAvailableSteps: IAvailableStepsMap = {
+  [APPOINTMENT_STEPS.SELECT_EMPLOYEE]: { isValid: false },
   [APPOINTMENT_STEPS.SERVICES_SELECTION]: { isValid: false },
   [APPOINTMENT_STEPS.DATE_SELECTION]: { isValid: false },
   [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: { isValid: false },
@@ -60,6 +64,9 @@ function AppointmentSteps() {
   const isUserAuthenticated = useAuthStore(authSelectors.isAuthenticated);
   const setHeroCardType = useUIStore(uiActions.setHeroCardType);
   const [isNotAllowedModalOpen, setIsNotAllowedModalOpen] = useState(false);
+  const selectedEmployee = useNewAppointmentStore(
+    newAppointmentSelectors.employeeId,
+  );
 
   const selectedTreatments = useNewAppointmentStore(
     newAppointmentSelectors.selectedTreatments,
@@ -78,7 +85,7 @@ function AppointmentSteps() {
   );
 
   const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.SERVICES_SELECTION,
+    APPOINTMENT_STEPS.SELECT_EMPLOYEE,
   );
 
   const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
@@ -148,7 +155,34 @@ function AppointmentSteps() {
     }
   };
 
-  const handleStartAppointmentFlow = useCallback(() => {
+  const handleSelectEmployee = useCallback(() => {
+    if (isNotAllowedServicesSelected) {
+      setIsNotAllowedModalOpen(true);
+      return;
+    }
+
+    if (authUser?.role === AuthRoles.BUSINESS) {
+      toast.info(
+        "Apenas clientes podem agendar, entre com uma conta de cliente",
+      );
+      return;
+    }
+
+    if (!selectedEmployee) {
+      toast.info("Selecione um profissional para continuar");
+      return;
+    }
+
+    //TODO: Remove this after employee selection is implemented in the backend
+    if (selectedEmployee === "2") {
+      window.location.href = Constants.FALLBACK_APPOINTMENT_URL;
+      return;
+    }
+
+    handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
+  }, [authUser?.role, isNotAllowedServicesSelected, selectedEmployee]);
+
+  const handleSelectServices = useCallback(() => {
     if (isNotAllowedServicesSelected) {
       setIsNotAllowedModalOpen(true);
       return;
@@ -165,6 +199,13 @@ function AppointmentSteps() {
   }, [authUser?.role, isNotAllowedServicesSelected]);
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
+    [APPOINTMENT_STEPS.SELECT_EMPLOYEE]: (
+      <SelectEmployeeStep
+        isValidChange={(isValid) =>
+          changeStepValidState(APPOINTMENT_STEPS.SELECT_EMPLOYEE, isValid)
+        }
+      />
+    ),
     [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
       <FirstStep
         isValidChange={(isValid) =>
@@ -199,16 +240,43 @@ function AppointmentSteps() {
   };
 
   const renderButtons: Record<APPOINTMENT_STEPS, ReactElement> = {
-    [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
+    [APPOINTMENT_STEPS.SELECT_EMPLOYEE]: (
       <Button
         fullWidth
         color={ButtonColors.WHITE}
         className={styles.button}
-        disabled={!availableSteps[APPOINTMENT_STEPS.SERVICES_SELECTION].isValid}
-        onClick={handleStartAppointmentFlow}
+        disabled={!availableSteps[APPOINTMENT_STEPS.SELECT_EMPLOYEE].isValid}
+        onClick={handleSelectEmployee}
       >
         CONTINUAR
       </Button>
+    ),
+    [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
+      <>
+        <div className={styles.fullWidth}>
+          <Button
+            fullWidth
+            color={ButtonColors.WHITE}
+            outline
+            className={styles.button}
+            onClick={() => handleChangeStep(APPOINTMENT_STEPS.SELECT_EMPLOYEE)}
+          >
+            VOLTAR
+          </Button>
+        </div>
+
+        <Button
+          fullWidth
+          color={ButtonColors.WHITE}
+          className={styles.button}
+          disabled={
+            !availableSteps[APPOINTMENT_STEPS.SERVICES_SELECTION].isValid
+          }
+          onClick={handleSelectServices}
+        >
+          CONTINUAR
+        </Button>
+      </>
     ),
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
       <>
