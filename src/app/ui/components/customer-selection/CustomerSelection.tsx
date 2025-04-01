@@ -65,10 +65,10 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
       }),
     );
 
-    customersOptionsList.push(addNewCustomerOption);
+    customersOptionsList.unshift(addNewCustomerOption);
 
     if (newCustomer) {
-      customersOptionsList.unshift({
+      customersOptionsList.splice(1, 0, {
         label: (
           <p>
             {newCustomer.name}  <span className="text-gray-500">{newCustomer.phoneNumber}</span>
