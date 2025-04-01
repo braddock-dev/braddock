@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { ReactElement, useEffect, useRef } from "react";
 import styles from "./Select.module.scss";
 import {
   CheckIcon,
@@ -17,7 +17,7 @@ export enum ItemType {
 }
 
 export interface ISelectItem {
-  label: string;
+  label: string | ReactElement;
   value: string;
   type?: ItemType;
   selectedDisplay?: string;
@@ -77,7 +77,11 @@ export default function SelectComponent(props: ISelectProps) {
       itemsTobeSelected = [...selectedItems, item];
 
       if (props.searchable) {
-        setSearchValue(item.label);
+        if(typeof item.label === "string"){
+          setSearchValue(item.label);
+        }else{
+          setSearchValue(item.selectedDisplay || item.value);
+        }
         setIsOpen(false);
         itemsTobeSelected = [item];
       }
