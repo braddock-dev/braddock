@@ -22,6 +22,8 @@ class OperatorService {
 
       const response = await ApiInterface.send(request);
 
+      Logger.debug(this.LOG_TAG, "Get operators response", [response]);
+
       if (!response || response.status !== HttpStatus.OK || !response?.data) {
         throw new Error("Failed to get operators");
       }
