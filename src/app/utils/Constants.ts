@@ -65,6 +65,8 @@ export const Constants = {
     DELETE_TIME_OFF: (id: number) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/timeOff/${id}`,
     GET_WORKING_HOURS: () => `${EXTERNAL_CONFIGS.BASE_URL}/workingHours`,
+    GET_OPERATORS: (businessId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/operators`,
   },
   APP_ROUTES: {
     HOME: "/",
