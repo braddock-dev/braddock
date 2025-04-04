@@ -11,6 +11,7 @@ class OperatorDataAdapter {
 
   public convertDataToOperator(data: IOperatorResponse): IOperator {
     return {
+      id: data.id,
       name: data.name,
       msisdn: data.msisdn,
       email: data.email,

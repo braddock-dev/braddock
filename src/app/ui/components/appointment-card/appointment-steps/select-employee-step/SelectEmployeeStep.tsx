@@ -44,14 +44,14 @@ export default function SelectEmployeeStep(props: ISelectEmployeeStepProps) {
       <div className={styles.employeeList}>
         {operators.map((operator) => (
           <EmployeeCard
-            key={operator.msisdn}
+            key={operator.id}
             employee={{
-              id: operator.msisdn,
+              id: operator.id,
               name: operator.name,
               photo: operator.iconUrl,
               position: operator.description,
             }}
-            isSelected={selectedEmployee === operator.msisdn}
+            isSelected={selectedEmployee === operator.id}
             onSelect={(selectedEmployee) => {
               setEmployeeId(selectedEmployee.id);
               props.isValidChange(true);

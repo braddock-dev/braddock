@@ -1,4 +1,5 @@
 export interface IOperatorResponse {
+  id: string;
   name: string;
   msisdn: string;
   email: string;
