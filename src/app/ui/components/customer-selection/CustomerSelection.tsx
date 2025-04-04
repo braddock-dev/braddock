@@ -2,7 +2,7 @@ import SelectComponent, {
   ISelectItem,
   ItemType,
 } from "@/app/ui/components/select/Select";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, ReactElement } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { getCustomers } from "@/app/backend/actions/customerActions";
 import { toast } from "sonner";
@@ -53,19 +53,27 @@ export default function CustomerSelection(props: ICustomerSelectionProps) {
 
     const customersOptionsList: ISelectItem[] = customersList.map(
       (customer) => ({
-        label: customer.name || customer.msisdn,
+        label: (
+          <p>
+            {customer.name} - <span className="text-gray-500">{customer.msisdn}</span>
+          </p>
+        ),
         value: customer.msisdn,
         type: ItemType.SIMPLE,
-        selectedDisplay: customer.name || customer.msisdn,
+        selectedDisplay: `${customer.name}  ${customer.msisdn}` || customer.msisdn,
         data: customer,
       }),
     );
 
-    customersOptionsList.push(addNewCustomerOption);
+    customersOptionsList.unshift(addNewCustomerOption);
 
     if (newCustomer) {
-      customersOptionsList.unshift({
-        label: newCustomer.name || newCustomer.phoneNumber,
+      customersOptionsList.splice(1, 0, {
+        label: (
+          <p>
+            {newCustomer.name}  <span className="text-gray-500">{newCustomer.phoneNumber}</span>
+          </p>
+        ),
         value: newCustomer.phoneNumber,
         type: ItemType.SIMPLE,
         selectedDisplay: newCustomer.name || newCustomer.phoneNumber,
