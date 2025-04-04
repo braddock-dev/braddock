@@ -46,6 +46,10 @@ export default function FirstStep({
     newAppointmentActions.setSelectedTreatment,
   );
 
+  const employeeId = useNewAppointmentStore(
+    newAppointmentSelectors.employeeId,
+  );
+
   const {
     data: treatments,
     isLoading,
@@ -53,8 +57,8 @@ export default function FirstStep({
     isError,
     error,
   } = useQuery({
-    queryKey: ["treatmentsList"],
-    queryFn: () => getTreatmentsList(),
+    queryKey: ["treatmentsList", [employeeId]],
+    queryFn: () => getTreatmentsList(employeeId || ""),
   });
 
   useEffect(() => {

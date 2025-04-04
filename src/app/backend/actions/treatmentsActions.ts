@@ -9,9 +9,10 @@ import {
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 
 export async function getTreatmentsList(
+  operatorId: string,
   dir: SortOrder = SortOrder.ASC,
 ): Promise<ITreatment[]> {
-  return TreatmentManager.getTreatments(dir);
+  return TreatmentManager.getTreatments(dir, operatorId);
 }
 
 export async function getTreatmentTimeslots(

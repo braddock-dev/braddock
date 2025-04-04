@@ -14,11 +14,11 @@ class TreatmentManager {
     Logger.log(this.LOG_TAG, "Service initialized");
   }
 
-  public async getTreatments(dir: SortOrder): Promise<ITreatment[]> {
-    Logger.debug(this.LOG_TAG, "Start getting treatments");
+  public async getTreatments(dir: SortOrder, operatorId: string): Promise<ITreatment[]> {
+    Logger.debug(this.LOG_TAG, "Start getting treatments",[dir, operatorId]);
 
     try {
-      const treatmentsResponse = await TreatmentsService.getTreatments();
+      const treatmentsResponse = await TreatmentsService.getTreatments(operatorId);
 
       Logger.debug(this.LOG_TAG, "Get treatments response", [
         treatmentsResponse,

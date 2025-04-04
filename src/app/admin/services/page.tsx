@@ -27,6 +27,8 @@ export default function Page() {
   const [treatmentToBeDeleted, setTreatmentToBeDeleted] =
     useState<ITreatment>();
 
+  const employeeId = "1"; //TODO: Get logged in employee id
+
   const {
     data: treatmentsList,
     isPending: isPendingTreatmentsList,
@@ -34,7 +36,7 @@ export default function Page() {
     refetch,
   } = useQuery({
     queryKey: ["treatments"],
-    queryFn: () => getTreatmentsList(SortOrder.DESC),
+    queryFn: () => getTreatmentsList(employeeId, SortOrder.DESC),
   });
 
   const { mutate: deleteServiceMutation, isPending } = useMutation({

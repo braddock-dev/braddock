@@ -37,8 +37,8 @@ export const Constants = {
     FULL_DATE: "DD [de] MMMM [de] YYYY",
   },
   API_ROUTES: {
-    GET_TREATMENTS: (businessId: string) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
+    GET_TREATMENTS: (businessId: string, operatorId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments?operatorId=${operatorId}`,
     CREATE_TREATMENT: `${EXTERNAL_CONFIGS.BASE_URL}/treatments`,
     DELETE_TREATMENT: (treatmentId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/treatments/${treatmentId}`,
@@ -123,7 +123,6 @@ export const Constants = {
   TIMESLOTS: {
     DEFAULT_DAYS_FORWARD: 180,
   },
-  FALLBACK_APPOINTMENT_URL: "https://calendly.com/luyzferrnando2/30min",
 };
 
 export enum Currency {

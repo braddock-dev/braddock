@@ -15,13 +15,14 @@ class TreatmentsService {
     Logger.log(this.LOG_TAG, "Service initialized");
   }
 
-  public async getTreatments(): Promise<any[]> {
+  public async getTreatments(operatorId: string): Promise<any[]> {
     Logger.log(this.LOG_TAG, "Start getting treatments");
 
     try {
       const request: IHttpRequestConfig = {
         url: Constants.API_ROUTES.GET_TREATMENTS(
           Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
+          operatorId,
         ),
         httpMethod: HttpMethods.GET,
       };
