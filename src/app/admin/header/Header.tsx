@@ -3,10 +3,38 @@
 import AppLogo from "@/app/ui/vectors/logo-horizontal.svg";
 import { useAuthStore } from "@/app/store/authStore";
 import AvatarOptions from "@/app/ui/components/avatar-options/AvatarOptions";
-import NotificationsIcon from "@/app/ui/vectors/notifications-icon.svg";
+import { operatorActions, operatorSelectors, useOperatorStore } from "@/app/store/operatorStore";
+import { useQuery } from "@tanstack/react-query";
+import { getOperators } from "@/app/backend/actions/operatorActions";
+import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
+import SelectComponent, { ISelectItem } from "@/app/ui/components/select/Select";
+import styles from "./Header.module.scss";
+import { useMemo } from "react";
 
 export default function Header() {
   const userInfo = useAuthStore((state) => state.userInfo);
+  const selectedOperator = useOperatorStore(operatorSelectors.selectedOperator);
+  const setSelectedOperator = useOperatorStore(operatorActions.setSelectedOperator);
+
+  const { data: operators } = useQuery({
+    queryKey: ["operators"],
+    queryFn: () => getOperators(),
+  });
+
+  const selectItems: ISelectItem[] = useMemo(() => [
+    {
+      label: "Todos",
+      selectedDisplay: "Todos",
+      value: "all",
+      data: null,
+    },
+    ...(operators?.map((operator) => ({
+      label: operator.name,
+      selectedDisplay: operator.name,
+      value: operator.id,
+      data: operator,
+    })) || []),
+  ], [operators]);
 
   return (
     <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-brown border-b text-sm py-2.5 lg:ps-[260px]">
@@ -48,18 +76,26 @@ export default function Header() {
           </a>
         </div>
 
-        <div className="w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3">
-          <div></div>
+        <div className="w-full flex items-center justify-end ms-auto  gap-x-3">
+          <div className="flex justify-end">
+            <SelectComponent
+             selectTriggerClassName={styles.selectTrigger}
+              items={selectItems}
+              placeholder="Selecione um operador"
+              multiple={false}
+              onChange={(items) => {
+                const selectedItem = items[0];
+                if (selectedItem.value === "all") {
+                  setSelectedOperator("all");
+                } else {
+                  setSelectedOperator(selectedItem.data as IOperator);
+                }
+              }}
+              defaultValue={selectedOperator === "all" ? ["all"] : selectedOperator ? [selectedOperator.id] : []}
+            />
+          </div>
 
           <div className="flex flex-row items-center justify-end gap-1">
-            <button
-              type="button"
-              className="group size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-            >
-              <NotificationsIcon className="shrink-0 size-4 stroke-amber-50 group-hover:stroke-brown" />
-              <span className="sr-only">Notifications</span>
-            </button>
-
             {userInfo && <AvatarOptions userInfo={userInfo} />}
           </div>
         </div>
