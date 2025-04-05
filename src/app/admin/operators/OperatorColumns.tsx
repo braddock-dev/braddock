@@ -13,7 +13,14 @@ import {
 import * as React from "react";
 import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 
-export const operatorColumns: ColumnDef<IOperator>[] = [
+interface IOperatorColumnsProps {
+  onEditOperator: (operator: IOperator) => void;
+  onDeleteOperator: (operator: IOperator) => void;
+}
+
+export const getOperatorColumns = (
+  props: IOperatorColumnsProps,
+): ColumnDef<IOperator>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -73,10 +80,16 @@ export const operatorColumns: ColumnDef<IOperator>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
-          
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar</DropdownMenuItem>
-            <DropdownMenuItem>Excluir</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => props.onEditOperator(operator)}>
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => props.onDeleteOperator(operator)}
+            >
+              Excluir
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

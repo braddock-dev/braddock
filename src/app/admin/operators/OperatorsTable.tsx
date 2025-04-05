@@ -13,7 +13,7 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { operatorColumns } from "./OperatorColumns";
+import { getOperatorColumns } from "./OperatorColumns";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -41,6 +41,8 @@ const columnIdToLabelMap = {
 
 interface IOperatorsTableProps {
   operators: IOperator[];
+  onEditOperator: (operator: IOperator) => void;
+  onDeleteOperator: (operator: IOperator) => void;
 }
 
 export function OperatorsTable(props: IOperatorsTableProps) {
@@ -51,7 +53,10 @@ export function OperatorsTable(props: IOperatorsTableProps) {
 
   const table = useReactTable({
     data: props.operators,
-    columns: operatorColumns,
+    columns: getOperatorColumns({
+      onEditOperator: props.onEditOperator,
+      onDeleteOperator: props.onDeleteOperator,
+    }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -152,7 +157,7 @@ export function OperatorsTable(props: IOperatorsTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={operatorColumns.length}
+                  colSpan={getOperatorColumns({ onEditOperator: () => {}, onDeleteOperator: () => {} }).length}
                   className="h-24 text-center"
                 >
                   No results.
