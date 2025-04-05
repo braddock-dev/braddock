@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import * as React from "react";
 import { Fragment, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getOperators, updateOperator } from "@/app/backend/actions/operatorActions";
+import { getOperators, deleteOperator } from "@/app/backend/actions/operatorActions";
 import { toast } from "sonner";
 import Spinner from "@/app/ui/components/spinner/Spinner";
 import { OperatorsTable } from "./OperatorsTable";
@@ -29,7 +29,7 @@ export default function Page() {
 
   const { mutate: deleteOperatorMutation, isPending: isPendingDelete } = useMutation({
     mutationKey: ["deleteOperator"],
-    mutationFn: (operatorId: string) => updateOperator(operatorId, { isActive: false }),
+    mutationFn: (operatorId: string) => deleteOperator(operatorId),
     onError: () => {
       toast.error("Erro ao remover o operador");
     },

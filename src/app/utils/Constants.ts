@@ -69,6 +69,8 @@ export const Constants = {
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/operators`,
     UPDATE_OPERATOR: (operatorId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/operators/${operatorId}`,
+    DELETE_OPERATOR: (operatorId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/operators/${operatorId}`,
   },
   APP_ROUTES: {
     HOME: "/",

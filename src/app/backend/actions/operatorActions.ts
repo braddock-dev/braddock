@@ -12,4 +12,8 @@ export async function updateOperator(
   data: Partial<IOperator>
 ): Promise<IOperator> {
   return OperatorManager.updateOperator(operatorId, data);
+}
+
+export async function deleteOperator(operatorId: string): Promise<void> {
+  return OperatorManager.deleteOperator(operatorId);
 } 

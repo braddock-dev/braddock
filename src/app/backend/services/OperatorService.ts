@@ -66,6 +66,30 @@ class OperatorService {
       throw error;
     }
   }
+
+  public async deleteOperator(operatorId: string): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Deleting operator...", [operatorId]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.DELETE_OPERATOR(operatorId),
+        httpMethod: HttpMethods.DELETE,
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Delete operator response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK) {
+        throw new Error("Failed to delete operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Delete operator response success");
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to delete operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorService(); 

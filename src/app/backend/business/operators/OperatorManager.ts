@@ -41,6 +41,18 @@ class OperatorManager {
       throw error;
     }
   }
+
+  public async deleteOperator(operatorId: string): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Deleting operator...", [operatorId]);
+
+    try {
+      await OperatorService.deleteOperator(operatorId);
+      Logger.log(this.LOG_TAG, "Delete operator response success");
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to delete operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorManager(); 
