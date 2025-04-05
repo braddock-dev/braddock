@@ -24,7 +24,7 @@ export default function Header() {
   const selectItems: ISelectItem[] = useMemo(() => [
     {
       label: "Todos",
-      selectedDisplay: "Todos",
+      selectedDisplay: "Todos Operadores",
       value: "all",
       data: null,
     },
