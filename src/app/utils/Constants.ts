@@ -76,6 +76,7 @@ export const Constants = {
     SERVICES: "/admin/services",
     ACCOUNT: "/admin/account",
     LOGIN: "/login",
+    OPERATORS: "/admin/operators",
   },
   ERRORS: {
     GENERIC: {
