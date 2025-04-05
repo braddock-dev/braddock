@@ -31,6 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ButtonColors } from "@/app/ui/components/button/Button";
 
 const columnIdToLabelMap = {
   name: "Nome",
@@ -43,6 +44,7 @@ interface IOperatorsTableProps {
   operators: IOperator[];
   onEditOperator: (operator: IOperator) => void;
   onDeleteOperator: (operator: IOperator) => void;
+  onAddOperator: () => void;
 }
 
 export function OperatorsTable(props: IOperatorsTableProps) {
@@ -90,7 +92,10 @@ export function OperatorsTable(props: IOperatorsTableProps) {
           type="text"
           centerText
         />
-        <DropdownMenu modal={false}>
+
+        <div className="flex gap-2 items-center">
+        
+           <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Colunas <ChevronDown />
@@ -116,6 +121,15 @@ export function OperatorsTable(props: IOperatorsTableProps) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <Button
+            variant={"primary"} 
+            onClick={props.onAddOperator}
+          >
+            Adicionar
+          </Button>
+        </div>
+       
       </div>
       <div className="rounded-md border">
         <Table>

@@ -11,11 +11,14 @@ import { OperatorsTable } from "./OperatorsTable";
 import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
 import { EditOperator } from "@/app/ui/components/operators/edit-operator/EditOperator";
+import { CreateOperator } from "@/app/ui/components/operators/create-operator/CreateOperator";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
+import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 
 export default function Page() {
   const [operatorToBeEdited, setOperatorToBeEdited] = useState<IOperator>();
   const [operatorToBeDeleted, setOperatorToBeDeleted] = useState<IOperator>();
+  const [isCreatingOperator, setIsCreatingOperator] = useState(false);
 
   const {
     data: operatorsList,
@@ -64,6 +67,7 @@ export default function Page() {
               operators={operatorsList || []}
               onEditOperator={(operator) => setOperatorToBeEdited(operator)}
               onDeleteOperator={(operator) => setOperatorToBeDeleted(operator)}
+              onAddOperator={() => setIsCreatingOperator(true)}
             />
 
             <SidePanelWrapper
@@ -81,6 +85,20 @@ export default function Page() {
                   }}
                 />
               )}
+            </SidePanelWrapper>
+
+            <SidePanelWrapper
+              onClose={() => setIsCreatingOperator(false)}
+              title={"Criar Operador"}
+              isOpen={isCreatingOperator}
+            >
+              <CreateOperator
+                onClose={() => setIsCreatingOperator(false)}
+                onCreated={() => {
+                  setIsCreatingOperator(false);
+                  refetch();
+                }}
+              />
             </SidePanelWrapper>
 
             <AlertDialogWrapper

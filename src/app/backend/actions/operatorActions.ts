@@ -16,4 +16,8 @@ export async function updateOperator(
 
 export async function deleteOperator(operatorId: string): Promise<void> {
   return OperatorManager.deleteOperator(operatorId);
+}
+
+export async function createOperator(data: IOperator): Promise<IOperator> {
+  return OperatorManager.createOperator(data);
 } 

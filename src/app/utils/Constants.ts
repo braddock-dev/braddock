@@ -67,6 +67,8 @@ export const Constants = {
     GET_WORKING_HOURS: () => `${EXTERNAL_CONFIGS.BASE_URL}/workingHours`,
     GET_OPERATORS: (businessId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/operators`,
+    CREATE_OPERATOR: () =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/operators`,
     UPDATE_OPERATOR: (operatorId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/operators/${operatorId}`,
     DELETE_OPERATOR: (operatorId: string) =>

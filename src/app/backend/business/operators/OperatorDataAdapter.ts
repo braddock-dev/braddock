@@ -23,6 +23,19 @@ class OperatorDataAdapter {
   public convertDataToOperators(data: IOperatorResponse[]): IOperator[] {
     return data.map(this.convertDataToOperator.bind(this));
   }
+
+  public convertDataToOperatorRequest(data: IOperator): IOperatorResponse {
+    return {
+      id: data.id,
+      name: data.name,
+      msisdn: data.msisdn,
+      email: data.email,
+      iconUrl: data.iconUrl || "",
+      description: data.description,
+    }
+  }
+  
+
 }
 
 export default new OperatorDataAdapter(); 

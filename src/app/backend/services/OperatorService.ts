@@ -90,6 +90,33 @@ class OperatorService {
       throw error;
     }
   }
+
+  public async createOperator(data: IOperatorResponse): Promise<IOperatorResponse> {
+    Logger.debug(this.LOG_TAG, "Creating operator...", [data]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.CREATE_OPERATOR(),
+        httpMethod: HttpMethods.POST,
+        data,
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Create operator response", [response]);
+
+      if (!response || response.status !== HttpStatus.CREATED || !response?.data) {
+        throw new Error("Failed to create operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Create operator response success", [response.data]);
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to create operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorService(); 

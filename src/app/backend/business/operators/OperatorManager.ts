@@ -53,6 +53,23 @@ class OperatorManager {
       throw error;
     }
   }
+
+  public async createOperator(data: IOperator): Promise<IOperator> {
+    Logger.debug(this.LOG_TAG, "Creating operator...", [data]);
+
+    try {
+      const operatorRequestData = OperatorDataAdapter.convertDataToOperatorRequest(data);
+      const operatorResponse = await OperatorService.createOperator(operatorRequestData);
+      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse);
+
+      Logger.log(this.LOG_TAG, "Create operator response success", [operator]);
+
+      return operator;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to create operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorManager(); 
