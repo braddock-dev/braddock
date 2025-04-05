@@ -36,6 +36,36 @@ class OperatorService {
       throw error;
     }
   }
+
+  public async updateOperator(
+    operatorId: string,
+    data: Partial<IOperatorResponse>
+  ): Promise<IOperatorResponse> {
+    Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.UPDATE_OPERATOR(operatorId),
+        httpMethod: HttpMethods.PUT,
+        data,
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Update operator response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK || !response?.data) {
+        throw new Error("Failed to update operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Update operator response success", [response.data]);
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to update operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorService(); 

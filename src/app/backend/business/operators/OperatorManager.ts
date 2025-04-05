@@ -25,6 +25,22 @@ class OperatorManager {
       throw error;
     }
   }
+
+  public async updateOperator(operatorId: string, data: Partial<IOperator>): Promise<IOperator> {
+    Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
+
+    try {
+      const operatorResponse = await OperatorService.updateOperator(operatorId, data);
+      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse);
+
+      Logger.log(this.LOG_TAG, "Update operator response success", [operator]);
+
+      return operator;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to update operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorManager(); 
