@@ -161,13 +161,6 @@ function AppointmentSteps() {
       return;
     }
 
-    if (authUser?.role === AuthRoles.BUSINESS) {
-      toast.info(
-        "Apenas clientes podem agendar, entre com uma conta de cliente",
-      );
-      return;
-    }
-
     if (!selectedEmployee) {
       toast.info("Selecione um profissional para continuar");
       return;
