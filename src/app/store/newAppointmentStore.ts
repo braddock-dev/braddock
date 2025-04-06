@@ -9,6 +9,7 @@ import { IAppointment } from "@/app/backend/business/treatments/data/Appointment
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
 export interface INewAppointmentStore {
+  employeeId?: string;
   appointmentId?: string;
   treatments: ITreatment[];
   selectedTreatments: ITreatment[];
@@ -28,9 +29,11 @@ export interface INewAppointmentStore {
   setAppointmentStore: (appointment: IAppointment) => void;
   recommendedDate?: Date;
   setRecommendedDate: (date: Date) => void;
+  setEmployeeId: (employeeId: string) => void;
 }
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
+  employeeId: undefined,
   appointmentId: undefined,
   requestedBy: undefined,
   treatments: [],
@@ -41,6 +44,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   phoneNumber: "",
   customerName: "",
   customerEmail: "",
+  setEmployeeId: (employeeId: string) => set({ employeeId }),
   setRecommendedDate: (date: Date) => set({ recommendedDate: date }),
   setCustomerInfo: (name: string, phone: string, email: string) =>
     set({
@@ -109,6 +113,7 @@ export const newAppointmentSelectors = {
   recommendedDate: (state: INewAppointmentStore) => state.recommendedDate,
   isRescheduleMode: (state: INewAppointmentStore) => !!state.appointmentId,
   appointmentId: (state: INewAppointmentStore) => state.appointmentId,
+  employeeId: (state: INewAppointmentStore) => state.employeeId,
   appointmentStore: (state: INewAppointmentStore): IBaseNewAppointmentInfo => ({
     treatments: state.treatments,
     selectedTreatments: state.selectedTreatments,
@@ -139,6 +144,7 @@ export const newAppointmentSelectors = {
 };
 
 export const newAppointmentActions = {
+  setEmployeeId: (state: INewAppointmentStore) => state.setEmployeeId,
   setTreatments: (state: INewAppointmentStore) => state.setTreatments,
   setSelectedTreatment: (state: INewAppointmentStore) =>
     state.setSelectedTreatment,
