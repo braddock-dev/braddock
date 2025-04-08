@@ -32,6 +32,11 @@ export default function SideMenu() {
         url: Constants.APP_ROUTES.CUSTOMERS,
       },
       {
+        label: "Operadores",
+        icon: <Users className="shrink-0 size-4" />,
+        url: Constants.APP_ROUTES.OPERATORS,
+      },
+      {
         label: "Minha Conta",
         icon: <UserIcon className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.ACCOUNT,

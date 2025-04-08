@@ -123,6 +123,7 @@ export const newAppointmentSelectors = {
     customerName: state.customerName,
     customerEmail: state.customerEmail,
     requestedBy: state.requestedBy,
+    employeeId: state.employeeId,
   }),
   isAppointmentValid: (state: INewAppointmentStore) => {
     return (
@@ -130,7 +131,8 @@ export const newAppointmentSelectors = {
       !!state.selectedDaySlot &&
       !!state.selectedTimeSlot &&
       !!state.customerName &&
-      !!state.phoneNumber
+      !!state.phoneNumber &&
+      !!state.employeeId
     );
   },
 
@@ -138,7 +140,8 @@ export const newAppointmentSelectors = {
     return (
       state.selectedTreatments.length > 0 &&
       !!state.selectedDaySlot &&
-      !!state.selectedTimeSlot
+      !!state.selectedTimeSlot &&
+      !!state.employeeId
     );
   },
 };

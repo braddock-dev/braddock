@@ -96,6 +96,7 @@ class AppointmentDataAdapter {
       customerPhone: newAppointment.phoneNumber,
       customerEmail: newAppointment.customerEmail,
       requestedBy: newAppointment.requestedBy,
+      employeeId: newAppointment.employeeId,
     };
   }
 }

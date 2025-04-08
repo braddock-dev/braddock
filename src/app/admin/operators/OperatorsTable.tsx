@@ -1,4 +1,6 @@
-import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
+"use client";
+
+import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 import * as React from "react";
 import {
   ColumnFiltersState,
@@ -11,7 +13,7 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { customerColumns } from "@/app/admin/customers/CustomerColumns";
+import { getOperatorColumns } from "./OperatorColumns";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -29,32 +31,33 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ButtonColors } from "@/app/ui/components/button/Button";
 
 const columnIdToLabelMap = {
   name: "Nome",
   msisdn: "Telefone",
   email: "Email",
+  description: "Descrição",
 };
 
-interface ICustomersTableProps {
-  customers: ICustomer[];
-  onEditCustomer: (customer: ICustomer) => void;
-  onDeleteCustomer: (customer: ICustomer) => void;
+interface IOperatorsTableProps {
+  operators: IOperator[];
+  onEditOperator: (operator: IOperator) => void;
+  onDeleteOperator: (operator: IOperator) => void;
+  onAddOperator: () => void;
 }
-export function CustomersTable(props: ICustomersTableProps) {
+
+export function OperatorsTable(props: IOperatorsTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: props.customers,
-    columns: customerColumns({
-      onEditCustomer: props.onEditCustomer,
-      onDeleteCustomer: props.onDeleteCustomer,
+    data: props.operators,
+    columns: getOperatorColumns({
+      onEditOperator: props.onEditOperator,
+      onDeleteOperator: props.onDeleteOperator,
     }),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -75,9 +78,9 @@ export function CustomersTable(props: ICustomersTableProps) {
   return (
     <div className="w-full">
       <div className="flex items-center py-4 justify-between gap-4">
-        <h1 className="text-2xl font-bold text-brown">Clientes</h1>
+        <h1 className="text-2xl font-bold text-brown">Operadores</h1>
         <Input
-          placeholder="Pesquisar Clientes..."
+          placeholder="Pesquisar Operadores..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -85,10 +88,14 @@ export function CustomersTable(props: ICustomersTableProps) {
           classNameContainer="max-w-md mx-auto"
           hasValue={!!table.getColumn("name")?.getFilterValue()}
           themeMode="light"
+          withBorder
           type="text"
           centerText
         />
-        <DropdownMenu modal={false}>
+
+        <div className="flex gap-2 items-center">
+        
+           <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Colunas <ChevronDown />
@@ -114,6 +121,15 @@ export function CustomersTable(props: ICustomersTableProps) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <Button
+            variant={"primary"} 
+            onClick={props.onAddOperator}
+          >
+            Adicionar
+          </Button>
+        </div>
+       
       </div>
       <div className="rounded-md border">
         <Table>
@@ -155,7 +171,7 @@ export function CustomersTable(props: ICustomersTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={customerColumns.length}
+                  colSpan={getOperatorColumns({ onEditOperator: () => {}, onDeleteOperator: () => {} }).length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -167,7 +183,7 @@ export function CustomersTable(props: ICustomersTableProps) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} de
+          {table.getFilteredSelectedRowModel().rows.length} de{" "}
           {table.getFilteredRowModel().rows.length} linha(s) selecionada(s)
         </div>
 
@@ -192,4 +208,4 @@ export function CustomersTable(props: ICustomersTableProps) {
       </div>
     </div>
   );
-}
+} 

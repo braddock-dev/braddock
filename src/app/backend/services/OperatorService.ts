@@ -36,6 +36,87 @@ class OperatorService {
       throw error;
     }
   }
+
+  public async updateOperator(
+    operatorId: string,
+    data: Partial<IOperatorResponse>
+  ): Promise<IOperatorResponse> {
+    Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.UPDATE_OPERATOR(operatorId),
+        httpMethod: HttpMethods.PUT,
+        data,
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Update operator response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK || !response?.data) {
+        throw new Error("Failed to update operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Update operator response success", [response.data]);
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to update operator.", error);
+      throw error;
+    }
+  }
+
+  public async deleteOperator(operatorId: string): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Deleting operator...", [operatorId]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.DELETE_OPERATOR(operatorId),
+        httpMethod: HttpMethods.DELETE,
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Delete operator response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK) {
+        throw new Error("Failed to delete operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Delete operator response success");
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to delete operator.", error);
+      throw error;
+    }
+  }
+
+  public async createOperator(data: IOperatorResponse): Promise<IOperatorResponse> {
+    Logger.debug(this.LOG_TAG, "Creating operator...", [data]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.CREATE_OPERATOR(),
+        httpMethod: HttpMethods.POST,
+        data,
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Create operator response", [response]);
+
+      if (!response || response.status !== HttpStatus.CREATED || !response?.data) {
+        throw new Error("Failed to create operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Create operator response success", [response.data]);
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to create operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorService(); 

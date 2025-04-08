@@ -25,6 +25,51 @@ class OperatorManager {
       throw error;
     }
   }
+
+  public async updateOperator(operatorId: string, data: Partial<IOperator>): Promise<IOperator> {
+    Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
+
+    try {
+      const operatorResponse = await OperatorService.updateOperator(operatorId, data);
+      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse);
+
+      Logger.log(this.LOG_TAG, "Update operator response success", [operator]);
+
+      return operator;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to update operator.", error);
+      throw error;
+    }
+  }
+
+  public async deleteOperator(operatorId: string): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Deleting operator...", [operatorId]);
+
+    try {
+      await OperatorService.deleteOperator(operatorId);
+      Logger.log(this.LOG_TAG, "Delete operator response success");
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to delete operator.", error);
+      throw error;
+    }
+  }
+
+  public async createOperator(data: IOperator): Promise<IOperator> {
+    Logger.debug(this.LOG_TAG, "Creating operator...", [data]);
+
+    try {
+      const operatorRequestData = OperatorDataAdapter.convertDataToOperatorRequest(data);
+      const operatorResponse = await OperatorService.createOperator(operatorRequestData);
+      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse);
+
+      Logger.log(this.LOG_TAG, "Create operator response success", [operator]);
+
+      return operator;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to create operator.", error);
+      throw error;
+    }
+  }
 }
 
 export default new OperatorManager(); 

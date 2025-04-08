@@ -17,9 +17,10 @@ export async function getTreatmentsList(
 
 export async function getTreatmentTimeslots(
   treatmentId: string[],
+  employeeId: string,
   daysForward?: number,
 ): Promise<IDaySlot[]> {
-  return TreatmentManager.getTreatmentTimeslots(treatmentId, daysForward);
+  return TreatmentManager.getTreatmentTimeslots(treatmentId, employeeId,daysForward);
 }
 
 export async function createTreatment(
