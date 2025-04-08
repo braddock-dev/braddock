@@ -54,6 +54,7 @@ export default function NewAppointment(props: INewAppointmentProps) {
       onSave={() => {
         newAppointmentMutation({
           appointmentData: {
+            employeeId: appointmentStore.employeeId!,
             customerEmail: appointmentStore.customerEmail,
             customerName: appointmentStore.customerName,
             phoneNumber: appointmentStore.phoneNumber,

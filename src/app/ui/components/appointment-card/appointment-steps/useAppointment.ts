@@ -32,6 +32,7 @@ export function useAppointment(onAppointmentSuccess: () => void) {
           customerEmail: newAppointmentData.customerEmail,
           selectedTimeSlot: newAppointmentData.selectedTimeSlot,
           requestedBy: newAppointmentData.requestedBy,
+          employeeId: newAppointmentData.employeeId!,
         };
 
         if (isRescheduleMode && appointmentId) {

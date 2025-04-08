@@ -69,6 +69,7 @@ class AppointmentsService {
           data: {
             treatmentsIds: appointmentData.treatmentsId,
             daysForward: daysForward,
+            operatorId: appointmentData.employeeId,
           },
         };
       } else if (appointmentData.requestedBy === AuthRoles.BUSINESS) {

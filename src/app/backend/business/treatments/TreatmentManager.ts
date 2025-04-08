@@ -46,6 +46,7 @@ class TreatmentManager {
 
   public async getTreatmentTimeslots(
     treatmentsId: string[],
+    employeeId: string,
     daysForward?: number,
   ): Promise<any[]> {
     Logger.debug(this.LOG_TAG, "Start getting treatment timeslots", [
@@ -60,6 +61,7 @@ class TreatmentManager {
 
       const timeslotsResponse = await TreatmentsService.getTreatmentTimeslots(
         treatmentsId,
+        employeeId,
         daysForward,
       );
 

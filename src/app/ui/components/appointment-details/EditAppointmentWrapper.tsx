@@ -72,6 +72,7 @@ export default function EditAppointmentWrapper(
             selectedTimeSlot: appointmentStore.selectedTimeSlot,
             selectedTreatments: appointmentStore.selectedTreatments,
             requestedBy: appointmentStore.requestedBy,
+            employeeId: appointmentStore.employeeId!,
           } satisfies INewAppointmentRequestData,
         });
       }}

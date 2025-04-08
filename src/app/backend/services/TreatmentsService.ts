@@ -44,11 +44,13 @@ class TreatmentsService {
 
   public async getTreatmentTimeslots(
     treatmentsId: string[],
+    employeeId: string,
     daysForward?: number,
   ): Promise<any[]> {
     Logger.log(this.LOG_TAG, "Start getting treatment timeslots", [
       treatmentsId,
       daysForward,
+      employeeId,
     ]);
 
     try {
@@ -60,6 +62,7 @@ class TreatmentsService {
         data: {
           treatmentsIds: treatmentsId,
           daysForward: daysForward,
+          operatorId: employeeId
         },
       };
 

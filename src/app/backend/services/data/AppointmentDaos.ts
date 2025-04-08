@@ -7,6 +7,7 @@ export interface INewAppointmentRequest {
   customerPhone: string;
   customerEmail?: string;
   requestedBy?: AuthRoles;
+  employeeId: string;
 }
 
 export interface IQueryAppointmentRequest {
