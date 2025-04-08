@@ -10,7 +10,7 @@ import {
 import { APPOINTMENTS } from "@/mocks/data/appointments";
 
 export const handlers = [
-  http.get(Constants.API_ROUTES.GET_TREATMENTS(":businessId"), () => {
+  http.get(Constants.API_ROUTES.GET_TREATMENTS(":businessId", "10"), () => {
     return HttpResponse.json(TREATMENTS_LIST, { status: HttpStatus.OK });
   }),
   http.post(Constants.API_ROUTES.GET_TIMESLOTS(":businessId"), () => {
