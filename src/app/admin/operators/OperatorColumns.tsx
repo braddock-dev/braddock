@@ -16,30 +16,20 @@ import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 interface IOperatorColumnsProps {
   onEditOperator: (operator: IOperator) => void;
   onDeleteOperator: (operator: IOperator) => void;
+  onAddTreatments: (operator: IOperator) => void;
 }
 
-export const getOperatorColumns = (
-  props: IOperatorColumnsProps,
-): ColumnDef<IOperator>[] => [
+export const getOperatorColumns = (props: IOperatorColumnsProps): ColumnDef<IOperator>[] => [
   {
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -81,13 +71,9 @@ export const getOperatorColumns = (
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => props.onEditOperator(operator)}>
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="text-red-600"
-              onClick={() => props.onDeleteOperator(operator)}
-            >
+            <DropdownMenuItem onClick={() => props.onAddTreatments(operator)}>Associar Serviços</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => props.onEditOperator(operator)}>Editar</DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600" onClick={() => props.onDeleteOperator(operator)}>
               Excluir
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -95,4 +81,4 @@ export const getOperatorColumns = (
       );
     },
   },
-]; 
+];

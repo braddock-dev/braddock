@@ -5,4 +5,10 @@ export interface IOperator {
   email: string;
   description: string;
   iconUrl: string;
-} 
+}
+
+export interface IToggleTreatment {
+  operatorId: string;
+  treatmentId: string;
+  isActive: boolean;
+}
