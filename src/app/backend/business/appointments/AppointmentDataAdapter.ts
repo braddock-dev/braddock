@@ -66,6 +66,7 @@ class AppointmentDataAdapter {
   ): IQueryAppointmentRequest {
     return {
       businessId: Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
+      operatorId: data.operatorId,
       startDate:
         data.startDate ||
         AppointmentDataAdapter.DEFAULT_DATE_INTERVAL.startDate,
