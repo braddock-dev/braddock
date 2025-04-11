@@ -87,7 +87,7 @@ export default function Page() {
 
             <SidePanelWrapper
               onClose={() => setOperatorToAddTreatments(undefined)}
-              title={`Associar Serciços  ${operatorToAddTreatments?.name}`}
+              title={`Associar Serviços  ${operatorToAddTreatments?.name}`}
               isOpen={!!operatorToAddTreatments}
             >
               {operatorToAddTreatments && (
