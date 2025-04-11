@@ -117,6 +117,35 @@ class OperatorService {
       throw error;
     }
   }
+
+  public async assignTreatments(operatorId: string, treatmentIds: string[]): Promise<IOperatorResponse> {
+    Logger.debug(this.LOG_TAG, "Assigning treatments to operator...", [operatorId, treatmentIds]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.ASSIGN_TREATMENTS(operatorId),
+        httpMethod: HttpMethods.POST,
+        data: { treatmentsIds: treatmentIds },
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Assign treatments response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK || !response?.data) {
+        throw new Error("Failed to assign treatments to operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Assign treatments response success", [response.data]);
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to assign treatments to operator.", error);
+      throw error;
+    }
+  }
+
+  
 }
 
 export default new OperatorService(); 

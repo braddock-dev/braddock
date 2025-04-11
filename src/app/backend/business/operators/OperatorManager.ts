@@ -2,6 +2,7 @@ import Logger from "@/app/utils/Logger";
 import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 import OperatorService from "@/app/backend/services/OperatorService";
 import OperatorDataAdapter from "@/app/backend/business/operators/OperatorDataAdapter";
+import { IOperatorResponse } from "../../services/data/OperatorDaos";
 
 class OperatorManager {
   private readonly LOG_TAG = "OperatorManager";
@@ -70,6 +71,19 @@ class OperatorManager {
       throw error;
     }
   }
+
+  public async assignTreatments(operatorId: string, treatmentIds: string[]): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Assigning treatments to operator in manager...", [operatorId, treatmentIds]);
+
+    try {
+      const operator = await OperatorService.assignTreatments(operatorId, treatmentIds);
+      Logger.log(this.LOG_TAG, "Successfully assigned treatments to operator", [operator]);
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to assign treatments to operator in manager", error);
+      throw error;
+    }
+  }
+
 }
 
 export default new OperatorManager(); 

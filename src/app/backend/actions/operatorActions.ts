@@ -21,3 +21,8 @@ export async function deleteOperator(operatorId: string): Promise<void> {
 export async function createOperator(data: IOperator): Promise<IOperator> {
   return OperatorManager.createOperator(data);
 } 
+
+
+export async function assignTreatments(operatorId: string, treatmentIds: string[]): Promise<void> {
+  return OperatorManager.assignTreatments(operatorId, treatmentIds);
+}
