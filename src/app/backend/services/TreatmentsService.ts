@@ -1,9 +1,5 @@
 import Logger from "@/app/utils/Logger";
-import {
-  HttpMethods,
-  HttpStatus,
-  IHttpRequestConfig,
-} from "@/app/backend/protocol/rest/IHttpInterface";
+import { HttpMethods, HttpStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 import { ITreatmentRequest } from "@/app/backend/services/data/TreatmentsDaos";
@@ -15,15 +11,20 @@ class TreatmentsService {
     Logger.log(this.LOG_TAG, "Service initialized");
   }
 
-  public async getTreatments(operatorId: string): Promise<any[]> {
+  public async getTreatments(operatorId?: string): Promise<any[]> {
     Logger.log(this.LOG_TAG, "Start getting treatments");
 
     try {
+      let requestUrl = "";
+
+      if (operatorId) {
+        requestUrl = Constants.API_ROUTES.GET_OPERATOR_TREATMENTS(Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE, operatorId);
+      } else {
+        requestUrl = Constants.API_ROUTES.GET_ALL_TREATMENTS(Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE);
+      }
+
       const request: IHttpRequestConfig = {
-        url: Constants.API_ROUTES.GET_TREATMENTS(
-          Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
-          operatorId,
-        ),
+        url: requestUrl,
         httpMethod: HttpMethods.GET,
       };
 
@@ -42,27 +43,17 @@ class TreatmentsService {
     }
   }
 
-  public async getTreatmentTimeslots(
-    treatmentsId: string[],
-    employeeId: string,
-    daysForward?: number,
-  ): Promise<any[]> {
-    Logger.log(this.LOG_TAG, "Start getting treatment timeslots", [
-      treatmentsId,
-      daysForward,
-      employeeId,
-    ]);
+  public async getTreatmentTimeslots(treatmentsId: string[], employeeId: string, daysForward?: number): Promise<any[]> {
+    Logger.log(this.LOG_TAG, "Start getting treatment timeslots", [treatmentsId, daysForward, employeeId]);
 
     try {
       const request: IHttpRequestConfig = {
-        url: Constants.API_ROUTES.GET_TIMESLOTS(
-          Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
-        ),
+        url: Constants.API_ROUTES.GET_TIMESLOTS(Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE),
         httpMethod: HttpMethods.POST,
         data: {
           treatmentsIds: treatmentsId,
           daysForward: daysForward,
-          operatorId: employeeId
+          operatorId: employeeId,
         },
       };
 
@@ -95,10 +86,7 @@ class TreatmentsService {
 
       Logger.log(this.LOG_TAG, "Create treatment response", [response]);
 
-      if (
-        !response ||
-        ![HttpStatus.CREATED, HttpStatus.OK].includes(response.status)
-      ) {
+      if (!response || ![HttpStatus.CREATED, HttpStatus.OK].includes(response.status)) {
         throw new Error("Failed to create treatment");
       }
 
@@ -133,14 +121,8 @@ class TreatmentsService {
     }
   }
 
-  public async updateTreatment(
-    treatmentId: string,
-    treatment: ITreatmentRequest,
-  ): Promise<any> {
-    Logger.log(this.LOG_TAG, "Start updating treatment", [
-      treatmentId,
-      treatment,
-    ]);
+  public async updateTreatment(treatmentId: string, treatment: ITreatmentRequest): Promise<any> {
+    Logger.log(this.LOG_TAG, "Start updating treatment", [treatmentId, treatment]);
 
     try {
       const request: IHttpRequestConfig = {

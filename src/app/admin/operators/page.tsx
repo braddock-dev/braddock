@@ -13,10 +13,11 @@ import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWr
 import { EditOperator } from "@/app/ui/components/operators/edit-operator/EditOperator";
 import { CreateOperator } from "@/app/ui/components/operators/create-operator/CreateOperator";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
-import Button, { ButtonColors } from "@/app/ui/components/button/Button";
+import AddOperatorTreatments from "@/app/ui/components/operators/add-operator-treatments/AddOperatorTreatments";
 
 export default function Page() {
   const [operatorToBeEdited, setOperatorToBeEdited] = useState<IOperator>();
+  const [operatorToAddTreatments, setOperatorToAddTreatments] = useState<IOperator>();
   const [operatorToBeDeleted, setOperatorToBeDeleted] = useState<IOperator>();
   const [isCreatingOperator, setIsCreatingOperator] = useState(false);
 
@@ -68,13 +69,10 @@ export default function Page() {
               onEditOperator={(operator) => setOperatorToBeEdited(operator)}
               onDeleteOperator={(operator) => setOperatorToBeDeleted(operator)}
               onAddOperator={() => setIsCreatingOperator(true)}
+              onAddTreatments={(operator) => setOperatorToAddTreatments(operator)}
             />
 
-            <SidePanelWrapper
-              onClose={() => setOperatorToBeEdited(undefined)}
-              title={"Editar Operador"}
-              isOpen={!!operatorToBeEdited}
-            >
+            <SidePanelWrapper onClose={() => setOperatorToBeEdited(undefined)} title={"Editar Operador"} isOpen={!!operatorToBeEdited}>
               {operatorToBeEdited && (
                 <EditOperator
                   operator={operatorToBeEdited}
@@ -88,10 +86,16 @@ export default function Page() {
             </SidePanelWrapper>
 
             <SidePanelWrapper
-              onClose={() => setIsCreatingOperator(false)}
-              title={"Criar Operador"}
-              isOpen={isCreatingOperator}
+              onClose={() => setOperatorToAddTreatments(undefined)}
+              title={`Associar Serviços  ${operatorToAddTreatments?.name}`}
+              isOpen={!!operatorToAddTreatments}
             >
+              {operatorToAddTreatments && (
+                <AddOperatorTreatments operator={operatorToAddTreatments} onClose={() => setOperatorToAddTreatments(undefined)} />
+              )}
+            </SidePanelWrapper>
+
+            <SidePanelWrapper onClose={() => setIsCreatingOperator(false)} title={"Criar Operador"} isOpen={isCreatingOperator}>
               <CreateOperator
                 onClose={() => setIsCreatingOperator(false)}
                 onCreated={() => {
@@ -119,4 +123,4 @@ export default function Page() {
       </Card>
     </div>
   );
-} 
+}

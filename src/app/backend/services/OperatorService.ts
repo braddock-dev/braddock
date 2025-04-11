@@ -37,10 +37,7 @@ class OperatorService {
     }
   }
 
-  public async updateOperator(
-    operatorId: string,
-    data: Partial<IOperatorResponse>
-  ): Promise<IOperatorResponse> {
+  public async updateOperator(operatorId: string, data: Partial<IOperatorResponse>): Promise<IOperatorResponse> {
     Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
 
     try {
@@ -117,6 +114,60 @@ class OperatorService {
       throw error;
     }
   }
+
+  public async assignTreatments(operatorId: string, treatmentIds: string[]): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Assigning treatments to operator...", [operatorId, treatmentIds]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.ASSIGN_TREATMENTS(operatorId),
+        httpMethod: HttpMethods.POST,
+        data: { treatmentsIds: treatmentIds },
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Assign treatments response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK) {
+        throw new Error("Failed to assign treatments to operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Assign treatments response success", [response.data]);
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to assign treatments to operator.", error);
+      throw error;
+    }
+  }
+
+  public async unassignTreatments(operatorId: string, treatmentIds: string[]): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Unassigning treatments from operator...", [operatorId, treatmentIds]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.UNASSIGN_TREATMENTS(operatorId),
+        httpMethod: HttpMethods.POST,
+        data: { treatmentsIds: treatmentIds },
+      };
+
+      const response = await ApiInterface.send(request);
+
+      Logger.debug(this.LOG_TAG, "Unassign treatments response", [response]);
+
+      if (!response || response.status !== HttpStatus.OK) {
+        throw new Error("Failed to unassign treatments from operator");
+      }
+
+      Logger.log(this.LOG_TAG, "Unassign treatments response success", [response.data]);
+
+      return response.data;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to unassign treatments from operator.", error);
+      throw error;
+    }
+  }
 }
 
-export default new OperatorService(); 
+export default new OperatorService();

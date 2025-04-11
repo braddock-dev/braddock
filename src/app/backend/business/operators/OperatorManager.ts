@@ -1,7 +1,8 @@
 import Logger from "@/app/utils/Logger";
-import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
+import { IOperator, IToggleTreatment } from "@/app/backend/business/operators/data/OperatorDtos";
 import OperatorService from "@/app/backend/services/OperatorService";
 import OperatorDataAdapter from "@/app/backend/business/operators/OperatorDataAdapter";
+import { IOperatorResponse } from "../../services/data/OperatorDaos";
 
 class OperatorManager {
   private readonly LOG_TAG = "OperatorManager";
@@ -70,6 +71,45 @@ class OperatorManager {
       throw error;
     }
   }
+
+  public async assignTreatments(operatorId: string, treatmentIds: string[]): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Assigning treatments to operator in manager...", [operatorId, treatmentIds]);
+
+    try {
+      const operator = await OperatorService.assignTreatments(operatorId, treatmentIds);
+      Logger.log(this.LOG_TAG, "Successfully assigned treatments to operator", [operator]);
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to assign treatments to operator in manager", error);
+      throw error;
+    }
+  }
+
+  public async unassignTreatments(operatorId: string, treatmentIds: string[]): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Unassigning treatments from operator in manager...", [operatorId, treatmentIds]);
+
+    try {
+      const operator = await OperatorService.unassignTreatments(operatorId, treatmentIds);
+      Logger.log(this.LOG_TAG, "Successfully unassigned treatments from operator", [operator]);
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to unassign treatments from operator in manager", error);
+      throw error;
+    }
+  }
+
+  public async toggleTreatment(toggleTreatment: IToggleTreatment) {
+    Logger.debug(this.LOG_TAG, "Toggling treatment...", [toggleTreatment]);
+
+    try {
+      if (toggleTreatment.isActive) {
+        await this.unassignTreatments(toggleTreatment.operatorId, [toggleTreatment.treatmentId]);
+      } else {
+        await this.assignTreatments(toggleTreatment.operatorId, [toggleTreatment.treatmentId]);
+      }
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to toggle treatment in manager", error);
+      throw error;
+    }
+  }
 }
 
-export default new OperatorManager(); 
+export default new OperatorManager();
