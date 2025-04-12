@@ -37,24 +37,7 @@ class OperatorDataAdapter {
   }
 
   private generateOperatorColors(index: number): string {
-    const colors = [
-      "#FF0000",
-      "#00FF00",
-      "#0000FF",
-      "#FFFF00",
-      "#FF00FF",
-      "#00FFFF",
-      "#FFA500",
-      "#800080",
-      "#008000",
-      "#000080",
-      "#800000",
-      "#808000",
-      "#008080",
-      "#808080",
-      "#FFFFFF",
-      "#000000",
-    ];
+    const colors = ["#b47866", "#336699", "#8338ec", "#03045e", "#fb6f92", "#344e41", "#2a9d8f", "#386641", "#e07a5f", "#f694c1", "#376996"];
 
     return colors[index % colors.length];
   }

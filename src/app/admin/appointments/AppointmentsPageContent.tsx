@@ -39,6 +39,8 @@ export default function AppointmentsPageContent() {
 
   const selectedOperator = useOperatorStore(operatorSelectors.selectedOperator);
 
+  const operators = useOperatorStore(operatorSelectors.operators);
+
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [selectedAppointment, setSelectedAppointment] = useState<IAppointment>();
 
@@ -89,8 +91,8 @@ export default function AppointmentsPageContent() {
   });
 
   const events = useMemo(() => {
-    return [...convertAppointmentsToEvents(data || []), ...convertTimeOffsToEvents(timeOffs || [])];
-  }, [data, timeOffs]);
+    return [...convertAppointmentsToEvents(data || [], operators), ...convertTimeOffsToEvents(timeOffs || [], operators)];
+  }, [data, timeOffs, operators]);
 
   if (error) {
     toast.error("Erro ao carregar os agendamentos.");
