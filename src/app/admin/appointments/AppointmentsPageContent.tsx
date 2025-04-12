@@ -173,14 +173,14 @@ export default function AppointmentsPageContent() {
     setNewAppointmentModalOpen(true);
   };
 
-  const handleBlockTime = () => {
+  const handleBlockTime = (operatorId: string) => {
     setShowNewEventModal(false);
 
-    if (selectedDateInterval) {
+    if (selectedDateInterval && operatorId) {
       mutateRegisterTimeOff({
         startTimeInMillis: selectedDateInterval.start,
         endTimeInMillis: selectedDateInterval.end,
-        operatorId: selectedOperator?.id,
+        operatorId: operatorId,
       });
     }
   };
