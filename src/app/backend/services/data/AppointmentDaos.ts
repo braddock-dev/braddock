@@ -14,6 +14,7 @@ export interface IQueryAppointmentRequest {
   businessId: string;
   startDate: number;
   endDate: number;
+  operatorId?: string;
 }
 
 export interface IAppointmentsResponse {

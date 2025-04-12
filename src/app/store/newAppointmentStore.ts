@@ -1,9 +1,5 @@
 import { create } from "zustand";
-import {
-  IDaySlot,
-  ITimeSlot,
-  ITreatment,
-} from "@/app/backend/business/treatments/data/TreatmentsData";
+import { IDaySlot, ITimeSlot, ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 import { IBaseNewAppointmentInfo } from "@/app/backend/business/appointments/data/AppointmentData";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
@@ -29,7 +25,7 @@ export interface INewAppointmentStore {
   setAppointmentStore: (appointment: IAppointment) => void;
   recommendedDate?: Date;
   setRecommendedDate: (date: Date) => void;
-  setEmployeeId: (employeeId: string) => void;
+  setEmployeeId: (employeeId?: string) => void;
 }
 
 export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
@@ -44,7 +40,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
   phoneNumber: "",
   customerName: "",
   customerEmail: "",
-  setEmployeeId: (employeeId: string) => set({ employeeId }),
+  setEmployeeId: (employeeId?: string) => set({ employeeId }),
   setRecommendedDate: (date: Date) => set({ recommendedDate: date }),
   setCustomerInfo: (name: string, phone: string, email: string) =>
     set({
@@ -71,8 +67,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
     });
   },
   setRequestedBy: (requestedBy: AuthRoles) => set({ requestedBy }),
-  setSelectedTimeSlot: (timeSlot?: ITimeSlot) =>
-    set({ selectedTimeSlot: timeSlot }),
+  setSelectedTimeSlot: (timeSlot?: ITimeSlot) => set({ selectedTimeSlot: timeSlot }),
   setTreatments: (treatments: ITreatment[]) => set({ treatments }),
   resetState: () =>
     set({
@@ -99,8 +94,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
 export const newAppointmentSelectors = {
   treatments: (state: INewAppointmentStore) => state.treatments,
   selectedTreatments: (state: INewAppointmentStore) => state.selectedTreatments,
-  selectedTreatmentsIds: (state: INewAppointmentStore) =>
-    state.selectedTreatments.map((treatment) => treatment.id),
+  selectedTreatmentsIds: (state: INewAppointmentStore) => state.selectedTreatments.map((treatment) => treatment.id),
   selectedDaySlot: (state: INewAppointmentStore) => state.selectedDaySlot,
   selectedTimeSlot: (state: INewAppointmentStore) => state.selectedTimeSlot,
   customerName: (state: INewAppointmentStore) => state.customerName,
@@ -137,27 +131,19 @@ export const newAppointmentSelectors = {
   },
 
   isAppointmentValidWithoutCustomer: (state: INewAppointmentStore) => {
-    return (
-      state.selectedTreatments.length > 0 &&
-      !!state.selectedDaySlot &&
-      !!state.selectedTimeSlot &&
-      !!state.employeeId
-    );
+    return state.selectedTreatments.length > 0 && !!state.selectedDaySlot && !!state.selectedTimeSlot && !!state.employeeId;
   },
 };
 
 export const newAppointmentActions = {
   setEmployeeId: (state: INewAppointmentStore) => state.setEmployeeId,
   setTreatments: (state: INewAppointmentStore) => state.setTreatments,
-  setSelectedTreatment: (state: INewAppointmentStore) =>
-    state.setSelectedTreatment,
+  setSelectedTreatment: (state: INewAppointmentStore) => state.setSelectedTreatment,
   setSelectedDaySlot: (state: INewAppointmentStore) => state.setSelectedDaySlot,
-  setSelectedTimeSlot: (state: INewAppointmentStore) =>
-    state.setSelectedTimeSlot,
+  setSelectedTimeSlot: (state: INewAppointmentStore) => state.setSelectedTimeSlot,
   resetState: (state: INewAppointmentStore) => state.resetState,
   setCustomerInfo: (state: INewAppointmentStore) => state.setCustomerInfo,
-  setAppointmentStore: (state: INewAppointmentStore) =>
-    state.setAppointmentStore,
+  setAppointmentStore: (state: INewAppointmentStore) => state.setAppointmentStore,
   setRecommendedDate: (state: INewAppointmentStore) => state.setRecommendedDate,
   setRequestedBy: (state: INewAppointmentStore) => state.setRequestedBy,
 };
