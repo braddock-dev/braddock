@@ -3,9 +3,7 @@
 import AppLogo from "@/app/ui/vectors/logo-horizontal.svg";
 import Link from "next/link";
 import { Constants } from "@/app/utils/Constants";
-import MenuItem, {
-  ISideMenuItem,
-} from "@/app/ui/components/side-menu/MenuItem";
+import MenuItem, { ISideMenuItem } from "@/app/ui/components/side-menu/MenuItem";
 import { useMemo } from "react";
 import HomeIcon from "@/app/ui/vectors/home.svg";
 import { usePathname } from "next/navigation";
@@ -27,14 +25,14 @@ export default function SideMenu() {
         url: Constants.APP_ROUTES.SERVICES,
       },
       {
-        label: "Clientes",
-        icon: <Users className="shrink-0 size-4" />,
-        url: Constants.APP_ROUTES.CUSTOMERS,
-      },
-      {
         label: "Operadores",
         icon: <Users className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.OPERATORS,
+      },
+      {
+        label: "Clientes",
+        icon: <Users className="shrink-0 size-4" />,
+        url: Constants.APP_ROUTES.CUSTOMERS,
       },
       {
         label: "Minha Conta",
@@ -72,17 +70,10 @@ export default function SideMenu() {
           </div>
 
           <div className="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
-            <nav
-              className="hs-accordion-group p-3 w-full flex flex-col flex-wrap"
-              data-hs-accordion-always-open
-            >
+            <nav className="hs-accordion-group p-3 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
               <ul className="flex flex-col space-y-1">
                 {menuItems.map((menuItem, index) => (
-                  <MenuItem
-                    key={index}
-                    menuItem={menuItem}
-                    isActive={menuItem.url.startsWith(pathName)}
-                  />
+                  <MenuItem key={index} menuItem={menuItem} isActive={menuItem.url.startsWith(pathName)} />
                 ))}
               </ul>
             </nav>
