@@ -1,10 +1,7 @@
 import Logger from "@/app/utils/Logger";
 import { NewTimeOffRequest } from "@/app/backend/services/data/TimeOffDaos";
 import TimeOffService from "@/app/backend/services/TimeOffService";
-import {
-  ITimeOff,
-  IWorkingHours,
-} from "@/app/backend/business/time-off/TimeOffDtos";
+import { ITimeOff, IWorkingHours } from "@/app/backend/business/time-off/TimeOffDtos";
 import TimeOffDataAdapter from "@/app/backend/business/time-off/TimeOffDataAdapter";
 import dayJsWrapper from "@/app/utils/dayjs";
 
@@ -24,9 +21,7 @@ class TimeOffManager {
       const timeOffs = this.separateTimeOffsByDay(data);
       Logger.debug(this.LOG_TAG, "Separated time offs", [timeOffs]);
 
-      await Promise.all(
-        timeOffs.map((timeOff) => TimeOffService.registerTimeOff(timeOff)),
-      );
+      await Promise.all(timeOffs.map((timeOff) => TimeOffService.registerTimeOff(timeOff)));
 
       Logger.debug(this.LOG_TAG, "Setting time off response", [data]);
     } catch (error) {
@@ -40,8 +35,7 @@ class TimeOffManager {
 
     try {
       const responseData = await TimeOffService.getWorkingHours();
-      const workingHours =
-        TimeOffDataAdapter.convertDataToWorkingHours(responseData);
+      const workingHours = TimeOffDataAdapter.convertDataToWorkingHours(responseData);
 
       Logger.debug(this.LOG_TAG, "Get working hours response", [workingHours]);
 
@@ -52,15 +46,18 @@ class TimeOffManager {
     }
   }
 
-  public async getTimeOffs(): Promise<ITimeOff[]> {
+  public async getTimeOffs(operatorId?: string): Promise<ITimeOff[]> {
     Logger.debug(this.LOG_TAG, "Start getting time offs");
 
     try {
-      const responseData = await TimeOffService.getTimeOffs();
-      const timeOffs =
-        TimeOffDataAdapter.convertDataToTimeOffsList(responseData);
+      const responseData = await TimeOffService.getTimeOffs(operatorId);
+      const timeOffs = TimeOffDataAdapter.convertDataToTimeOffsList(responseData);
 
       Logger.debug(this.LOG_TAG, "Time off converted...", [timeOffs]);
+
+      if (operatorId) {
+        return timeOffs.filter((timeOff) => timeOff.operatorId === operatorId);
+      }
 
       return timeOffs;
     } catch (error) {
@@ -84,10 +81,7 @@ class TimeOffManager {
   }
 
   private separateTimeOffsByDay(timeOffs: NewTimeOffRequest) {
-    const isSameDay = dayJsWrapper(timeOffs.startTimeInMillis).isSame(
-      timeOffs.endTimeInMillis,
-      "day",
-    );
+    const isSameDay = dayJsWrapper(timeOffs.startTimeInMillis).isSame(timeOffs.endTimeInMillis, "day");
 
     if (isSameDay) {
       return [timeOffs];
@@ -95,10 +89,7 @@ class TimeOffManager {
 
     const intervals: NewTimeOffRequest[] = [];
 
-    const numberOfDays = dayJsWrapper(timeOffs.endTimeInMillis).diff(
-      timeOffs.startTimeInMillis,
-      "day",
-    );
+    const numberOfDays = dayJsWrapper(timeOffs.endTimeInMillis).diff(timeOffs.startTimeInMillis, "day");
 
     Logger.debug(this.LOG_TAG, "Number of days", [numberOfDays]);
 
@@ -106,32 +97,23 @@ class TimeOffManager {
       if (day === 0) {
         intervals.push({
           startTimeInMillis: timeOffs.startTimeInMillis,
-          endTimeInMillis: dayJsWrapper(timeOffs.startTimeInMillis)
-            .set("hours", this.TIME_OFF_END_HOUR)
-            .valueOf(),
+          endTimeInMillis: dayJsWrapper(timeOffs.startTimeInMillis).set("hours", this.TIME_OFF_END_HOUR).valueOf(),
         });
         continue;
       }
 
       if (day === numberOfDays) {
         intervals.push({
-          startTimeInMillis: dayJsWrapper(timeOffs.endTimeInMillis)
-            .set("hours", this.TIME_OFF_START_HOUR)
-            .valueOf(),
+          startTimeInMillis: dayJsWrapper(timeOffs.endTimeInMillis).set("hours", this.TIME_OFF_START_HOUR).valueOf(),
           endTimeInMillis: timeOffs.endTimeInMillis,
         });
         break;
       }
 
       if (day !== 0 && day !== numberOfDays) {
-        const startTime = dayJsWrapper(timeOffs.startTimeInMillis)
-          .add(day, "day")
-          .set("hour", this.TIME_OFF_START_HOUR);
+        const startTime = dayJsWrapper(timeOffs.startTimeInMillis).add(day, "day").set("hour", this.TIME_OFF_START_HOUR);
 
-        const endTime = dayJsWrapper(startTime).set(
-          "hour",
-          this.TIME_OFF_END_HOUR,
-        );
+        const endTime = dayJsWrapper(startTime).set("hour", this.TIME_OFF_END_HOUR);
 
         intervals.push({
           startTimeInMillis: startTime.valueOf(),

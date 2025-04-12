@@ -58,8 +58,8 @@ export default function AppointmentsPageContent() {
   });
 
   const { data: timeOffs, refetch: refetchTimeOffs } = useQuery({
-    queryKey: ["timeOffs"],
-    queryFn: () => getTimeOffs(),
+    queryKey: ["timeOffs", selectedOperator?.id],
+    queryFn: () => getTimeOffs(selectedOperator?.id),
     refetchInterval: Constants.APPOINTMENTS.REFETCH_INTERVAL,
   });
 
@@ -180,6 +180,7 @@ export default function AppointmentsPageContent() {
       mutateRegisterTimeOff({
         startTimeInMillis: selectedDateInterval.start,
         endTimeInMillis: selectedDateInterval.end,
+        operatorId: selectedOperator?.id,
       });
     }
   };

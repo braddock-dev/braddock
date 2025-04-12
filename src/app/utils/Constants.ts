@@ -57,7 +57,7 @@ export const Constants = {
     DELETE_APPOINTMENT: (appointmentId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/appointments/${appointmentId}`,
     REFRESH_CALENDAR_TOKEN: () => `${EXTERNAL_CONFIGS.BASE_URL}/refreshGoogleCalendarCredentials`,
     REGISTER_TIME_OFF: () => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff`,
-    GET_TIME_OFF: () => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff`,
+    GET_TIME_OFF: (operatorId?: string) => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff?operatorId=${operatorId}`,
     DELETE_TIME_OFF: (id: number) => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff/${id}`,
     GET_WORKING_HOURS: () => `${EXTERNAL_CONFIGS.BASE_URL}/workingHours`,
     GET_OPERATORS: (businessId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/operators`,
