@@ -9,7 +9,7 @@ import { getOperators } from "@/app/backend/actions/operatorActions";
 import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 import SelectComponent, { ISelectItem } from "@/app/ui/components/select/Select";
 import styles from "./Header.module.scss";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 const ALL_OPERATORS_VALUE = "all";
 
@@ -18,10 +18,18 @@ export default function Header() {
   const selectedOperator = useOperatorStore(operatorSelectors.selectedOperator);
   const setSelectedOperator = useOperatorStore(operatorActions.setSelectedOperator);
 
+  const setOperators = useOperatorStore(operatorActions.setOperators);
+
   const { data: operators } = useQuery({
     queryKey: ["operators"],
     queryFn: () => getOperators(),
   });
+
+  useEffect(() => {
+    if (operators) {
+      setOperators(operators);
+    }
+  }, [operators, setOperators]);
 
   const selectItems: ISelectItem[] = useMemo(
     () => [

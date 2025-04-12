@@ -14,6 +14,7 @@ export interface IAppointment {
   durationInHours: number;
   startTime: string;
   treatments: ITreatment[];
+  operatorId: string;
 }
 
 export interface IAppointmentQueryData {
