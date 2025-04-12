@@ -1,40 +1,27 @@
 import AppointmentInfoForm from "@/app/ui/components/appointment-details/AppointmentInfoForm";
 import React, { useEffect } from "react";
 import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
-import {
-  newAppointmentActions,
-  newAppointmentSelectors,
-  useNewAppointmentStore,
-} from "@/app/store/newAppointmentStore";
+import { newAppointmentActions, newAppointmentSelectors, useNewAppointmentStore } from "@/app/store/newAppointmentStore";
 import { useMutation } from "@tanstack/react-query";
 import { editAppointment } from "@/app/backend/actions/appointmentActions";
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 import { toast } from "sonner";
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
+import { Constants } from "@/app/utils/Constants";
 
 interface IAppointmentInfoFormProps {
   appointment: IAppointment;
   onCancel: () => void;
   onSave: () => void;
 }
-export default function EditAppointmentWrapper(
-  props: IAppointmentInfoFormProps,
-) {
-  const setAppointmentStore = useNewAppointmentStore(
-    newAppointmentActions.setAppointmentStore,
-  );
+export default function EditAppointmentWrapper(props: IAppointmentInfoFormProps) {
+  const setAppointmentStore = useNewAppointmentStore(newAppointmentActions.setAppointmentStore);
 
-  const appointmentStore = useNewAppointmentStore(
-    newAppointmentSelectors.appointmentStore,
-  );
+  const appointmentStore = useNewAppointmentStore(newAppointmentSelectors.appointmentStore);
 
-  const isAppointmentValid = useNewAppointmentStore(
-    newAppointmentSelectors.isAppointmentValid,
-  );
+  const isAppointmentValid = useNewAppointmentStore(newAppointmentSelectors.isAppointmentValid);
 
-  const setRequestedBy = useNewAppointmentStore(
-    newAppointmentActions.setRequestedBy,
-  );
+  const setRequestedBy = useNewAppointmentStore(newAppointmentActions.setRequestedBy);
 
   useEffect(() => {
     setRequestedBy(AuthRoles.BUSINESS);
@@ -42,10 +29,8 @@ export default function EditAppointmentWrapper(
 
   const { mutate: editAppointmentMutation, isPending } = useMutation({
     mutationKey: ["editAppointment"],
-    mutationFn: (data: {
-      id: string;
-      appointmentData: INewAppointmentRequestData;
-    }) => editAppointment(data.id, data.appointmentData),
+    mutationFn: (data: { id: string; appointmentData: INewAppointmentRequestData }) =>
+      editAppointment(data.id, data.appointmentData, Constants.TIMESLOTS.DEFAULT_DAYS_FORWARD),
     onError: () => {
       toast.error("Erro ao editar o agendamento");
     },

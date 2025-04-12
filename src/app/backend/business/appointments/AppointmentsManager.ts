@@ -48,11 +48,12 @@ class AppointmentsManager {
     }
   }
 
-  public async editAppointment(appointmentId: string, appointmentData: INewAppointmentRequestData): Promise<void> {
+  public async editAppointment(appointmentId: string, appointmentData: INewAppointmentRequestData, daysForward?: number): Promise<void> {
     Logger.debug(this.LOG_TAG, "Start editing appointment", [appointmentId, appointmentData]);
 
+    
     try {
-      const createdAppointment = await this.scheduleAppointment(appointmentData);
+      const createdAppointment = await this.scheduleAppointment(appointmentData, daysForward);
 
       await this.deleteAppointment(appointmentId);
 
