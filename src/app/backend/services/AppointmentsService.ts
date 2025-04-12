@@ -67,6 +67,7 @@ class AppointmentsService {
             customerName: appointmentData.customerName,
             customerMsisdn: `${appointmentData.customerPhone}`,
             daysForward: daysForward,
+            operatorId: appointmentData.employeeId,
           },
         };
       } else {
