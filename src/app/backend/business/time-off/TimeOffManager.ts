@@ -98,6 +98,7 @@ class TimeOffManager {
         intervals.push({
           startTimeInMillis: timeOffs.startTimeInMillis,
           endTimeInMillis: dayJsWrapper(timeOffs.startTimeInMillis).set("hours", this.TIME_OFF_END_HOUR).valueOf(),
+          operatorId: timeOffs.operatorId,
         });
         continue;
       }
@@ -106,6 +107,7 @@ class TimeOffManager {
         intervals.push({
           startTimeInMillis: dayJsWrapper(timeOffs.endTimeInMillis).set("hours", this.TIME_OFF_START_HOUR).valueOf(),
           endTimeInMillis: timeOffs.endTimeInMillis,
+          operatorId: timeOffs.operatorId,
         });
         break;
       }
@@ -118,6 +120,7 @@ class TimeOffManager {
         intervals.push({
           startTimeInMillis: startTime.valueOf(),
           endTimeInMillis: endTime.valueOf(),
+          operatorId: timeOffs.operatorId,
         });
       }
     }
