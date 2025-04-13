@@ -39,6 +39,7 @@ export function EditOperator(props: EditOperatorProps) {
         msisdn: props.operator.msisdn,
         email: props.operator.email,
         description: props.operator.description,
+        iconUrl: props.operator.iconUrl,
       }}
     />
   );

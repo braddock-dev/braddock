@@ -9,6 +9,7 @@ import { z } from "zod";
 import { PHONE_NUMBER_VALIDATION_RULE } from "@/lib/utils";
 import LightPhoneNumberInput from "../../phone-number-input/LightPhoneNumberInput";
 import ColorPicker from "../../color-picker/ColorPicker";
+import LogoUploader from "../../logo-uploader/LogoUploader";
 
 export const operatorFormSchema = z.object({
   name: z.string().min(3, "Mínimo 3 Caracteres").max(255),
@@ -16,6 +17,7 @@ export const operatorFormSchema = z.object({
   email: z.string().email("Email inválido"),
   description: z.string().min(3, "Mínimo 3 Caracteres").max(255),
   color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor inválida"),
+  iconUrl: z.string().url("Imagem inválida"),
 });
 
 interface IOperatorFormProps {
@@ -42,6 +44,13 @@ export default function OperatorForm(props: IOperatorFormProps) {
   return (
     <div className="p-4 flex flex-col gap-4">
       <form className={"flex gap-4 flex-col"}>
+        <LogoUploader
+          onUploadComplete={(fileUrl) => {
+            setValue("iconUrl", fileUrl);
+          }}
+          defaultValue={getValues().iconUrl}
+        />
+
         <Input
           type={"text"}
           inputMode={"text"}
