@@ -7,7 +7,7 @@ import MenuItem, { ISideMenuItem } from "@/app/ui/components/side-menu/MenuItem"
 import { useMemo } from "react";
 import HomeIcon from "@/app/ui/vectors/home.svg";
 import { usePathname } from "next/navigation";
-import { Archive, UserIcon, Users, X } from "lucide-react";
+import { Archive, UserIcon, Users, X, UserRoundCog, SquareUser } from "lucide-react";
 import { menuActions, menuSelectors, useMenuStore } from "@/app/store/menuStore";
 
 export default function SideMenu() {
@@ -29,7 +29,7 @@ export default function SideMenu() {
       },
       {
         label: "Operadores",
-        icon: <Users className="shrink-0 size-4" />,
+        icon: <UserRoundCog className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.OPERATORS,
       },
       {
@@ -39,7 +39,7 @@ export default function SideMenu() {
       },
       {
         label: "Minha Conta",
-        icon: <UserIcon className="shrink-0 size-4" />,
+        icon: <SquareUser className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.ACCOUNT,
       },
     ];
