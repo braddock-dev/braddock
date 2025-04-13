@@ -7,14 +7,8 @@ import * as React from "react";
 import { Fragment, useState } from "react";
 import TreatmentsTable from "@/app/admin/services/TreatmentsTable";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  deleteTreatment,
-  getTreatmentsList,
-} from "@/app/backend/actions/treatmentsActions";
-import {
-  ITreatment,
-  SortOrder,
-} from "@/app/backend/business/treatments/data/TreatmentsData";
+import { deleteTreatment, getTreatmentsList } from "@/app/backend/actions/treatmentsActions";
+import { ITreatment, SortOrder } from "@/app/backend/business/treatments/data/TreatmentsData";
 import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
 import NewTreatment from "@/app/ui/components/treatments/new-treatment/NewTreatment";
 import EditTreatment from "@/app/ui/components/treatments/edit-treatment/EditTreatment";
@@ -24,10 +18,7 @@ import { toast } from "sonner";
 export default function Page() {
   const [showAddTreatmentModal, setShowAddTreatmentModal] = useState(false);
   const [treatmentToBeEdited, setTreatmentToBeEdited] = useState<ITreatment>();
-  const [treatmentToBeDeleted, setTreatmentToBeDeleted] =
-    useState<ITreatment>();
-
-  const employeeId = "1"; //TODO: Get logged in employee id
+  const [treatmentToBeDeleted, setTreatmentToBeDeleted] = useState<ITreatment>();
 
   const {
     data: treatmentsList,
@@ -36,7 +27,7 @@ export default function Page() {
     refetch,
   } = useQuery({
     queryKey: ["treatments"],
-    queryFn: () => getTreatmentsList(employeeId, SortOrder.DESC),
+    queryFn: () => getTreatmentsList(undefined, SortOrder.DESC),
   });
 
   const { mutate: deleteServiceMutation, isPending } = useMutation({
@@ -83,11 +74,7 @@ export default function Page() {
               }}
             />
 
-            <SidePanelWrapper
-              onClose={() => setShowAddTreatmentModal(false)}
-              title={"Novo Serviço"}
-              isOpen={showAddTreatmentModal}
-            >
+            <SidePanelWrapper onClose={() => setShowAddTreatmentModal(false)} title={"Novo Serviço"} isOpen={showAddTreatmentModal}>
               <NewTreatment
                 onClose={() => setShowAddTreatmentModal(false)}
                 onCreated={() => {
@@ -97,11 +84,7 @@ export default function Page() {
               />
             </SidePanelWrapper>
 
-            <SidePanelWrapper
-              onClose={() => setTreatmentToBeEdited(undefined)}
-              title={"Actualizar Serviço"}
-              isOpen={!!treatmentToBeEdited}
-            >
+            <SidePanelWrapper onClose={() => setTreatmentToBeEdited(undefined)} title={"Actualizar Serviço"} isOpen={!!treatmentToBeEdited}>
               {treatmentToBeEdited && (
                 <EditTreatment
                   onClose={() => setTreatmentToBeEdited(undefined)}

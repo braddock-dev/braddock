@@ -79,6 +79,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       customerEmail: "",
       recommendedDate: undefined,
       appointmentId: undefined,
+      employeeId: undefined,
     }),
   setAppointmentStore: (appointment: IAppointment) => {
     set({
@@ -87,6 +88,7 @@ export const useNewAppointmentStore = create<INewAppointmentStore>((set) => ({
       customerName: appointment.clientName,
       customerEmail: appointment.clientEmail,
       appointmentId: appointment.id,
+      employeeId: appointment.operatorId,
     });
   },
 }));

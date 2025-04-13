@@ -32,7 +32,7 @@ class OperatorManager {
 
     try {
       const operatorResponse = await OperatorService.updateOperator(operatorId, data);
-      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse);
+      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse, 0);
 
       Logger.log(this.LOG_TAG, "Update operator response success", [operator]);
 
@@ -61,7 +61,7 @@ class OperatorManager {
     try {
       const operatorRequestData = OperatorDataAdapter.convertDataToOperatorRequest(data);
       const operatorResponse = await OperatorService.createOperator(operatorRequestData);
-      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse);
+      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse, 0);
 
       Logger.log(this.LOG_TAG, "Create operator response success", [operator]);
 

@@ -56,71 +56,69 @@ export default function Page() {
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <Card className="p-6">
-        {isPendingOperatorsList ? (
-          <div className="flex justify-center items-center h-64">
-            <Spinner />
-          </div>
-        ) : (
-          <Fragment>
-            <OperatorsTable
-              operators={operatorsList || []}
-              onEditOperator={(operator) => setOperatorToBeEdited(operator)}
-              onDeleteOperator={(operator) => setOperatorToBeDeleted(operator)}
-              onAddOperator={() => setIsCreatingOperator(true)}
-              onAddTreatments={(operator) => setOperatorToAddTreatments(operator)}
-            />
+    <Card className="p-6">
+      {isPendingOperatorsList ? (
+        <div className="flex justify-center items-center h-64">
+          <Spinner />
+        </div>
+      ) : (
+        <Fragment>
+          <OperatorsTable
+            operators={operatorsList || []}
+            onEditOperator={(operator) => setOperatorToBeEdited(operator)}
+            onDeleteOperator={(operator) => setOperatorToBeDeleted(operator)}
+            onAddOperator={() => setIsCreatingOperator(true)}
+            onAddTreatments={(operator) => setOperatorToAddTreatments(operator)}
+          />
 
-            <SidePanelWrapper onClose={() => setOperatorToBeEdited(undefined)} title={"Editar Operador"} isOpen={!!operatorToBeEdited}>
-              {operatorToBeEdited && (
-                <EditOperator
-                  operator={operatorToBeEdited}
-                  onClose={() => setOperatorToBeEdited(undefined)}
-                  onUpdated={() => {
-                    setOperatorToBeEdited(undefined);
-                    refetch();
-                  }}
-                />
-              )}
-            </SidePanelWrapper>
-
-            <SidePanelWrapper
-              onClose={() => setOperatorToAddTreatments(undefined)}
-              title={`Associar Serviços  ${operatorToAddTreatments?.name}`}
-              isOpen={!!operatorToAddTreatments}
-            >
-              {operatorToAddTreatments && (
-                <AddOperatorTreatments operator={operatorToAddTreatments} onClose={() => setOperatorToAddTreatments(undefined)} />
-              )}
-            </SidePanelWrapper>
-
-            <SidePanelWrapper onClose={() => setIsCreatingOperator(false)} title={"Criar Operador"} isOpen={isCreatingOperator}>
-              <CreateOperator
-                onClose={() => setIsCreatingOperator(false)}
-                onCreated={() => {
-                  setIsCreatingOperator(false);
+          <SidePanelWrapper onClose={() => setOperatorToBeEdited(undefined)} title={"Editar Operador"} isOpen={!!operatorToBeEdited}>
+            {operatorToBeEdited && (
+              <EditOperator
+                operator={operatorToBeEdited}
+                onClose={() => setOperatorToBeEdited(undefined)}
+                onUpdated={() => {
+                  setOperatorToBeEdited(undefined);
                   refetch();
                 }}
               />
-            </SidePanelWrapper>
+            )}
+          </SidePanelWrapper>
 
-            <AlertDialogWrapper
-              isOpen={!!operatorToBeDeleted}
-              onOpenChange={(isOpen) => {
-                if (!isOpen) {
-                  setOperatorToBeDeleted(undefined);
-                }
+          <SidePanelWrapper
+            onClose={() => setOperatorToAddTreatments(undefined)}
+            title={`Associar Serviços  ${operatorToAddTreatments?.name}`}
+            isOpen={!!operatorToAddTreatments}
+          >
+            {operatorToAddTreatments && (
+              <AddOperatorTreatments operator={operatorToAddTreatments} onClose={() => setOperatorToAddTreatments(undefined)} />
+            )}
+          </SidePanelWrapper>
+
+          <SidePanelWrapper onClose={() => setIsCreatingOperator(false)} title={"Criar Operador"} isOpen={isCreatingOperator}>
+            <CreateOperator
+              onClose={() => setIsCreatingOperator(false)}
+              onCreated={() => {
+                setIsCreatingOperator(false);
+                refetch();
               }}
-              title={"Remover Operador"}
-              description={"Tem a certeza que deseja remover este operador?"}
-              onCancel={() => setOperatorToBeDeleted(undefined)}
-              onConfirm={() => handleDeleteOperator(operatorToBeDeleted?.id)}
-              confirmText={"Remover"}
             />
-          </Fragment>
-        )}
-      </Card>
-    </div>
+          </SidePanelWrapper>
+
+          <AlertDialogWrapper
+            isOpen={!!operatorToBeDeleted}
+            onOpenChange={(isOpen) => {
+              if (!isOpen) {
+                setOperatorToBeDeleted(undefined);
+              }
+            }}
+            title={"Remover Operador"}
+            description={"Tem a certeza que deseja remover este operador?"}
+            onCancel={() => setOperatorToBeDeleted(undefined)}
+            onConfirm={() => handleDeleteOperator(operatorToBeDeleted?.id)}
+            confirmText={"Remover"}
+          />
+        </Fragment>
+      )}
+    </Card>
   );
 }

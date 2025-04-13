@@ -39,6 +39,8 @@ export default function AppointmentsPageContent() {
 
   const selectedOperator = useOperatorStore(operatorSelectors.selectedOperator);
 
+  const operators = useOperatorStore(operatorSelectors.operators);
+
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
   const [selectedAppointment, setSelectedAppointment] = useState<IAppointment>();
 
@@ -58,8 +60,8 @@ export default function AppointmentsPageContent() {
   });
 
   const { data: timeOffs, refetch: refetchTimeOffs } = useQuery({
-    queryKey: ["timeOffs"],
-    queryFn: () => getTimeOffs(),
+    queryKey: ["timeOffs", selectedOperator?.id],
+    queryFn: () => getTimeOffs(selectedOperator?.id),
     refetchInterval: Constants.APPOINTMENTS.REFETCH_INTERVAL,
   });
 
@@ -89,8 +91,8 @@ export default function AppointmentsPageContent() {
   });
 
   const events = useMemo(() => {
-    return [...convertAppointmentsToEvents(data || []), ...convertTimeOffsToEvents(timeOffs || [])];
-  }, [data, timeOffs]);
+    return [...convertAppointmentsToEvents(data || [], operators), ...convertTimeOffsToEvents(timeOffs || [], operators)];
+  }, [data, timeOffs, operators]);
 
   if (error) {
     toast.error("Erro ao carregar os agendamentos.");
@@ -173,13 +175,14 @@ export default function AppointmentsPageContent() {
     setNewAppointmentModalOpen(true);
   };
 
-  const handleBlockTime = () => {
+  const handleBlockTime = (operatorId: string) => {
     setShowNewEventModal(false);
 
-    if (selectedDateInterval) {
+    if (selectedDateInterval && operatorId) {
       mutateRegisterTimeOff({
         startTimeInMillis: selectedDateInterval.start,
         endTimeInMillis: selectedDateInterval.end,
+        operatorId: operatorId,
       });
     }
   };

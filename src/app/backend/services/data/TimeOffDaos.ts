@@ -2,6 +2,7 @@ export interface NewTimeOffRequest {
   startTimeInMillis: number;
   endTimeInMillis: number;
   reason?: string;
+  operatorId: string;
 }
 
 export interface IWorkingHoursResponse {
@@ -20,4 +21,5 @@ export interface ITimeOffResponse {
   endTimeInMillis: number;
   businessId: string;
   createdAt: number;
+  operatorId: string;
 }

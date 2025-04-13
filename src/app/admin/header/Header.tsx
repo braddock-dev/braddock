@@ -10,6 +10,9 @@ import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 import SelectComponent, { ISelectItem } from "@/app/ui/components/select/Select";
 import styles from "./Header.module.scss";
 import { useEffect, useMemo } from "react";
+import { Link, Menu } from "lucide-react";
+import { menuActions, menuSelectors, useMenuStore } from "@/app/store/menuStore";
+import { Constants } from "@/app/utils/Constants";
 
 const ALL_OPERATORS_VALUE = "all";
 
@@ -19,6 +22,8 @@ export default function Header() {
   const setSelectedOperator = useOperatorStore(operatorActions.setSelectedOperator);
 
   const setOperators = useOperatorStore(operatorActions.setOperators);
+  const toggleMenu = useMenuStore(menuActions.toggleMenu);
+  const isMenuOpen = useMenuStore(menuSelectors.isOpen);
 
   const { data: operators } = useQuery({
     queryKey: ["operators"],
@@ -50,42 +55,25 @@ export default function Header() {
   );
 
   return (
-    <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-brown border-b text-sm py-2.5 lg:ps-[260px]">
+    <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-brown border-b text-sm py-2.5 pl-4">
       <nav className="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
-        <div className="me-5 lg:me-0 lg:hidden flex items-center gap-4">
-          <button
-            type="button"
-            className="size-8 flex justify-center items-center gap-x-2 border border-white text-white rounded-lg focus:outline-none focus:text-white disabled:opacity-50 disabled:pointer-events-none"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            aria-controls="hs-application-sidebar"
-            aria-label="Toggle navigation"
-            data-hs-overlay="#hs-application-sidebar"
-          >
-            <span className="sr-only">Abrir menu</span>
-            <svg
-              className="shrink-0 size-4"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect width="18" height="18" x="3" y="3" rx="2" />
-              <path d="M15 3v18" />
-              <path d="m8 9 3 3-3 3" />
-            </svg>
-          </button>
-          <a className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80" href="#" aria-label="Preline">
-            <AppLogo className={"h-6"} />
-          </a>
-        </div>
+        <button
+          className="mr-3 bg-brown text-white p-2 rounded-md border border-white"
+          onClick={toggleMenu}
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        >
+          <Menu className="size-4" />
+        </button>
 
-        <div className="w-full flex items-center justify-end ms-auto  gap-x-3">
+        <a
+          className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
+          href={Constants.APP_ROUTES.HOME}
+          aria-label="Logo Principal"
+        >
+          <AppLogo className={"h-6"} />
+        </a>
+
+        <div className="w-full flex items-center justify-end ms-auto gap-x-3">
           <div className="flex justify-end">
             <SelectComponent
               selectTriggerClassName={styles.selectTrigger}

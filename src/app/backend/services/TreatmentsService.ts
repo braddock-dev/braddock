@@ -12,7 +12,7 @@ class TreatmentsService {
   }
 
   public async getTreatments(operatorId?: string): Promise<any[]> {
-    Logger.log(this.LOG_TAG, "Start getting treatments");
+    Logger.log(this.LOG_TAG, "Start getting treatments", [operatorId]);
 
     try {
       let requestUrl = "";

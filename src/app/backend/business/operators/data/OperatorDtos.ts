@@ -5,6 +5,7 @@ export interface IOperator {
   email: string;
   description: string;
   iconUrl: string;
+  color?: string;
 }
 
 export interface IToggleTreatment {

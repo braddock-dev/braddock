@@ -18,21 +18,26 @@ input {
   padding: 0 !important;
 }
 
-.toastui-calendar-event-time-content{
+.toastui-calendar-event-time-content {
   white-space: break-spaces;
 }
 
-.toastui-calendar-panel-resizer{
+.toastui-calendar-panel-resizer {
   display: none !important;
 }
 
-.toastui-calendar-day-view-day-names, .toastui-calendar-week-view-day-names{
+.toastui-calendar-day-view-day-names,
+.toastui-calendar-week-view-day-names {
   border-bottom: none !important;
+}
+
+.toastui-calendar-panel.toastui-calendar-time {
+  height: 100% !important;
 }
 
 @layer base {
   :root {
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
 }
 

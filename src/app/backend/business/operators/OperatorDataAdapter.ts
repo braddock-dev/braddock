@@ -9,7 +9,7 @@ class OperatorDataAdapter {
     Logger.log(this.LOG_TAG, "Service initialized");
   }
 
-  public convertDataToOperator(data: IOperatorResponse): IOperator {
+  public convertDataToOperator(data: IOperatorResponse, index: number): IOperator {
     return {
       id: data.id,
       name: data.name,
@@ -17,11 +17,12 @@ class OperatorDataAdapter {
       email: data.email,
       description: data.description,
       iconUrl: data.iconUrl,
+      color: this.generateOperatorColors(index),
     };
   }
 
   public convertDataToOperators(data: IOperatorResponse[]): IOperator[] {
-    return data.map(this.convertDataToOperator.bind(this));
+    return data.map((operator, index) => this.convertDataToOperator(operator, index));
   }
 
   public convertDataToOperatorRequest(data: IOperator): IOperatorResponse {
@@ -32,10 +33,14 @@ class OperatorDataAdapter {
       email: data.email,
       iconUrl: data.iconUrl || "",
       description: data.description,
-    }
+    };
   }
-  
 
+  private generateOperatorColors(index: number): string {
+    const colors = ["#b47866", "#336699", "#8338ec", "#03045e", "#fb6f92", "#344e41", "#2a9d8f", "#386641", "#e07a5f", "#f694c1", "#376996"];
+
+    return colors[index % colors.length];
+  }
 }
 
-export default new OperatorDataAdapter(); 
+export default new OperatorDataAdapter();
