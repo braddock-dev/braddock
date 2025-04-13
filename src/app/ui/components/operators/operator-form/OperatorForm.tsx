@@ -8,17 +8,19 @@ import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
 import { z } from "zod";
 import { PHONE_NUMBER_VALIDATION_RULE } from "@/lib/utils";
 import LightPhoneNumberInput from "../../phone-number-input/LightPhoneNumberInput";
+import ColorPicker from "../../color-picker/ColorPicker";
 
 export const operatorFormSchema = z.object({
   name: z.string().min(3, "Mínimo 3 Caracteres").max(255),
   msisdn: PHONE_NUMBER_VALIDATION_RULE,
   email: z.string().email("Email inválido"),
   description: z.string().min(3, "Mínimo 3 Caracteres").max(255),
+  color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor inválida"),
 });
 
 interface IOperatorFormProps {
   onCancel: () => void;
-  onSave: (data: Partial<IOperator>) => void;
+  onSave: (data: IOperator) => void;
   isSaving: boolean;
   defaultValues?: Partial<IOperator>;
 }
@@ -30,7 +32,7 @@ export default function OperatorForm(props: IOperatorFormProps) {
     getValues,
     setValue,
     trigger,
-  } = useForm<Partial<IOperator>>({
+  } = useForm<IOperator>({
     resolver: zodResolver(operatorFormSchema),
     reValidateMode: "onChange",
     mode: "onChange",
@@ -52,7 +54,7 @@ export default function OperatorForm(props: IOperatorFormProps) {
           hasValue={!!getValues().name}
           themeMode={"light"}
         />
-        
+
         <LightPhoneNumberInput
           value={getValues().msisdn}
           errorMessage={errors.msisdn?.message}
@@ -87,6 +89,17 @@ export default function OperatorForm(props: IOperatorFormProps) {
           hasValue={!!getValues().description}
           themeMode={"light"}
         />
+
+        <ColorPicker
+          register={register}
+          setValue={setValue}
+          trigger={trigger}
+          getValues={getValues}
+          errors={errors.color}
+          touched={touchedFields.color}
+          name="color"
+          label="Cor para agendamentos"
+        />
       </form>
 
       <SectionInfo title={"Acções"}>
@@ -107,4 +120,4 @@ export default function OperatorForm(props: IOperatorFormProps) {
       </SectionInfo>
     </div>
   );
-} 
+}

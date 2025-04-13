@@ -37,7 +37,7 @@ class OperatorService {
     }
   }
 
-  public async updateOperator(operatorId: string, data: Partial<IOperatorResponse>): Promise<IOperatorResponse> {
+  public async updateOperator(operatorId: string, data: IOperatorResponse): Promise<IOperatorResponse> {
     Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
 
     try {
