@@ -50,42 +50,9 @@ export default function Header() {
   );
 
   return (
-    <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-brown border-b text-sm py-2.5 lg:ps-[260px]">
+    <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-brown border-b text-sm py-2.5 pl-16">
       <nav className="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
-        <div className="me-5 lg:me-0 lg:hidden flex items-center gap-4">
-          <button
-            type="button"
-            className="size-8 flex justify-center items-center gap-x-2 border border-white text-white rounded-lg focus:outline-none focus:text-white disabled:opacity-50 disabled:pointer-events-none"
-            aria-haspopup="dialog"
-            aria-expanded="false"
-            aria-controls="hs-application-sidebar"
-            aria-label="Toggle navigation"
-            data-hs-overlay="#hs-application-sidebar"
-          >
-            <span className="sr-only">Abrir menu</span>
-            <svg
-              className="shrink-0 size-4"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect width="18" height="18" x="3" y="3" rx="2" />
-              <path d="M15 3v18" />
-              <path d="m8 9 3 3-3 3" />
-            </svg>
-          </button>
-          <a className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80" href="#" aria-label="Preline">
-            <AppLogo className={"h-6"} />
-          </a>
-        </div>
-
-        <div className="w-full flex items-center justify-end ms-auto  gap-x-3">
+        <div className="w-full flex items-center justify-end ms-auto gap-x-3">
           <div className="flex justify-end">
             <SelectComponent
               selectTriggerClassName={styles.selectTrigger}

@@ -4,13 +4,18 @@ import AppLogo from "@/app/ui/vectors/logo-horizontal.svg";
 import Link from "next/link";
 import { Constants } from "@/app/utils/Constants";
 import MenuItem, { ISideMenuItem } from "@/app/ui/components/side-menu/MenuItem";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import HomeIcon from "@/app/ui/vectors/home.svg";
 import { usePathname } from "next/navigation";
-import { Archive, UserIcon, Users } from "lucide-react";
+import { Archive, Menu, UserIcon, Users, X } from "lucide-react";
 
 export default function SideMenu() {
   const pathName = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   const menuItems = useMemo((): ISideMenuItem[] => {
     return [
@@ -44,16 +49,19 @@ export default function SideMenu() {
 
   return (
     <div>
+      {/* Menu toggle button - visible on all screen sizes */}
+      <button
+        className="fixed top-3 left-4 z-[70] bg-brown text-white p-2 rounded-md"
+        onClick={toggleMenu}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+      >
+        {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+      </button>
+
       <div
-        id="hs-application-sidebar"
-        className="hs-overlay  [--auto-close:lg]
-  hs-overlay-open:translate-x-0
-  -translate-x-full transition-all duration-300 transform
-  w-[260px] h-full
-  hidden
-  fixed inset-y-0 start-0 z-[60]
-  border-e border-gray-200 bg-brown
-  lg:block lg:translate-x-0 lg:end-auto lg:bottom-0"
+        className={`fixed inset-y-0 start-0 z-[60] w-[260px] h-full 
+          border-e border-gray-200 bg-brown transition-transform duration-300 transform
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
         role="dialog"
         tabIndex={-1}
         aria-label="Sidebar"
@@ -70,7 +78,7 @@ export default function SideMenu() {
           </div>
 
           <div className="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
-            <nav className="hs-accordion-group p-3 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
+            <nav className="p-3 w-full flex flex-col flex-wrap">
               <ul className="flex flex-col space-y-1">
                 {menuItems.map((menuItem, index) => (
                   <MenuItem key={index} menuItem={menuItem} isActive={menuItem.url.startsWith(pathName)} />
@@ -80,6 +88,9 @@ export default function SideMenu() {
           </div>
         </div>
       </div>
+
+      {/* Overlay to close menu when clicking outside */}
+      {isOpen && <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-[55]" onClick={() => setIsOpen(false)} aria-hidden="true" />}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Calendar from "@toast-ui/react-calendar";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
 import { EventObject, TZDate } from "@toast-ui/calendar";
@@ -63,31 +63,25 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
     }
   };
 
+  useEffect(() => {
+    if (calendarRef.current && calendarRef.current.containerElementRef.current) {
+      calendarRef.current.containerElementRef.current.style.maxWidth = "100%";
+    }
+  }, [calendarRef]);
+
   return (
-    <div className={"h-[120vh] w-full pb-10 flex flex-col gap-5"}>
+    <div className={"h-[90vh] w-full pb-5 flex flex-col gap-5 overflow-hidden"}>
       <div className={"flex justify-between items-center"}>
         <div className={"flex gap-1"}>
-          <Button
-            variant="outline"
-            size={"lg"}
-            onClick={() => onClickNavigation(CalendarActions.MOVE_PREV)}
-          >
+          <Button variant="outline" size={"lg"} onClick={() => onClickNavigation(CalendarActions.MOVE_PREV)}>
             Anterior
           </Button>
 
-          <Button
-            variant="outline"
-            size={"lg"}
-            onClick={() => onClickNavigation(CalendarActions.MOVE_TODAY)}
-          >
+          <Button variant="outline" size={"lg"} onClick={() => onClickNavigation(CalendarActions.MOVE_TODAY)}>
             Hoje
           </Button>
 
-          <Button
-            variant="outline"
-            size={"lg"}
-            onClick={() => onClickNavigation(CalendarActions.MOVE_NEXT)}
-          >
+          <Button variant="outline" size={"lg"} onClick={() => onClickNavigation(CalendarActions.MOVE_NEXT)}>
             Próximo
           </Button>
         </div>
@@ -111,14 +105,13 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
       </div>
 
       <Calendar
-        height={"100%"}
         view={viewMode}
         week={{
           dayNames: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
           taskView: false,
           startDayOfWeek: 1,
           hourStart: 8,
-          hourEnd: 20,
+          hourEnd: 19,
           showNowIndicator: true,
         }}
         useFormPopup={false}
