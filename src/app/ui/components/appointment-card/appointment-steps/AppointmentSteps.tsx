@@ -2,21 +2,11 @@
 
 import styles from "./AppointmentSteps.module.scss";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import FirstStep from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
 import ThirdStep from "@/app/ui/components/appointment-card/appointment-steps/third-step/ThirdStep";
-import {
-  newAppointmentActions,
-  newAppointmentSelectors,
-  useNewAppointmentStore,
-} from "@/app/store/newAppointmentStore";
+import { newAppointmentActions, newAppointmentSelectors, useNewAppointmentStore } from "@/app/store/newAppointmentStore";
 import FourthStep from "@/app/ui/components/appointment-card/appointment-steps/fourth-step/FourthStep";
 import OTPStep from "@/app/ui/components/appointment-card/appointment-steps/otp-step/OTPStep";
 import { useOTPValidationCode } from "@/app/ui/components/appointment-card/appointment-steps/otp-step/useOTPData";
@@ -27,10 +17,7 @@ import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 import { toast } from "sonner";
 import { HeroCardType, uiActions, useUIStore } from "@/app/store/uiStore";
 import { NotAllowedServiceModal } from "@/app/ui/components/not-allowed-service-modal/NotAllowedServiceModal";
-import {
-  isNotAllowedServiceSelected,
-  notAllowedServicesSelected,
-} from "@/app/admin/appointments/utils";
+import { isNotAllowedServiceSelected, notAllowedServicesSelected } from "@/app/admin/appointments/utils";
 import SelectEmployeeStep from "@/app/ui/components/appointment-card/appointment-steps/select-employee-step/SelectEmployeeStep";
 import { Constants } from "@/app/utils/Constants";
 
@@ -64,37 +51,23 @@ function AppointmentSteps() {
   const isUserAuthenticated = useAuthStore(authSelectors.isAuthenticated);
   const setHeroCardType = useUIStore(uiActions.setHeroCardType);
   const [isNotAllowedModalOpen, setIsNotAllowedModalOpen] = useState(false);
-  const selectedEmployee = useNewAppointmentStore(
-    newAppointmentSelectors.employeeId,
-  );
+  const selectedEmployee = useNewAppointmentStore(newAppointmentSelectors.employeeId);
 
-  const selectedTreatments = useNewAppointmentStore(
-    newAppointmentSelectors.selectedTreatments,
-  );
+  const selectedTreatments = useNewAppointmentStore(newAppointmentSelectors.selectedTreatments);
 
-  const setRequestedBy = useNewAppointmentStore(
-    newAppointmentActions.setRequestedBy,
-  );
+  const setRequestedBy = useNewAppointmentStore(newAppointmentActions.setRequestedBy);
 
   const isNotAllowedServicesSelected = useMemo(() => {
     return isNotAllowedServiceSelected(selectedTreatments);
   }, [selectedTreatments]);
 
-  const appointmentStore = useNewAppointmentStore(
-    newAppointmentSelectors.appointmentStore,
-  );
+  const appointmentStore = useNewAppointmentStore(newAppointmentSelectors.appointmentStore);
 
-  const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(
-    APPOINTMENT_STEPS.SELECT_EMPLOYEE,
-  );
+  const [currentStep, setCurrentStep] = useState<APPOINTMENT_STEPS>(APPOINTMENT_STEPS.SELECT_EMPLOYEE);
 
-  const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(
-    defaultAvailableSteps,
-  );
+  const [availableSteps, setAvailableSteps] = useState<IAvailableStepsMap>(defaultAvailableSteps);
 
-  const { isPendingNewAppointment, mutateNewAppointment } = useAppointment(
-    handleOnAppointmentSuccess,
-  );
+  const { isPendingNewAppointment, mutateNewAppointment } = useAppointment(handleOnAppointmentSuccess);
 
   const { mutateSendOtp, isPendingSendOtp } = useOTPValidationCode();
 
@@ -121,19 +94,16 @@ function AppointmentSteps() {
     mutateNewAppointment(appointmentStore);
   };
 
-  const changeStepValidState = useCallback(
-    (step: APPOINTMENT_STEPS, isValid: boolean) => {
-      setAvailableSteps((prev) => ({
-        ...prev,
-        [step]: { isValid },
-      }));
-    },
-    [],
-  );
+  const changeStepValidState = useCallback((step: APPOINTMENT_STEPS, isValid: boolean) => {
+    setAvailableSteps((prev) => ({
+      ...prev,
+      [step]: { isValid },
+    }));
+  }, []);
 
   const handleCompleteAppointment = () => {
     resetState();
-    setCurrentStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
+    setCurrentStep(APPOINTMENT_STEPS.SELECT_EMPLOYEE);
   };
 
   const handleShowAppointments = () => {
@@ -176,9 +146,7 @@ function AppointmentSteps() {
     }
 
     if (authUser?.role === AuthRoles.BUSINESS) {
-      toast.info(
-        "Apenas clientes podem agendar, entre com uma conta de cliente",
-      );
+      toast.info("Apenas clientes podem agendar, entre com uma conta de cliente");
       return;
     }
 
@@ -187,18 +155,10 @@ function AppointmentSteps() {
 
   const renderStep: Record<APPOINTMENT_STEPS, ReactElement> = {
     [APPOINTMENT_STEPS.SELECT_EMPLOYEE]: (
-      <SelectEmployeeStep
-        isValidChange={(isValid) =>
-          changeStepValidState(APPOINTMENT_STEPS.SELECT_EMPLOYEE, isValid)
-        }
-      />
+      <SelectEmployeeStep isValidChange={(isValid) => changeStepValidState(APPOINTMENT_STEPS.SELECT_EMPLOYEE, isValid)} />
     ),
     [APPOINTMENT_STEPS.SERVICES_SELECTION]: (
-      <FirstStep
-        isValidChange={(isValid) =>
-          changeStepValidState(APPOINTMENT_STEPS.SERVICES_SELECTION, isValid)
-        }
-      />
+      <FirstStep isValidChange={(isValid) => changeStepValidState(APPOINTMENT_STEPS.SERVICES_SELECTION, isValid)} />
     ),
     [APPOINTMENT_STEPS.DATE_SELECTION]: (
       <SecondStep
@@ -209,11 +169,7 @@ function AppointmentSteps() {
       />
     ),
     [APPOINTMENT_STEPS.COMPLETE_APPOINTMENT]: (
-      <ThirdStep
-        isValidChange={(isValid) =>
-          changeStepValidState(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT, isValid)
-        }
-      />
+      <ThirdStep isValidChange={(isValid) => changeStepValidState(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT, isValid)} />
     ),
     [APPOINTMENT_STEPS.OTP_STEP]: (
       <OTPStep
@@ -256,9 +212,7 @@ function AppointmentSteps() {
           fullWidth
           color={ButtonColors.WHITE}
           className={styles.button}
-          disabled={
-            !availableSteps[APPOINTMENT_STEPS.SERVICES_SELECTION].isValid
-          }
+          disabled={!availableSteps[APPOINTMENT_STEPS.SERVICES_SELECTION].isValid}
           onClick={handleSelectServices}
         >
           CONTINUAR
@@ -273,9 +227,7 @@ function AppointmentSteps() {
             color={ButtonColors.WHITE}
             outline
             className={styles.button}
-            onClick={() =>
-              handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)
-            }
+            onClick={() => handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION)}
           >
             VOLTAR
           </Button>
@@ -312,11 +264,7 @@ function AppointmentSteps() {
           className={styles.button}
           onClick={handleClickConfirmUserInfo}
           isLoading={isPendingSendOtp || isPendingNewAppointment}
-          disabled={
-            !availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid ||
-            isPendingSendOtp ||
-            isPendingNewAppointment
-          }
+          disabled={!availableSteps[APPOINTMENT_STEPS.COMPLETE_APPOINTMENT].isValid || isPendingSendOtp || isPendingNewAppointment}
         >
           CONTINUAR
         </Button>
@@ -329,9 +277,7 @@ function AppointmentSteps() {
           color={ButtonColors.LIGHT_BROWN}
           className={styles.button}
           outline
-          onClick={() =>
-            handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT)
-          }
+          onClick={() => handleChangeStep(APPOINTMENT_STEPS.COMPLETE_APPOINTMENT)}
           disabled={isPendingNewAppointment}
         >
           VOLTAR
@@ -342,10 +288,7 @@ function AppointmentSteps() {
           className={styles.button}
           onClick={handleStartAppointment}
           isLoading={isPendingNewAppointment}
-          disabled={
-            !availableSteps[APPOINTMENT_STEPS.OTP_STEP].isValid ||
-            isPendingNewAppointment
-          }
+          disabled={!availableSteps[APPOINTMENT_STEPS.OTP_STEP].isValid || isPendingNewAppointment}
         >
           FINALIZAR
         </Button>
@@ -353,22 +296,11 @@ function AppointmentSteps() {
     ),
     [APPOINTMENT_STEPS.SUCCESS_STEP]: (
       <>
-        <Button
-          fullWidth
-          color={ButtonColors.BLACK}
-          className={styles.button}
-          outline
-          onClick={handleCompleteAppointment}
-        >
+        <Button fullWidth color={ButtonColors.BLACK} className={styles.button} outline onClick={handleCompleteAppointment}>
           FAZER OUTRO
         </Button>
 
-        <Button
-          fullWidth
-          color={ButtonColors.WHITE}
-          className={styles.button}
-          onClick={handleShowAppointments}
-        >
+        <Button fullWidth color={ButtonColors.WHITE} className={styles.button} onClick={handleShowAppointments}>
           AGENDAMENTOS
         </Button>
       </>
@@ -377,9 +309,7 @@ function AppointmentSteps() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.groupButtonsContainer}>
-        {renderStep[currentStep]}
-      </div>
+      <div className={styles.groupButtonsContainer}>{renderStep[currentStep]}</div>
 
       <div className={styles.buttonContainer}>{renderButtons[currentStep]}</div>
 

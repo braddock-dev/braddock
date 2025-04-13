@@ -1,10 +1,6 @@
 import styles from "./SelectEmployeeStep.module.scss";
 import EmployeeCard from "@/app/ui/components/appointment-card/appointment-steps/select-employee-step/employee-card/EmployeeCard";
-import {
-  newAppointmentActions,
-  newAppointmentSelectors,
-  useNewAppointmentStore,
-} from "@/app/store/newAppointmentStore";
+import { newAppointmentActions, newAppointmentSelectors, useNewAppointmentStore } from "@/app/store/newAppointmentStore";
 import { useQuery } from "@tanstack/react-query";
 import { getOperators } from "@/app/backend/actions/operatorActions";
 import AppointmentCardLoadingState from "@/app/ui/components/appointment-card/appointment-card-loading-state/AppointmentCardLoadingState";
@@ -14,16 +10,13 @@ interface ISelectEmployeeStepProps {
 }
 
 export default function SelectEmployeeStep(props: ISelectEmployeeStepProps) {
-  const selectedEmployee = useNewAppointmentStore(
-    newAppointmentSelectors.employeeId,
-  );
-  const setEmployeeId = useNewAppointmentStore(
-    newAppointmentActions.setEmployeeId,
-  );
+  const selectedEmployee = useNewAppointmentStore(newAppointmentSelectors.employeeId);
+  const setEmployeeId = useNewAppointmentStore(newAppointmentActions.setEmployeeId);
+  const setSelectedTreatment = useNewAppointmentStore(newAppointmentActions.setSelectedTreatment);
 
   const { data: operators, isLoading } = useQuery({
     queryKey: ["operators"],
-    queryFn: ()=> getOperators(),
+    queryFn: () => getOperators(),
   });
 
   if (isLoading) {
@@ -54,6 +47,7 @@ export default function SelectEmployeeStep(props: ISelectEmployeeStepProps) {
             isSelected={selectedEmployee === operator.id}
             onSelect={(selectedEmployee) => {
               setEmployeeId(selectedEmployee.id);
+              setSelectedTreatment([]);
               props.isValidChange(true);
             }}
           />
