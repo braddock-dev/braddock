@@ -4,18 +4,16 @@ import AppLogo from "@/app/ui/vectors/logo-horizontal.svg";
 import Link from "next/link";
 import { Constants } from "@/app/utils/Constants";
 import MenuItem, { ISideMenuItem } from "@/app/ui/components/side-menu/MenuItem";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import HomeIcon from "@/app/ui/vectors/home.svg";
 import { usePathname } from "next/navigation";
-import { Archive, Menu, UserIcon, Users, X } from "lucide-react";
+import { Archive, UserIcon, Users, X } from "lucide-react";
+import { menuActions, menuSelectors, useMenuStore } from "@/app/store/menuStore";
 
 export default function SideMenu() {
   const pathName = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const isOpen = useMenuStore(menuSelectors.isOpen);
+  const closeMenu = useMenuStore(menuActions.closeMenu);
 
   const menuItems = useMemo((): ISideMenuItem[] => {
     return [
@@ -49,15 +47,6 @@ export default function SideMenu() {
 
   return (
     <div>
-      {/* Menu toggle button - visible on all screen sizes */}
-      <button
-        className="fixed top-3 left-4 z-[70] bg-brown text-white p-2 rounded-md"
-        onClick={toggleMenu}
-        aria-label={isOpen ? "Close menu" : "Open menu"}
-      >
-        {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-      </button>
-
       <div
         className={`fixed inset-y-0 start-0 z-[60] w-[260px] h-full 
           border-e border-gray-200 bg-brown transition-transform duration-300 transform
@@ -67,7 +56,10 @@ export default function SideMenu() {
         aria-label="Sidebar"
       >
         <div className="relative flex flex-col h-full max-h-full">
-          <div className="px-6 pt-4 flex justify-center">
+          <div className="px-6 pt-4 flex items-center gap-x-3">
+            <button className="text-white p-2 rounded-md border border-white" onClick={closeMenu} aria-label="Close menu">
+              <X className="size-4" />
+            </button>
             <Link
               className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
               href={Constants.APP_ROUTES.HOME}
@@ -90,7 +82,7 @@ export default function SideMenu() {
       </div>
 
       {/* Overlay to close menu when clicking outside */}
-      {isOpen && <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-[55]" onClick={() => setIsOpen(false)} aria-hidden="true" />}
+      {isOpen && <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-[55]" onClick={closeMenu} aria-hidden="true" />}
     </div>
   );
 }
