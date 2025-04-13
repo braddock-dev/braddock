@@ -26,6 +26,8 @@ export default function AppointmentInfoForm({ ...props }: IAppointmentInfoFormPr
 
   const selectedTreatments = useNewAppointmentStore(newAppointmentSelectors.selectedTreatments);
 
+  const setSelectedTreatment = useNewAppointmentStore(newAppointmentActions.setSelectedTreatment);
+
   const setEmployeeId = useNewAppointmentStore(newAppointmentActions.setEmployeeId);
   const employeeId = useNewAppointmentStore(newAppointmentSelectors.employeeId);
 
@@ -52,6 +54,7 @@ export default function AppointmentInfoForm({ ...props }: IAppointmentInfoFormPr
           selectedOperator={employeeId}
           setSelectedOperator={(operator) => {
             setEmployeeId(operator?.id);
+            setSelectedTreatment([]);
           }}
         />
       </SectionInfo>
