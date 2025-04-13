@@ -18,7 +18,6 @@ interface ISelectButtonProps {
   onClick?: (selectButton: ISelectButton) => void;
   isSelected: boolean;
   className?: string;
-  disabled?: boolean;
 }
 export default function SelectButton(props: ISelectButtonProps) {
   return (
@@ -27,7 +26,6 @@ export default function SelectButton(props: ISelectButtonProps) {
       data-is-selected={props.isSelected}
       data-button-type={props.selectButton.type}
       onClick={() => props.onClick && props.onClick(props.selectButton)}
-      disabled={props.disabled}
     >
       {props.selectButton.text}
     </button>

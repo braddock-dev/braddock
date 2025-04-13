@@ -1,6 +1,14 @@
 import Logger from "@/app/utils/Logger";
-import { ITimeOffResponse, IWorkingHoursResponse, NewTimeOffRequest } from "@/app/backend/services/data/TimeOffDaos";
-import { HttpMethods, HttpStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
+import {
+  ITimeOffResponse,
+  IWorkingHoursResponse,
+  NewTimeOffRequest,
+} from "@/app/backend/services/data/TimeOffDaos";
+import {
+  HttpMethods,
+  HttpStatus,
+  IHttpRequestConfig,
+} from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 
@@ -37,12 +45,12 @@ class TimeOffService {
     }
   }
 
-  public async getTimeOffs(operatorId?: string): Promise<ITimeOffResponse[]> {
-    Logger.debug(this.LOG_TAG, "Start getting time offs", [operatorId]);
+  public async getTimeOffs(): Promise<ITimeOffResponse[]> {
+    Logger.debug(this.LOG_TAG, "Start getting time offs");
 
     try {
       const request: IHttpRequestConfig = {
-        url: Constants.API_ROUTES.GET_TIME_OFF(operatorId),
+        url: Constants.API_ROUTES.GET_TIME_OFF(),
         httpMethod: HttpMethods.GET,
       };
 
@@ -103,7 +111,9 @@ class TimeOffService {
         throw new Error("Error getting working hours");
       }
 
-      Logger.debug(this.LOG_TAG, "Getting working hours response", [response.data]);
+      Logger.debug(this.LOG_TAG, "Getting working hours response", [
+        response.data,
+      ]);
 
       return response.data;
     } catch (error) {

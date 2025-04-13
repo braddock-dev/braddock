@@ -8,8 +8,8 @@ export async function registerTimeOff(data: NewTimeOffRequest) {
   return TimeOffManager.registerTimeOff(data);
 }
 
-export async function getTimeOffs(operatorId?: string): Promise<ITimeOff[]> {
-  return TimeOffManager.getTimeOffs(operatorId);
+export async function getTimeOffs(): Promise<ITimeOff[]> {
+  return TimeOffManager.getTimeOffs();
 }
 
 export async function deleteTimeOff(id: number) {

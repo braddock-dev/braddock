@@ -11,22 +11,6 @@ const nextConfig = {
     });
     return config;
   },
-    images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '*',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'http',
-        hostname: '*',
-        port: '3000',
-        pathname: '/**',
-      },
-    ],
-  },
 };
 
 export default withSentryConfig(nextConfig, {

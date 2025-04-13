@@ -33,7 +33,6 @@ function Input(
     hasValue,
     themeMode = "dark",
     centerText,
-    withBorder,
     ...rest
   }: IInputProps,
   ref?: React.Ref<HTMLInputElement>,

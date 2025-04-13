@@ -11,7 +11,6 @@ export interface ISideMenuItem {
 interface MenuItemProps {
   menuItem: ISideMenuItem;
   isActive: boolean;
-  onClick?: () => void;
 }
 export default function MenuItem(props: MenuItemProps) {
   return (
@@ -24,7 +23,6 @@ export default function MenuItem(props: MenuItemProps) {
           },
         )}
         href={props.menuItem.url}
-        onClick={props.onClick}
       >
         {props.menuItem.icon}
         {props.menuItem.label}

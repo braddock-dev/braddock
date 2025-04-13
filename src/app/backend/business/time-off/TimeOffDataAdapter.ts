@@ -27,12 +27,11 @@ class TimeOffDataAdapter {
     };
   }
 
-  public convertDataToTimeOff(data: ITimeOffResponse): ITimeOff {
+  public convertDataToTimeOff(dataL: ITimeOffResponse): ITimeOff {
     return {
-      id: data.id,
-      endTimeInMillis: data.endTimeInMillis,
-      startTimeInMillis: data.startTimeInMillis,
-      operatorId: data.operatorId,
+      id: dataL.id,
+      endTimeInMillis: dataL.endTimeInMillis,
+      startTimeInMillis: dataL.startTimeInMillis,
     };
   }
 

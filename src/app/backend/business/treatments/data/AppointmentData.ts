@@ -14,13 +14,11 @@ export interface IAppointment {
   durationInHours: number;
   startTime: string;
   treatments: ITreatment[];
-  operatorId: string;
 }
 
 export interface IAppointmentQueryData {
   startDate?: number;
   endDate?: number;
-  operatorId?: string;
 }
 
 export enum EventType {

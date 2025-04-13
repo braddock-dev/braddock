@@ -12,5 +12,4 @@ export interface ITimeOff {
   id: number;
   startTimeInMillis: number;
   endTimeInMillis: number;
-  operatorId: string;
 }
