@@ -55,10 +55,6 @@ class TimeOffManager {
 
       Logger.debug(this.LOG_TAG, "Time off converted...", [timeOffs]);
 
-      if (operatorId) {
-        return timeOffs.filter((timeOff) => timeOff.operatorId === operatorId);
-      }
-
       return timeOffs;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error getting time offs", error);

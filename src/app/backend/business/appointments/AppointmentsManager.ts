@@ -18,10 +18,6 @@ class AppointmentsManager {
 
       Logger.log(this.LOG_TAG, "Get appointments response success", [appointmentData]);
 
-      if (data.operatorId) {
-        return appointmentData.filter((appointment) => appointment.operatorId === data.operatorId);
-      }
-
       return appointmentData;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to fetch appointments.", error);
@@ -51,7 +47,6 @@ class AppointmentsManager {
   public async editAppointment(appointmentId: string, appointmentData: INewAppointmentRequestData, daysForward?: number): Promise<void> {
     Logger.debug(this.LOG_TAG, "Start editing appointment", [appointmentId, appointmentData]);
 
-    
     try {
       const createdAppointment = await this.scheduleAppointment(appointmentData, daysForward);
 
