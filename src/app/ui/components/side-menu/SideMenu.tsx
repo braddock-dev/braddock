@@ -73,7 +73,7 @@ export default function SideMenu() {
             <nav className="p-3 w-full flex flex-col flex-wrap">
               <ul className="flex flex-col space-y-1">
                 {menuItems.map((menuItem, index) => (
-                  <MenuItem key={index} menuItem={menuItem} isActive={menuItem.url.startsWith(pathName)} />
+                  <MenuItem key={index} menuItem={menuItem} isActive={menuItem.url.startsWith(pathName)} onClick={closeMenu} />
                 ))}
               </ul>
             </nav>
