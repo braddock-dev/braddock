@@ -7,6 +7,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { initialCalendars } from "@/app/admin/appointments/utils";
 import { SelectDateTimeInfo } from "@/app/backend/business/treatments/data/AppointmentData";
+import { calendarTheme } from "@/app/utils/calendar";
 
 const enum CalendarActions {
   MOVE_PREV = "move-prev",
@@ -124,6 +125,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
         onSelectDateTime={props.onSelectDateTime}
         onClickEvent={props.onSelectEvent}
         gridSelection={{ enableClick: true, enableDblClick: true }}
+        theme={calendarTheme}
       />
     </div>
   );
