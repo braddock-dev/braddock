@@ -18,8 +18,7 @@ export function EditOperator(props: EditOperatorProps) {
 
   const { mutate: updateOperatorMutation, isPending } = useMutation({
     mutationKey: ["updateOperator"],
-    mutationFn: (data: Partial<IOperator>) =>
-      updateOperator(props.operator.id, data),
+    mutationFn: (data: IOperator) => updateOperator(props.operator.id, data),
     onError: () => {
       toast.error("Erro ao atualizar operador");
     },
@@ -40,7 +39,8 @@ export function EditOperator(props: EditOperatorProps) {
         msisdn: props.operator.msisdn,
         email: props.operator.email,
         description: props.operator.description,
+        iconUrl: props.operator.iconUrl,
       }}
     />
   );
-} 
+}

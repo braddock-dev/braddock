@@ -27,11 +27,12 @@ class OperatorManager {
     }
   }
 
-  public async updateOperator(operatorId: string, data: Partial<IOperator>): Promise<IOperator> {
+  public async updateOperator(operatorId: string, data: IOperator): Promise<IOperator> {
     Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
 
     try {
-      const operatorResponse = await OperatorService.updateOperator(operatorId, data);
+      const operatorRequestData = OperatorDataAdapter.convertDataToOperatorRequest(data);
+      const operatorResponse = await OperatorService.updateOperator(operatorId, operatorRequestData);
       const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse, 0);
 
       Logger.log(this.LOG_TAG, "Update operator response success", [operator]);
