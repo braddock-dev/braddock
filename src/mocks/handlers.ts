@@ -2,30 +2,20 @@ import { http, HttpResponse } from "msw";
 import { TIME_SLOTS, TREATMENTS_LIST } from "@/mocks/data/treatmentsMockData";
 import { Constants } from "@/app/utils/Constants";
 import { HttpStatus } from "@/app/backend/protocol/rest/IHttpInterface";
-import {
-  GET_USER_INFO_RESPONSE,
-  SEND_OTP_RESPONSE,
-  VERIFY_OTP_RESPONSE,
-} from "@/mocks/data/authMockData";
+import { GET_USER_INFO_RESPONSE, SEND_OTP_RESPONSE, VERIFY_OTP_RESPONSE } from "@/mocks/data/authMockData";
 import { APPOINTMENTS } from "@/mocks/data/appointments";
 
 export const handlers = [
-  http.get(Constants.API_ROUTES.GET_TREATMENTS(":businessId"), () => {
+  http.get(Constants.API_ROUTES.GET_OPERATOR_TREATMENTS(":businessId", "10"), () => {
     return HttpResponse.json(TREATMENTS_LIST, { status: HttpStatus.OK });
   }),
   http.post(Constants.API_ROUTES.GET_TIMESLOTS(":businessId"), () => {
     return HttpResponse.json(TIME_SLOTS, { status: HttpStatus.OK });
   }),
 
-  http.post(
-    Constants.API_ROUTES.SCHEDULE_APPOINTMENT_CUSTOMER(
-      ":businessId",
-      ":timeSlotId",
-    ),
-    (info) => {
-      return HttpResponse.json({}, { status: HttpStatus.CREATED });
-    },
-  ),
+  http.post(Constants.API_ROUTES.SCHEDULE_APPOINTMENT_CUSTOMER(":businessId", ":timeSlotId"), (info) => {
+    return HttpResponse.json({}, { status: HttpStatus.CREATED });
+  }),
 
   http.post(Constants.API_ROUTES.SEND_OTP(), () => {
     return HttpResponse.json(SEND_OTP_RESPONSE, { status: HttpStatus.CREATED });

@@ -39,6 +39,8 @@ interface ISelectProps {
   items: ISelectItem[];
   defaultValue?: (string | number)[];
   className?: string;
+  selectTriggerClassName?: string;
+  multiple?: boolean;
   placeholder: string;
   label?: string;
   onChange?: (value: ISelectItem[]) => void;
@@ -50,7 +52,7 @@ interface ISelectProps {
   isLoading?: boolean;
 }
 
-export default function SelectComponent(props: ISelectProps) {
+export default function SelectComponent({multiple = true, ...props}: ISelectProps) {
   const [selectedItems, setSelectedItems] = React.useState<ISelectItem[]>([]);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const optionsRef = useRef<HTMLUListElement | null>(null);
@@ -62,6 +64,13 @@ export default function SelectComponent(props: ISelectProps) {
   const optionsMaxHeight = props.maxHeight || DEFAULT_MAX_HEIGHT;
 
   const handleSelectItem = (item: ISelectItem) => {
+
+    if(!multiple){
+      setSelectedItems([item]);
+      props.onChange && props.onChange([item]);
+      return;
+    }
+
     let itemsTobeSelected: ISelectItem[] = [];
 
     if (isItemSelected(item)) {
@@ -158,7 +167,7 @@ export default function SelectComponent(props: ISelectProps) {
 
   return (
     <div
-      className={`${styles.container} ${props.className}`}
+      className={`${styles.container} ${props.className} ${props.selectTriggerClassName ?? ""}`}
       ref={selectContainerRef}
     >
       <div

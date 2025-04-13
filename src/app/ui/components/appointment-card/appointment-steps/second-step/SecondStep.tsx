@@ -51,6 +51,10 @@ export default function SecondStep(props: ITimeSlot) {
     newAppointmentSelectors.recommendedDate,
   );
 
+  const employeeId = useNewAppointmentStore(
+    newAppointmentSelectors.employeeId,
+  );
+
   useEffect(() => {
     props.isValidChange(!!selectedDaySlot && !!selectedTimeSlot);
   }, [selectedDaySlot, selectedTimeSlot]);
@@ -61,10 +65,11 @@ export default function SecondStep(props: ITimeSlot) {
     isError,
     error,
   } = useQuery({
-    queryKey: ["getTreatmentTimeslots", selectedTreatmentIds.join()],
+    queryKey: ["getTreatmentTimeslots", selectedTreatmentIds.join(), employeeId],
     queryFn: () =>
       getTreatmentTimeslots(
         selectedTreatmentIds,
+        employeeId!,
         Constants.TIMESLOTS.DEFAULT_DAYS_FORWARD,
       ),
   });

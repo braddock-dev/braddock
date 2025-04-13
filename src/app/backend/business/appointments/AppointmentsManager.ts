@@ -13,14 +13,10 @@ class AppointmentsManager {
     try {
       const queryData = AppointmentDataAdapter.convertQueryData(data);
 
-      const appointmentsResponse =
-        await AppointmentsService.getAppointments(queryData);
-      const appointmentData =
-        AppointmentDataAdapter.convertDataToAppointments(appointmentsResponse);
+      const appointmentsResponse = await AppointmentsService.getAppointments(queryData);
+      const appointmentData = AppointmentDataAdapter.convertDataToAppointments(appointmentsResponse);
 
-      Logger.log(this.LOG_TAG, "Get appointments response success", [
-        appointmentData,
-      ]);
+      Logger.log(this.LOG_TAG, "Get appointments response success", [appointmentData]);
 
       return appointmentData;
     } catch (error) {
@@ -29,24 +25,15 @@ class AppointmentsManager {
     }
   }
 
-  public async scheduleAppointment(
-    appointment: INewAppointmentRequestData,
-    daysForward?: number,
-  ): Promise<void> {
+  public async scheduleAppointment(appointment: INewAppointmentRequestData, daysForward?: number): Promise<void> {
     Logger.debug(this.LOG_TAG, "Start scheduling appointment", [appointment]);
 
     try {
-      const appointmentRequestData =
-        AppointmentDataAdapter.convertAppointmentDataToRequestData(appointment);
+      const appointmentRequestData = AppointmentDataAdapter.convertAppointmentDataToRequestData(appointment);
 
-      Logger.debug(this.LOG_TAG, "Appointment request data", [
-        appointmentRequestData,
-      ]);
+      Logger.debug(this.LOG_TAG, "Appointment request data", [appointmentRequestData]);
 
-      const response = await AppointmentsService.scheduleAppointment(
-        appointmentRequestData,
-        daysForward,
-      );
+      const response = await AppointmentsService.scheduleAppointment(appointmentRequestData, daysForward);
 
       Logger.debug(this.LOG_TAG, "Schedule appointment response", [response]);
 
@@ -57,24 +44,15 @@ class AppointmentsManager {
     }
   }
 
-  public async editAppointment(
-    appointmentId: string,
-    appointmentData: INewAppointmentRequestData,
-  ): Promise<void> {
-    Logger.debug(this.LOG_TAG, "Start editing appointment", [
-      appointmentId,
-      appointmentData,
-    ]);
+  public async editAppointment(appointmentId: string, appointmentData: INewAppointmentRequestData, daysForward?: number): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start editing appointment", [appointmentId, appointmentData]);
 
     try {
-      const createdAppointment =
-        await this.scheduleAppointment(appointmentData);
+      const createdAppointment = await this.scheduleAppointment(appointmentData, daysForward);
 
       await this.deleteAppointment(appointmentId);
 
-      Logger.debug(this.LOG_TAG, "Edit appointment response", [
-        createdAppointment,
-      ]);
+      Logger.debug(this.LOG_TAG, "Edit appointment response", [createdAppointment]);
 
       return;
     } catch (error) {
@@ -87,8 +65,7 @@ class AppointmentsManager {
     Logger.debug(this.LOG_TAG, "Start deleting appointment", [appointmentId]);
 
     try {
-      const response =
-        await AppointmentsService.deleteAppointment(appointmentId);
+      const response = await AppointmentsService.deleteAppointment(appointmentId);
 
       Logger.debug(this.LOG_TAG, "Delete appointment response", [response]);
 

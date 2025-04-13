@@ -1,26 +1,11 @@
 "use client";
-import SelectButton, {
-  ISelectButton,
-} from "@/app/ui/components/select-button/SelectButton";
-import {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import SelectButton, { ISelectButton } from "@/app/ui/components/select-button/SelectButton";
+import { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import {
-  FreeMode,
-  Mousewheel,
-  Navigation,
-  Pagination,
-  Scrollbar,
-} from "swiper/modules";
+import { FreeMode, Mousewheel, Navigation, Pagination, Scrollbar } from "swiper/modules";
 import styles from "./ButtonGroup.module.scss";
 import ArrowIcon from "@/app/ui/vectors/chevron-right.svg";
 import { v4 as uuid } from "uuid";
@@ -51,14 +36,16 @@ interface IButtonGroupProps {
   isMultiple?: boolean;
   showCounter?: boolean;
   displayMode: DISPLAY_MODE;
-  onSelectedButtonsChange: (buttonValues: any[], buttonData: any[]) => void;
+  onSelectedButtonsChange?: (buttonValues: any[], buttonData: any[]) => void;
+  onSelect?: (buttonValue: string) => void;
+  onDeselect?: (buttonValue: string) => void;
   theme?: Theme;
   noPadding?: boolean;
+  isControlled?: boolean;
+  fullHeight?: boolean;
+  disabled?: boolean;
 }
-export default function ButtonGroup({
-  theme = Theme.DARK,
-  ...props
-}: IButtonGroupProps) {
+export default function ButtonGroup({ theme = Theme.DARK, ...props }: IButtonGroupProps) {
   const [hidden, setHidden] = useState<boolean>(true);
   const swiperRef = useRef<SwiperRef | null>(null);
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -69,10 +56,7 @@ export default function ButtonGroup({
     setSelectedKeys(getDefaultSelection(props.defaultSelectedKey));
   }, [props.defaultSelectedKey]);
 
-  const hiddenSliderClass = useMemo(
-    () => (hidden ? styles.hidden : ""),
-    [hidden],
-  );
+  const hiddenSliderClass = useMemo(() => (hidden ? styles.hidden : ""), [hidden]);
 
   const hiddenPrevButtonClass = useMemo(() => {
     return currentSlide === 0 ? styles.hidden : "";
@@ -90,7 +74,7 @@ export default function ButtonGroup({
     (buttonValue: string) => {
       return selectedKeys.includes(buttonValue);
     },
-    [selectedKeys],
+    [selectedKeys]
   );
 
   const triggerSelectedButtonsChange = useCallback(
@@ -99,20 +83,27 @@ export default function ButtonGroup({
         .filter((buttonItem) => selectedKeys.includes(buttonItem.value))
         .map((buttonItem) => buttonItem.data);
 
-      props.onSelectedButtonsChange(selectedKeys, selectedButtonData);
+      props.onSelectedButtonsChange?.(selectedKeys, selectedButtonData);
     },
-    [props.buttonItems],
+    [props.buttonItems]
   );
 
   const toggleSelectedButton = useCallback(
     (selectButton: ISelectButton) => {
       let resultOptions;
 
+      if (props.isControlled) {
+        if (isButtonSelected(selectButton.value)) {
+          props.onDeselect?.(selectButton.value);
+        } else {
+          props.onSelect?.(selectButton.value);
+        }
+        return;
+      }
+
       if (props.isMultiple) {
         if (isButtonSelected(selectButton.value)) {
-          resultOptions = selectedKeys.filter(
-            (value) => value !== selectButton.value,
-          );
+          resultOptions = selectedKeys.filter((value) => value !== selectButton.value);
         } else {
           resultOptions = [...selectedKeys, selectButton.value];
         }
@@ -121,40 +112,34 @@ export default function ButtonGroup({
       }
 
       setSelectedKeys(resultOptions);
-      triggerSelectedButtonsChange(resultOptions);
+      triggerSelectedButtonsChange?.(resultOptions);
     },
-    [
-      props.isMultiple,
-      isButtonSelected,
-      selectedKeys,
-      triggerSelectedButtonsChange,
-    ],
+    [props.isMultiple, isButtonSelected, selectedKeys, triggerSelectedButtonsChange, props.isControlled]
   );
 
   const displayMode: Record<DISPLAY_MODE, ReactElement> = {
     [DISPLAY_MODE.LIST]: (
-      <div className={styles.listContainer} data-no-padding={props.noPadding}>
+      <div className={styles.listContainer} data-no-padding={props.noPadding} data-full-height={props.fullHeight}>
         {props.buttonItems.map((buttonItem, index) => (
           <SelectButton
             key={index}
             selectButton={buttonItem}
             isSelected={isButtonSelected(buttonItem.value)}
             onClick={toggleSelectedButton}
+            disabled={props.disabled}
           />
         ))}
       </div>
     ),
     [DISPLAY_MODE.EVEN_LIST]: (
-      <div
-        className={`${styles.listContainer} ${styles.evenList}`}
-        data-no-padding={props.noPadding}
-      >
+      <div className={`${styles.listContainer} ${styles.evenList}`} data-no-padding={props.noPadding}>
         {props.buttonItems.map((buttonItem, index) => (
           <SelectButton
             key={index}
             selectButton={buttonItem}
             isSelected={isButtonSelected(buttonItem.value)}
             onClick={toggleSelectedButton}
+            disabled={props.disabled}
           />
         ))}
       </div>
@@ -185,22 +170,17 @@ export default function ButtonGroup({
                 selectButton={buttonItem}
                 isSelected={isButtonSelected(buttonItem.value)}
                 onClick={toggleSelectedButton}
+                disabled={props.disabled}
               />
             </SwiperSlide>
           ))}
         </Swiper>
 
-        <div
-          id={prevButtonId}
-          className={`${styles.prevButton} ${hiddenSliderClass} ${hiddenPrevButtonClass}`}
-        >
+        <div id={prevButtonId} className={`${styles.prevButton} ${hiddenSliderClass} ${hiddenPrevButtonClass}`}>
           <ArrowIcon className={styles.icon} />
         </div>
 
-        <div
-          id={nextButtonId}
-          className={`${styles.nextButton} ${hiddenSliderClass} ${hiddenNextButtonClass}`}
-        >
+        <div id={nextButtonId} className={`${styles.nextButton} ${hiddenSliderClass} ${hiddenNextButtonClass}`}>
           <ArrowIcon className={styles.icon} />
         </div>
       </div>
@@ -210,10 +190,7 @@ export default function ButtonGroup({
   return (
     <div className={styles.container} data-theme={theme}>
       <p className={styles.title}>
-        {props.title}{" "}
-        <span className={styles.counter}>
-          {selectedKeys.length > 1 ? `(${selectedKeys.length})` : ""}
-        </span>
+        {props.title} <span className={styles.counter}>{selectedKeys.length > 1 ? `(${selectedKeys.length})` : ""}</span>
       </p>
 
       {displayMode[props.displayMode]}

@@ -37,34 +37,35 @@ export const Constants = {
     FULL_DATE: "DD [de] MMMM [de] YYYY",
   },
   API_ROUTES: {
-    GET_TREATMENTS: (businessId: string) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
+    GET_OPERATOR_TREATMENTS: (businessId: string, operatorId: string) =>
+      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments?operatorId=${operatorId}`,
+    GET_ALL_TREATMENTS: (businessId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/treatments`,
+
     CREATE_TREATMENT: `${EXTERNAL_CONFIGS.BASE_URL}/treatments`,
-    DELETE_TREATMENT: (treatmentId: string) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/treatments/${treatmentId}`,
-    GET_TIMESLOTS: (businessId: string) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots`,
+    DELETE_TREATMENT: (treatmentId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/treatments/${treatmentId}`,
+    GET_TIMESLOTS: (businessId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots`,
     SCHEDULE_APPOINTMENT_CUSTOMER: (businessId: string, timeSlotId: string) =>
       `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/timeslots/${timeSlotId}/schedule`,
-    SCHEDULE_APPOINTMENT_BUSINESS: (timeSlotId: string) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/timeslots/${timeSlotId}/schedule`,
+    SCHEDULE_APPOINTMENT_BUSINESS: (timeSlotId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/timeslots/${timeSlotId}/schedule`,
     GET_APPOINTMENTS: () => `${EXTERNAL_CONFIGS.BASE_URL}/appointments`,
     SEND_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/sendVerificationCode`,
     VERIFY_OTP: () => `${EXTERNAL_CONFIGS.BASE_URL}/checkVerificationCode`,
     UPDATE_CUSTOMER: () => `${EXTERNAL_CONFIGS.BASE_URL}/customers`,
-    UPDATE_CUSTOMER_BUSINESS: (customerId: string) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/customers/${customerId}`,
+    UPDATE_CUSTOMER_BUSINESS: (customerId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/customers/${customerId}`,
     GET_CUSTOMERS: () => `${EXTERNAL_CONFIGS.BASE_URL}/customers`,
     GET_USER_INFO: () => `${EXTERNAL_CONFIGS.BASE_URL}/identity`,
-    DELETE_APPOINTMENT: (appointmentId: string) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/appointments/${appointmentId}`,
-    REFRESH_CALENDAR_TOKEN: () =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/refreshGoogleCalendarCredentials`,
+    DELETE_APPOINTMENT: (appointmentId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/appointments/${appointmentId}`,
+    REFRESH_CALENDAR_TOKEN: () => `${EXTERNAL_CONFIGS.BASE_URL}/refreshGoogleCalendarCredentials`,
     REGISTER_TIME_OFF: () => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff`,
-    GET_TIME_OFF: () => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff`,
-    DELETE_TIME_OFF: (id: number) =>
-      `${EXTERNAL_CONFIGS.BASE_URL}/timeOff/${id}`,
+    GET_TIME_OFF: (operatorId?: string) => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff?operatorId=${operatorId}`,
+    DELETE_TIME_OFF: (id: number) => `${EXTERNAL_CONFIGS.BASE_URL}/timeOff/${id}`,
     GET_WORKING_HOURS: () => `${EXTERNAL_CONFIGS.BASE_URL}/workingHours`,
+    GET_OPERATORS: (businessId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/businesses/${businessId}/operators`,
+    CREATE_OPERATOR: () => `${EXTERNAL_CONFIGS.BASE_URL}/operators`,
+    UPDATE_OPERATOR: (operatorId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/operators/${operatorId}`,
+    DELETE_OPERATOR: (operatorId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/operators/${operatorId}`,
+    ASSIGN_TREATMENTS: (operatorId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/operators/${operatorId}/assignTreatments`,
+    UNASSIGN_TREATMENTS: (operatorId: string) => `${EXTERNAL_CONFIGS.BASE_URL}/operators/${operatorId}/unassignTreatments`,
   },
   APP_ROUTES: {
     HOME: "/",
@@ -74,6 +75,7 @@ export const Constants = {
     SERVICES: "/admin/services",
     ACCOUNT: "/admin/account",
     LOGIN: "/login",
+    OPERATORS: "/admin/operators",
   },
   ERRORS: {
     GENERIC: {
@@ -121,7 +123,6 @@ export const Constants = {
   TIMESLOTS: {
     DEFAULT_DAYS_FORWARD: 180,
   },
-  FALLBACK_APPOINTMENT_URL: "https://calendly.com/luyzferrnando2/30min",
 };
 
 export enum Currency {

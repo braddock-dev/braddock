@@ -166,12 +166,6 @@ function AppointmentSteps() {
       return;
     }
 
-    //TODO: Remove this after employee selection is implemented in the backend
-    if (selectedEmployee === "2") {
-      window.location.href = Constants.FALLBACK_APPOINTMENT_URL;
-      return;
-    }
-
     handleChangeStep(APPOINTMENT_STEPS.SERVICES_SELECTION);
   }, [authUser?.role, isNotAllowedServicesSelected, selectedEmployee]);
 

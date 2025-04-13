@@ -1,18 +1,18 @@
 import styles from "./SelectEmployeeStep.module.scss";
-import EmployeeCard, {
-  IEmployee,
-} from "@/app/ui/components/appointment-card/appointment-steps/select-employee-step/employee-card/EmployeeCard";
-import SecondEmployee from "@/app/ui/images/employees/second.jpg";
-import FirstEmployee from "@/app/ui/images/employees/first.jpg";
+import EmployeeCard from "@/app/ui/components/appointment-card/appointment-steps/select-employee-step/employee-card/EmployeeCard";
 import {
   newAppointmentActions,
   newAppointmentSelectors,
   useNewAppointmentStore,
 } from "@/app/store/newAppointmentStore";
+import { useQuery } from "@tanstack/react-query";
+import { getOperators } from "@/app/backend/actions/operatorActions";
+import AppointmentCardLoadingState from "@/app/ui/components/appointment-card/appointment-card-loading-state/AppointmentCardLoadingState";
 
 interface ISelectEmployeeStepProps {
   isValidChange: (isValid: boolean) => void;
 }
+
 export default function SelectEmployeeStep(props: ISelectEmployeeStepProps) {
   const selectedEmployee = useNewAppointmentStore(
     newAppointmentSelectors.employeeId,
@@ -21,30 +21,37 @@ export default function SelectEmployeeStep(props: ISelectEmployeeStepProps) {
     newAppointmentActions.setEmployeeId,
   );
 
-  const employees: IEmployee[] = [
-    {
-      id: "1",
-      name: "Jonne Baptista",
-      photo: FirstEmployee.src,
-      position: "Barbeiro",
-    },
-    {
-      id: "2",
-      name: "Luyz Ferrnando",
-      photo: SecondEmployee.src,
-      position: "Barbeiro",
-    },
-  ];
+  const { data: operators, isLoading } = useQuery({
+    queryKey: ["operators"],
+    queryFn: ()=> getOperators(),
+  });
+
+  if (isLoading) {
+    return <AppointmentCardLoadingState itemsCount={3} />;
+  }
+
+  if (!operators?.length) {
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.title}>Nenhum profissional disponível</h1>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Selecione o profissional</h1>
       <div className={styles.employeeList}>
-        {employees.map((employee) => (
+        {operators.map((operator) => (
           <EmployeeCard
-            key={employee.id}
-            employee={employee}
-            isSelected={selectedEmployee === employee.id}
+            key={operator.id}
+            employee={{
+              id: operator.id,
+              name: operator.name,
+              photo: operator.iconUrl,
+              position: operator.description,
+            }}
+            isSelected={selectedEmployee === operator.id}
             onSelect={(selectedEmployee) => {
               setEmployeeId(selectedEmployee.id);
               props.isValidChange(true);

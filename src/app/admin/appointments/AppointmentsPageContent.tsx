@@ -1,73 +1,57 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import {
-  EventType,
-  IAppointment,
-  IAppointmentQueryData,
-  SelectDateTimeInfo,
-} from "@/app/backend/business/treatments/data/AppointmentData";
+import { EventType, IAppointment, IAppointmentQueryData, SelectDateTimeInfo } from "@/app/backend/business/treatments/data/AppointmentData";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAppointments } from "@/app/backend/actions/appointmentActions";
-import {
-  convertAppointmentsToEvents,
-  convertTimeOffsToEvents,
-} from "@/app/admin/appointments/utils";
+import { convertAppointmentsToEvents, convertTimeOffsToEvents } from "@/app/admin/appointments/utils";
 import { toast } from "sonner";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import CalendarWrapper from "@/app/admin/appointments/CalendarWrapper";
 import AppointmentDetails from "@/app/ui/components/appointment-details/AppointmentDetails";
 import SidePanelWrapper from "@/app/ui/components/side-panel-wrapper/SidePanelWrapper";
-import {
-  newAppointmentActions,
-  useNewAppointmentStore,
-} from "@/app/store/newAppointmentStore";
+import { newAppointmentActions, useNewAppointmentStore } from "@/app/store/newAppointmentStore";
 import NewAppointment from "@/app/ui/components/new-appointment/NewAppointment";
 import DialogWrapper from "@/app/ui/components/dialog-wrapper/DialogWrapper";
 import AppointmentOptionsModal from "@/app/admin/appointments/AppointmentOptionsModal";
-import {
-  deleteTimeOff,
-  getTimeOffs,
-  registerTimeOff,
-} from "@/app/backend/actions/timeOffActions";
+import { deleteTimeOff, getTimeOffs, registerTimeOff } from "@/app/backend/actions/timeOffActions";
 import { IDateInterval } from "@/app/backend/business/appointments/data/AppointmentData";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
 import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import { getFutureXDaysDate, getPastXDaysDate } from "@/app/utils/functions";
+import { operatorSelectors, useOperatorStore } from "@/app/store/operatorStore";
 
 export default function AppointmentsPageContent() {
-  const [selectedDateInterval, setSelectedDateInterval] =
-    useState<IDateInterval>();
+  const [selectedDateInterval, setSelectedDateInterval] = useState<IDateInterval>();
 
   const [showNewEventModal, setShowNewEventModal] = useState(false);
   const [removeTimeOffModalOpen, setRemoveTimeOffModalOpen] = useState(false);
   const [selectedTimeOff, setSelectedTimeOff] = useState<string | undefined>();
 
-  const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] =
-    useState(false);
+  const [appointmentDetailsModalOpen, setAppointmentDetailsModalOpen] = useState(false);
 
   const [newAppointmentModalOpen, setNewAppointmentModalOpen] = useState(false);
 
-  const resetNewAppointmentStore = useNewAppointmentStore(
-    newAppointmentActions.resetState,
-  );
+  const resetNewAppointmentStore = useNewAppointmentStore(newAppointmentActions.resetState);
 
-  const setRecommendedDate = useNewAppointmentStore(
-    newAppointmentActions.setRecommendedDate,
-  );
+  const setRecommendedDate = useNewAppointmentStore(newAppointmentActions.setRecommendedDate);
+
+  const selectedOperator = useOperatorStore(operatorSelectors.selectedOperator);
+
+  const operators = useOperatorStore(operatorSelectors.operators);
 
   const overlayButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [filter] = useState<IAppointmentQueryData>({
-    startDate: getPastXDaysDate(
-      Constants.APPOINTMENTS.BUSINESS_FILTER.DEFAULT_PAST_DAYS,
-    ),
-    endDate: getFutureXDaysDate(
-      Constants.APPOINTMENTS.BUSINESS_FILTER.DEFAULT_FUTURE_DAYS,
-    ),
-  });
-  const [selectedAppointment, setSelectedAppointment] =
-    useState<IAppointment>();
+  const [selectedAppointment, setSelectedAppointment] = useState<IAppointment>();
+
+  const filter = useMemo(
+    (): IAppointmentQueryData => ({
+      startDate: getPastXDaysDate(Constants.APPOINTMENTS.BUSINESS_FILTER.DEFAULT_PAST_DAYS),
+      endDate: getFutureXDaysDate(Constants.APPOINTMENTS.BUSINESS_FILTER.DEFAULT_FUTURE_DAYS),
+      operatorId: selectedOperator?.id,
+    }),
+    [selectedOperator?.id]
+  );
 
   const { data, error, refetch } = useQuery({
     queryKey: ["appointments", filter],
@@ -76,8 +60,8 @@ export default function AppointmentsPageContent() {
   });
 
   const { data: timeOffs, refetch: refetchTimeOffs } = useQuery({
-    queryKey: ["timeOffs"],
-    queryFn: () => getTimeOffs(),
+    queryKey: ["timeOffs", selectedOperator?.id],
+    queryFn: () => getTimeOffs(selectedOperator?.id),
     refetchInterval: Constants.APPOINTMENTS.REFETCH_INTERVAL,
   });
 
@@ -107,24 +91,15 @@ export default function AppointmentsPageContent() {
   });
 
   const events = useMemo(() => {
-    return [
-      ...convertAppointmentsToEvents(data || []),
-      ...convertTimeOffsToEvents(timeOffs || []),
-    ];
-  }, [data, timeOffs]);
+    return [...convertAppointmentsToEvents(data || [], operators), ...convertTimeOffsToEvents(timeOffs || [], operators)];
+  }, [data, timeOffs, operators]);
 
   if (error) {
     toast.error("Erro ao carregar os agendamentos.");
 
     return (
-      <div
-        className={
-          "flex flex-col w-full justify-center items-center h-[80vh] gap-5"
-        }
-      >
-        <h2 className={"text-xl font-bold text-brown"}>
-          Erro ao carregar os agendamentos
-        </h2>
+      <div className={"flex flex-col w-full justify-center items-center h-[80vh] gap-5"}>
+        <h2 className={"text-xl font-bold text-brown"}>Erro ao carregar os agendamentos</h2>
         <Button color={ButtonColors.BLACK} onClick={() => refetch()}>
           Tentar Novamente
         </Button>
@@ -134,9 +109,7 @@ export default function AppointmentsPageContent() {
 
   function openEventDetails(appointmentId: string) {
     if (data) {
-      const appointment = data.find(
-        (appointment) => appointment.id === appointmentId,
-      );
+      const appointment = data.find((appointment) => appointment.id === appointmentId);
 
       if (!appointment) {
         toast.error("Erro ao carregar os detalhes do agendamento");
@@ -202,13 +175,14 @@ export default function AppointmentsPageContent() {
     setNewAppointmentModalOpen(true);
   };
 
-  const handleBlockTime = () => {
+  const handleBlockTime = (operatorId: string) => {
     setShowNewEventModal(false);
 
-    if (selectedDateInterval) {
+    if (selectedDateInterval && operatorId) {
       mutateRegisterTimeOff({
         startTimeInMillis: selectedDateInterval.start,
         endTimeInMillis: selectedDateInterval.end,
+        operatorId: operatorId,
       });
     }
   };
@@ -221,11 +195,7 @@ export default function AppointmentsPageContent() {
 
   return (
     <div>
-      <CalendarWrapper
-        events={events}
-        onSelectDateTime={handleSelectDateTime}
-        onSelectEvent={handleClickEvent}
-      />
+      <CalendarWrapper events={events} onSelectDateTime={handleSelectDateTime} onSelectEvent={handleClickEvent} />
 
       <button
         type="button"
@@ -239,22 +209,11 @@ export default function AppointmentsPageContent() {
         Open offcanvas
       </button>
 
-      <SidePanelWrapper
-        onClose={handleCloseDetailsSidePanel}
-        title={"Detalhes do Agendamento"}
-        isOpen={appointmentDetailsModalOpen}
-      >
-        <AppointmentDetails
-          appointment={selectedAppointment}
-          onClose={handleCloseDetailsSidePanel}
-        />
+      <SidePanelWrapper onClose={handleCloseDetailsSidePanel} title={"Detalhes do Agendamento"} isOpen={appointmentDetailsModalOpen}>
+        <AppointmentDetails appointment={selectedAppointment} onClose={handleCloseDetailsSidePanel} />
       </SidePanelWrapper>
 
-      <SidePanelWrapper
-        onClose={handleCloseNewAppointmentSidePanel}
-        title={"Novo Agendamento"}
-        isOpen={newAppointmentModalOpen}
-      >
+      <SidePanelWrapper onClose={handleCloseNewAppointmentSidePanel} title={"Novo Agendamento"} isOpen={newAppointmentModalOpen}>
         <NewAppointment onClose={handleCloseNewAppointmentSidePanel} />
       </SidePanelWrapper>
 
@@ -265,10 +224,7 @@ export default function AppointmentsPageContent() {
         description={"Criar um Novo Agendamento ou Bloquear o Horário?"}
         contentClassName={"max-w-[450px]"}
       >
-        <AppointmentOptionsModal
-          onNewAppointment={handleNewAppointment}
-          onBlockTime={handleBlockTime}
-        />
+        <AppointmentOptionsModal onNewAppointment={handleNewAppointment} onBlockTime={handleBlockTime} />
       </DialogWrapper>
 
       <AlertDialogWrapper

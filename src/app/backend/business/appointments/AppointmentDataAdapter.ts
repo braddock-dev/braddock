@@ -1,19 +1,9 @@
-import {
-  IAppointment,
-  IAppointmentQueryData,
-} from "@/app/backend/business/treatments/data/AppointmentData";
+import { IAppointment, IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
-import {
-  IAppointmentsResponse,
-  INewAppointmentRequest,
-  IQueryAppointmentRequest,
-} from "@/app/backend/services/data/AppointmentDaos";
+import { IAppointmentsResponse, INewAppointmentRequest, IQueryAppointmentRequest } from "@/app/backend/services/data/AppointmentDaos";
 import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
-import {
-  getDifferenceInHours,
-  getDifferenceInMinutes,
-} from "@/app/utils/functions";
+import { getDifferenceInHours, getDifferenceInMinutes } from "@/app/utils/functions";
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 
 class AppointmentDataAdapter {
@@ -31,29 +21,18 @@ class AppointmentDataAdapter {
       clientEmail: data.customerEmail || "",
       startTimeInMillis: data.startTimeInMillis,
       endTimeInMillis: data.endTimeInMillis,
-      durationInHours: getDifferenceInHours(
-        data.startTimeInMillis,
-        data.endTimeInMillis,
-      ),
-      durationInMinutes: getDifferenceInMinutes(
-        data.startTimeInMillis,
-        data.endTimeInMillis,
-      ),
+      durationInHours: getDifferenceInHours(data.startTimeInMillis, data.endTimeInMillis),
+      durationInMinutes: getDifferenceInMinutes(data.startTimeInMillis, data.endTimeInMillis),
       startTime: data.startTime,
       createdAt: data.createdAt,
-      treatments: TreatmentsDataAdapter.convertDataToTreatments(
-        data.treatments || [],
-      ),
+      treatments: TreatmentsDataAdapter.convertDataToTreatments(data.treatments || []),
+      operatorId: data.operatorId,
     };
   }
 
-  public convertDataToAppointments(
-    data: IAppointmentsResponse[],
-  ): IAppointment[] {
+  public convertDataToAppointments(data: IAppointmentsResponse[]): IAppointment[] {
     if (Array.isArray(data) && data.length > 0) {
-      const appointmentsList = data
-        .map((response) => response.appointments)
-        .flat();
+      const appointmentsList = data.map((response) => response.appointments).flat();
 
       return appointmentsList.map(this.convertDataToAppointment.bind(this));
     }
@@ -61,22 +40,16 @@ class AppointmentDataAdapter {
     return [];
   }
 
-  public convertQueryData(
-    data: IAppointmentQueryData,
-  ): IQueryAppointmentRequest {
+  public convertQueryData(data: IAppointmentQueryData): IQueryAppointmentRequest {
     return {
       businessId: Constants.EXTERNAL_CONFIGS.BUSINESS_REFERENCE,
-      startDate:
-        data.startDate ||
-        AppointmentDataAdapter.DEFAULT_DATE_INTERVAL.startDate,
-      endDate:
-        data.endDate || AppointmentDataAdapter.DEFAULT_DATE_INTERVAL.endDate,
+      operatorId: data.operatorId,
+      startDate: data.startDate || AppointmentDataAdapter.DEFAULT_DATE_INTERVAL.startDate,
+      endDate: data.endDate || AppointmentDataAdapter.DEFAULT_DATE_INTERVAL.endDate,
     };
   }
 
-  public convertAppointmentDataToRequestData(
-    newAppointment: INewAppointmentRequestData,
-  ): INewAppointmentRequest {
+  public convertAppointmentDataToRequestData(newAppointment: INewAppointmentRequestData): INewAppointmentRequest {
     if (!newAppointment.selectedTreatments.length) {
       throw new Error("No treatments selected");
     }
@@ -85,9 +58,7 @@ class AppointmentDataAdapter {
       throw new Error("No time slot selected");
     }
 
-    const treatmentsId = newAppointment.selectedTreatments.map(
-      (treatment) => treatment.id,
-    );
+    const treatmentsId = newAppointment.selectedTreatments.map((treatment) => treatment.id);
 
     return {
       treatmentsId: treatmentsId,
@@ -96,6 +67,7 @@ class AppointmentDataAdapter {
       customerPhone: newAppointment.phoneNumber,
       customerEmail: newAppointment.customerEmail,
       requestedBy: newAppointment.requestedBy,
+      employeeId: newAppointment.employeeId,
     };
   }
 }

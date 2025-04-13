@@ -14,6 +14,7 @@ export interface IBaseNewAppointmentInfo {
   customerName: string;
   customerEmail: string;
   requestedBy?: AuthRoles;
+  employeeId?: string;
 }
 
 export interface INewAppointmentRequestData {
@@ -23,6 +24,7 @@ export interface INewAppointmentRequestData {
   customerName: string;
   customerEmail: string;
   requestedBy?: AuthRoles;
+  employeeId: string;
 }
 
 export interface IDateInterval {

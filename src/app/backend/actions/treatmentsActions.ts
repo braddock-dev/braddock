@@ -9,16 +9,18 @@ import {
 } from "@/app/backend/business/treatments/data/TreatmentsData";
 
 export async function getTreatmentsList(
+  operatorId?: string,
   dir: SortOrder = SortOrder.ASC,
 ): Promise<ITreatment[]> {
-  return TreatmentManager.getTreatments(dir);
+  return TreatmentManager.getTreatments(dir, operatorId);
 }
 
 export async function getTreatmentTimeslots(
   treatmentId: string[],
+  employeeId: string,
   daysForward?: number,
 ): Promise<IDaySlot[]> {
-  return TreatmentManager.getTreatmentTimeslots(treatmentId, daysForward);
+  return TreatmentManager.getTreatmentTimeslots(treatmentId, employeeId,daysForward);
 }
 
 export async function createTreatment(

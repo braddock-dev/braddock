@@ -1,5 +1,5 @@
 import styles from "./EmployeeCard.module.scss";
-import Image from "next/image";
+import SafeImage from "@/app/ui/components/safe-image/SafeImage";
 
 export interface IEmployee {
   id: string;
@@ -13,6 +13,7 @@ interface IEmployeeCardProps {
   isSelected: boolean;
   onSelect: (employee: IEmployee) => void;
 }
+
 export default function EmployeeCard(props: IEmployeeCardProps) {
   return (
     <div
@@ -22,7 +23,7 @@ export default function EmployeeCard(props: IEmployeeCardProps) {
         props.onSelect(props.employee);
       }}
     >
-      <Image
+      <SafeImage
         className={styles.image}
         src={props.employee.photo}
         alt={props.employee.name}
