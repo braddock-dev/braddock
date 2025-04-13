@@ -1,5 +1,9 @@
 import Logger from "@/app/utils/Logger";
-import { ITreatment, ITreatmentFormData, SortOrder } from "@/app/backend/business/treatments/data/TreatmentsData";
+import {
+  ITreatment,
+  ITreatmentFormData,
+  SortOrder,
+} from "@/app/backend/business/treatments/data/TreatmentsData";
 import TreatmentsService from "@/app/backend/services/TreatmentsService";
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
 
@@ -10,17 +14,22 @@ class TreatmentManager {
     Logger.log(this.LOG_TAG, "Service initialized");
   }
 
-  public async getTreatments(dir: SortOrder, operatorId?: string): Promise<ITreatment[]> {
-    Logger.debug(this.LOG_TAG, "Start getting treatments", [dir, operatorId]);
+  public async getTreatments(dir: SortOrder): Promise<ITreatment[]> {
+    Logger.debug(this.LOG_TAG, "Start getting treatments");
 
     try {
-      const treatmentsResponse = await TreatmentsService.getTreatments(operatorId);
+      const treatmentsResponse = await TreatmentsService.getTreatments();
 
-      Logger.debug(this.LOG_TAG, "Get treatments response", [treatmentsResponse]);
+      Logger.debug(this.LOG_TAG, "Get treatments response", [
+        treatmentsResponse,
+      ]);
 
-      const flatternedTreatments = treatmentsResponse.map((categories) => categories.treatments).flat();
+      const flatternedTreatments = treatmentsResponse
+        .map((categories) => categories.treatments)
+        .flat();
 
-      const treatments = TreatmentsDataAdapter.convertDataToTreatments(flatternedTreatments);
+      const treatments =
+        TreatmentsDataAdapter.convertDataToTreatments(flatternedTreatments);
 
       Logger.debug(this.LOG_TAG, "Get treatments response", [treatments]);
 
@@ -35,21 +44,35 @@ class TreatmentManager {
     }
   }
 
-  public async getTreatmentTimeslots(treatmentsId: string[], employeeId: string, daysForward?: number): Promise<any[]> {
-    Logger.debug(this.LOG_TAG, "Start getting treatment timeslots", [treatmentsId, daysForward]);
+  public async getTreatmentTimeslots(
+    treatmentsId: string[],
+    daysForward?: number,
+  ): Promise<any[]> {
+    Logger.debug(this.LOG_TAG, "Start getting treatment timeslots", [
+      treatmentsId,
+      daysForward,
+    ]);
 
     try {
       if (!treatmentsId.length) {
         return [];
       }
 
-      const timeslotsResponse = await TreatmentsService.getTreatmentTimeslots(treatmentsId, employeeId, daysForward);
+      const timeslotsResponse = await TreatmentsService.getTreatmentTimeslots(
+        treatmentsId,
+        daysForward,
+      );
 
-      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [timeslotsResponse]);
+      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [
+        timeslotsResponse,
+      ]);
 
-      const timeslots = TreatmentsDataAdapter.convertDataToDaySlots(timeslotsResponse);
+      const timeslots =
+        TreatmentsDataAdapter.convertDataToDaySlots(timeslotsResponse);
 
-      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [timeslots]);
+      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [
+        timeslots,
+      ]);
 
       return timeslots;
     } catch (error) {
@@ -62,13 +85,19 @@ class TreatmentManager {
     Logger.debug(this.LOG_TAG, "Start creating treatment", [treatment]);
 
     try {
-      const treatmentRequestData = TreatmentsDataAdapter.convertTreatmentToRequest(treatment);
+      const treatmentRequestData =
+        TreatmentsDataAdapter.convertTreatmentToRequest(treatment);
 
-      Logger.debug(this.LOG_TAG, "Create treatment request data", [treatmentRequestData]);
+      Logger.debug(this.LOG_TAG, "Create treatment request data", [
+        treatmentRequestData,
+      ]);
 
-      const createdTreatment = await TreatmentsService.createTreatment(treatmentRequestData);
+      const createdTreatment =
+        await TreatmentsService.createTreatment(treatmentRequestData);
 
-      Logger.debug(this.LOG_TAG, "Create treatment response", [createdTreatment]);
+      Logger.debug(this.LOG_TAG, "Create treatment response", [
+        createdTreatment,
+      ]);
 
       return;
     } catch (error) {
@@ -90,13 +119,20 @@ class TreatmentManager {
     }
   }
 
-  public async updateTreatment(treatmentId: string, treatment: ITreatmentFormData): Promise<void> {
+  public async updateTreatment(
+    treatmentId: string,
+    treatment: ITreatmentFormData,
+  ): Promise<void> {
     Logger.debug(this.LOG_TAG, "Start updating treatment", [treatment]);
 
     try {
-      const treatmentRequestData = TreatmentsDataAdapter.convertTreatmentToRequest(treatment);
+      const treatmentRequestData =
+        TreatmentsDataAdapter.convertTreatmentToRequest(treatment);
 
-      await TreatmentsService.updateTreatment(treatmentId, treatmentRequestData);
+      await TreatmentsService.updateTreatment(
+        treatmentId,
+        treatmentRequestData,
+      );
 
       return;
     } catch (error) {

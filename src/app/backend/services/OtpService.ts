@@ -31,7 +31,7 @@ class OtpService {
 
       Logger.info(this.LOG_TAG, "OTP response", [response]);
 
-      if (response.status !== HttpStatusCode.Ok) {
+      if (response.status !== HttpStatusCode.Created) {
         Logger.error(this.LOG_TAG, "Error sending OTP", response.data);
         throw new Error(Constants.ERRORS.GENERIC.UNKNOWN);
       }

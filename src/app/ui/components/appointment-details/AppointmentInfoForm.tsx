@@ -4,14 +4,18 @@ import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
 import React, { Fragment, useMemo } from "react";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import SecondStep from "@/app/ui/components/appointment-card/appointment-steps/second-step/SecondStep";
-import FirstStep, { SelectionMode } from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
-import { newAppointmentActions, newAppointmentSelectors, useNewAppointmentStore } from "@/app/store/newAppointmentStore";
+import FirstStep, {
+  SelectionMode,
+} from "@/app/ui/components/appointment-card/appointment-steps/first-step/FirstStep";
+import {
+  newAppointmentActions,
+  newAppointmentSelectors,
+  useNewAppointmentStore,
+} from "@/app/store/newAppointmentStore";
 import { Theme } from "@/app/ui/components/button-group/ButtonGroup";
 import { ICustomer } from "@/app/backend/business/customer/CustomerDto";
 import CustomerSelection from "@/app/ui/components/customer-selection/CustomerSelection";
 import { ICustomerForm } from "@/app/ui/components/customer-form/CustomerForm";
-import { IOperator } from "@/app/backend/business/operators/data/OperatorDtos";
-import OperatorSelector from "../operators/operator-selector/OperatorSelector";
 
 interface IAppointmentInfoFormProps {
   onCancel: () => void;
@@ -19,18 +23,26 @@ interface IAppointmentInfoFormProps {
   isSaving: boolean;
   isValid?: boolean;
 }
-export default function AppointmentInfoForm({ ...props }: IAppointmentInfoFormProps) {
-  const selectedCustomerInfo = useNewAppointmentStore(newAppointmentSelectors.selectedCustomerInfo);
+export default function AppointmentInfoForm({
+  ...props
+}: IAppointmentInfoFormProps) {
+  const selectedCustomerInfo = useNewAppointmentStore(
+    newAppointmentSelectors.selectedCustomerInfo,
+  );
 
-  const setSelectedCustomerInfo = useNewAppointmentStore(newAppointmentActions.setCustomerInfo);
+  const setSelectedCustomerInfo = useNewAppointmentStore(
+    newAppointmentActions.setCustomerInfo,
+  );
 
-  const selectedTreatments = useNewAppointmentStore(newAppointmentSelectors.selectedTreatments);
-
-  const setEmployeeId = useNewAppointmentStore(newAppointmentActions.setEmployeeId);
-  const employeeId = useNewAppointmentStore(newAppointmentSelectors.employeeId);
+  const selectedTreatments = useNewAppointmentStore(
+    newAppointmentSelectors.selectedTreatments,
+  );
 
   const totalDuration = useMemo(() => {
-    return selectedTreatments.reduce((acc, treatment) => acc + treatment.durationInMinutes, 0);
+    return selectedTreatments.reduce(
+      (acc, treatment) => acc + treatment.durationInMinutes,
+      0,
+    );
   }, [selectedTreatments]);
 
   const handleSelectCustomer = (customer?: ICustomer) => {
@@ -47,20 +59,12 @@ export default function AppointmentInfoForm({ ...props }: IAppointmentInfoFormPr
 
   return (
     <div className="p-4 flex flex-col gap-4">
-      <SectionInfo title={`Operador`}>
-        <OperatorSelector
-          selectedOperator={employeeId}
-          setSelectedOperator={(operator) => {
-            setEmployeeId(operator?.id);
-          }}
+      <SectionInfo title={`Serviços (Duração: ${totalDuration} Min)`}>
+        <FirstStep
+          selectionMode={SelectionMode.SELECT}
+          isValidChange={() => {}}
         />
       </SectionInfo>
-
-      {employeeId && (
-        <SectionInfo title={`Serviços (Duração: ${totalDuration} Min)`}>
-          <FirstStep selectionMode={SelectionMode.SELECT} isValidChange={() => {}} />
-        </SectionInfo>
-      )}
 
       {!!selectedTreatments.length && (
         <Fragment>
@@ -79,7 +83,12 @@ export default function AppointmentInfoForm({ ...props }: IAppointmentInfoFormPr
         <Fragment>
           <hr className={"border-neutral-200"} />
           <SectionInfo title={"Quando?"}>
-            <SecondStep isValidChange={() => {}} onError={() => {}} noPadding theme={Theme.LIGHT} />
+            <SecondStep
+              isValidChange={() => {}}
+              onError={() => {}}
+              noPadding
+              theme={Theme.LIGHT}
+            />
           </SectionInfo>
 
           <SectionInfo title={"Acções"}>
@@ -88,7 +97,12 @@ export default function AppointmentInfoForm({ ...props }: IAppointmentInfoFormPr
                 CANCELAR
               </Button>
 
-              <Button color={ButtonColors.BROWN} onClick={props.onSave} disabled={props.isSaving || !props.isValid} isLoading={props.isSaving}>
+              <Button
+                color={ButtonColors.BROWN}
+                onClick={props.onSave}
+                disabled={props.isSaving || !props.isValid}
+                isLoading={props.isSaving}
+              >
                 SALVAR
               </Button>
             </div>
