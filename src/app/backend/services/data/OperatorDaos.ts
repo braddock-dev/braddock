@@ -5,5 +5,5 @@ export interface IOperatorResponse {
   email: string;
   description: string;
   iconUrl: string;
-  color?: string;
+  colorHex?: string;
 }

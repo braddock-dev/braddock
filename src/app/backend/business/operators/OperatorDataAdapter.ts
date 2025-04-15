@@ -17,7 +17,7 @@ class OperatorDataAdapter {
       email: data.email,
       description: data.description,
       iconUrl: data.iconUrl,
-      color: data.color || this.generateOperatorColors(index),
+      color: data.colorHex || this.generateOperatorColors(index),
     };
   }
 
@@ -33,7 +33,7 @@ class OperatorDataAdapter {
       email: data.email,
       iconUrl: data.iconUrl || "",
       description: data.description,
-      // color: data.color, // TODO: Add color to the operator
+      colorHex: data.color,
     };
   }
 

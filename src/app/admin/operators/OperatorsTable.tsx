@@ -19,13 +19,13 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import Input from "@/app/ui/components/input/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ButtonColors } from "@/app/ui/components/button/Button";
 
 const columnIdToLabelMap = {
   name: "Nome",
   msisdn: "Telefone",
   email: "Email",
   description: "Descrição",
+  color: "Cor",
 };
 
 interface IOperatorsTableProps {
