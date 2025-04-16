@@ -54,6 +54,14 @@ export const getOperatorColumns = (props: IOperatorColumnsProps): ColumnDef<IOpe
     cell: ({ row }) => <div>{row.getValue("description")}</div>,
   },
   {
+    accessorKey: "color",
+    header: "Cor",
+    cell: ({ row }) => {
+      const color = row.getValue("color") as string;
+      return <div className="flex items-center">{color && <div className="h-6 w-6 rounded-full mr-2" style={{ backgroundColor: color }} />}</div>;
+    },
+  },
+  {
     id: "actions",
     header: "Ações",
     enableHiding: false,

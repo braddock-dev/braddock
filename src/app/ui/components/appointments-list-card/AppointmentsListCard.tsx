@@ -18,12 +18,8 @@ interface IAppointmentCardProps {
 }
 export default function AppointmentsListCard(props: IAppointmentCardProps) {
   const [filter] = useState<IAppointmentQueryData>({
-    startDate: getPastXDaysDate(
-      Constants.APPOINTMENTS.CUSTOMER_FILTER.DEFAULT_PAST_DAYS,
-    ),
-    endDate: getFutureXDaysDate(
-      Constants.APPOINTMENTS.CUSTOMER_FILTER.DEFAULT_FUTURE_DAYS,
-    ),
+    startDate: getPastXDaysDate(Constants.APPOINTMENTS.CUSTOMER_FILTER.DEFAULT_PAST_DAYS),
+    endDate: getFutureXDaysDate(Constants.APPOINTMENTS.CUSTOMER_FILTER.DEFAULT_FUTURE_DAYS),
   });
   const setHeroCardType = useUIStore(uiActions.setHeroCardType);
 
@@ -53,12 +49,8 @@ export default function AppointmentsListCard(props: IAppointmentCardProps) {
       {isPending ? (
         <AppointmentListLoadingState />
       ) : error ? (
-        <div
-          className={"flex flex-col gap-4 pr-2  justify-center items-center"}
-        >
-          <p className={"w-[90%] text-red-500 text-center text-lg"}>
-            Erro ao carregar os agendamentos
-          </p>
+        <div className={"flex flex-col gap-4 justify-center items-center"}>
+          <p className={"w-[90%] text-red-500 text-center text-lg"}>Erro ao carregar os agendamentos</p>
           <Button
             color={ButtonColors.WHITE}
             onClick={() => {
@@ -69,7 +61,7 @@ export default function AppointmentsListCard(props: IAppointmentCardProps) {
           </Button>
         </div>
       ) : data?.length ? (
-        <div className={`flex flex-col gap-4 pr-2 h-full ${styles.content}`}>
+        <div className={`flex flex-col gap-4 h-full ${styles.content}`}>
           {data.map((appointment) => (
             <AppointmentItem
               key={appointment.id}
@@ -90,12 +82,8 @@ export default function AppointmentsListCard(props: IAppointmentCardProps) {
           </Button>
         </div>
       ) : (
-        <div
-          className={"flex flex-col gap-4 pr-2  justify-center items-center"}
-        >
-          <p className={"w-[95%] text-center text-xl text-white"}>
-            Você ainda não possui agendamentos
-          </p>
+        <div className={"flex flex-col gap-4 justify-center items-center"}>
+          <p className={"w-[95%] text-center text-xl text-white"}>Você ainda não possui agendamentos</p>
           <Button
             color={ButtonColors.BROWN}
             onClick={() => {
