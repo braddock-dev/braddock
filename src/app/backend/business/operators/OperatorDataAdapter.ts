@@ -33,7 +33,7 @@ class OperatorDataAdapter {
       email: data.email,
       iconUrl: data.iconUrl || "",
       description: data.description,
-      colorHex: data.color,
+      colorHex: `${data.color}FF`.toUpperCase(),
     };
   }
 
