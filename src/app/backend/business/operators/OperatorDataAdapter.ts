@@ -4,12 +4,13 @@ import { IOperatorResponse } from "@/app/backend/services/data/OperatorDaos";
 
 class OperatorDataAdapter {
   private readonly LOG_TAG = "OperatorDataAdapter";
+  private ALPHA_CHANNEL = "FF";
 
   constructor() {
     Logger.log(this.LOG_TAG, "Service initialized");
   }
 
-  public convertDataToOperator(data: IOperatorResponse, index: number): IOperator {
+  public convertDataToOperator(data: IOperatorResponse): IOperator {
     return {
       id: data.id,
       name: data.name,
@@ -17,30 +18,24 @@ class OperatorDataAdapter {
       email: data.email,
       description: data.description,
       iconUrl: data.iconUrl,
-      color: data.colorHex || this.generateOperatorColors(index),
+      color: data.colorHex?.slice(0, 7),
     };
   }
 
   public convertDataToOperators(data: IOperatorResponse[]): IOperator[] {
-    return data.map((operator, index) => this.convertDataToOperator(operator, index));
+    return data.map((operator) => this.convertDataToOperator(operator));
   }
 
   public convertDataToOperatorRequest(data: IOperator): IOperatorResponse {
     return {
       id: data.id,
       name: data.name,
-      msisdn: data.msisdn,
-      email: data.email,
+      msisdn: data.msisdn?.trim(),
+      email: data.email?.trim(),
       iconUrl: data.iconUrl || "",
       description: data.description,
-      colorHex: `${data.color}FF`.toUpperCase(),
+      colorHex: `${data.color}${this.ALPHA_CHANNEL}`.toUpperCase(),
     };
-  }
-
-  private generateOperatorColors(index: number): string {
-    const colors = ["#b47866", "#336699", "#8338ec", "#03045e", "#fb6f92", "#344e41", "#2a9d8f", "#386641", "#e07a5f", "#f694c1", "#376996"];
-
-    return colors[index % colors.length];
   }
 }
 

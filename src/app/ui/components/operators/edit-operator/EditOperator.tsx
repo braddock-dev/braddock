@@ -40,6 +40,7 @@ export function EditOperator(props: EditOperatorProps) {
         email: props.operator.email,
         description: props.operator.description,
         iconUrl: props.operator.iconUrl,
+        color: props.operator.color,
       }}
     />
   );

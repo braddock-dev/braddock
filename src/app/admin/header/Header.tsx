@@ -58,7 +58,7 @@ export default function Header() {
     <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-brown border-b text-sm py-2.5 pl-4">
       <nav className="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
         <button
-          className="mr-3 bg-brown text-white p-2 rounded-md border border-white"
+          className="mr-3 bg-brown text-white p-2 rounded-md border border-white cursor-pointer"
           onClick={toggleMenu}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         >

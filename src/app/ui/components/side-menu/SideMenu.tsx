@@ -57,7 +57,7 @@ export default function SideMenu() {
       >
         <div className="relative flex flex-col h-full max-h-full">
           <div className="px-6 pt-4 flex items-center gap-x-3">
-            <button className="text-white p-2 rounded-md border border-white" onClick={closeMenu} aria-label="Close menu">
+            <button className="text-white p-2 rounded-md border border-white cursor-pointer" onClick={closeMenu} aria-label="Close menu">
               <X className="size-4" />
             </button>
             <Link
