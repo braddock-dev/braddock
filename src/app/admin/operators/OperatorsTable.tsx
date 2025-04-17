@@ -37,7 +37,6 @@ interface IOperatorsTableProps {
 }
 
 export function OperatorsTable(props: IOperatorsTableProps) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -49,7 +48,6 @@ export function OperatorsTable(props: IOperatorsTableProps) {
       onDeleteOperator: props.onDeleteOperator,
       onAddTreatments: props.onAddTreatments,
     }),
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -58,7 +56,6 @@ export function OperatorsTable(props: IOperatorsTableProps) {
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
