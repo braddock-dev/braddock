@@ -15,8 +15,6 @@ interface IColorPickerProps {
 }
 
 export default function ColorPicker({ register, setValue, trigger, getValues, name, label = "Cor", defaultValue = "#b47866" }: IColorPickerProps) {
-  console.log({ color: getValues()[name] });
-
   return (
     <div className="flex flex-col gap-2">
       <label className="text-md font-medium text-gray-700">{label}</label>
