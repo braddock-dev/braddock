@@ -14,7 +14,7 @@ class OperatorDataAdapter {
     return {
       id: data.id,
       name: data.name,
-      msisdn: data.msisdn,
+      msisdn: data.msisdn?.trim(),
       email: data.email,
       description: data.description,
       iconUrl: data.iconUrl,
