@@ -40,6 +40,7 @@ interface ICalendarWrapperProps {
 }
 export default function CalendarWrapper(props: ICalendarWrapperProps) {
   const [viewMode, setViewMode] = useState(viewModeOptions[1].value);
+  const [currentDate, setCurrentDate] = useState(new Date());
   const calendarRef = useRef<typeof Calendar>(null);
 
   const calendarInstance = useMemo(() => {
@@ -62,7 +63,19 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
         calendarInstance.today();
         break;
     }
+
+    // Update current date after navigation
+    setCurrentDate(calendarInstance.getDate().toDate());
   };
+
+  // Update current date when component mounts
+  useMemo(() => {
+    if (calendarInstance) {
+      setCurrentDate(calendarInstance.getDate().toDate());
+    }
+  }, [calendarInstance]);
+
+  const formattedMonth = currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
 
   useEffect(() => {
     if (calendarRef.current && calendarRef.current.containerElementRef.current) {
@@ -85,6 +98,10 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
           <Button variant="outline" size={"lg"} onClick={() => onClickNavigation(CalendarActions.MOVE_NEXT)}>
             Próximo
           </Button>
+
+          <div className="flex items-center ml-4 text-lg font-medium text-gray-500">
+            {formattedMonth.charAt(0).toUpperCase() + formattedMonth.slice(1)}
+          </div>
         </div>
         <ToggleGroup
           type="single"
