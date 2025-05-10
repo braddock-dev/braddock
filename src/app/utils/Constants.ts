@@ -112,7 +112,7 @@ export const Constants = {
   APPOINTMENTS: {
     REFETCH_INTERVAL: 300000, // 5 minutes
     BUSINESS_FILTER: {
-      DEFAULT_PAST_DAYS: 7,
+      DEFAULT_PAST_DAYS: 60,
       DEFAULT_FUTURE_DAYS: 180,
     },
     CUSTOMER_FILTER: {
