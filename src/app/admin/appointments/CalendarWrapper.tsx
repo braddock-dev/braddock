@@ -129,7 +129,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
           taskView: false,
           startDayOfWeek: 1,
           hourStart: 8,
-          hourEnd: 20,
+          hourEnd: 21,
           showNowIndicator: true,
         }}
         useFormPopup={false}
