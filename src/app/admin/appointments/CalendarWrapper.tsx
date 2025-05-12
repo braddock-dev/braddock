@@ -75,7 +75,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
     }
   }, [calendarInstance]);
 
-  const formattedMonth = currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
+  const formattedMonth = currentDate.toLocaleString("pt-BR", { month: "long", year: "numeric" });
 
   useEffect(() => {
     if (calendarRef.current && calendarRef.current.containerElementRef.current) {
@@ -129,7 +129,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
           taskView: false,
           startDayOfWeek: 1,
           hourStart: 8,
-          hourEnd: 19,
+          hourEnd: 20,
           showNowIndicator: true,
         }}
         useFormPopup={false}
