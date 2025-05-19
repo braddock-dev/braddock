@@ -6,6 +6,7 @@ export interface IEmployee {
   name: string;
   photo: string;
   position: string;
+  IsInVocation?: boolean;
 }
 
 interface IEmployeeCardProps {
@@ -17,23 +18,25 @@ interface IEmployeeCardProps {
 export default function EmployeeCard(props: IEmployeeCardProps) {
   return (
     <div
+      data-in-vocation={props.employee.IsInVocation}
       className={styles.container}
       data-selected={props.isSelected}
       onClick={() => {
+        if (props.employee.IsInVocation) {
+          return;
+        }
         props.onSelect(props.employee);
       }}
     >
-      <SafeImage
-        className={styles.image}
-        src={props.employee.photo}
-        alt={props.employee.name}
-        width={200}
-        height={200}
-      />
+      <SafeImage className={styles.image} src={props.employee.photo} alt={props.employee.name} width={200} height={200} />
 
       <div className={styles.content}>
         <h1 className={styles.name}>{props.employee.name}</h1>
-        <h2 className={styles.position}>{props.employee.position}</h2>
+        {props.employee.IsInVocation ? (
+          <h2 className={styles.vocation}>Em férias</h2>
+        ) : (
+          <h2 className={styles.position}>{props.employee.position}</h2>
+        )}
       </div>
     </div>
   );

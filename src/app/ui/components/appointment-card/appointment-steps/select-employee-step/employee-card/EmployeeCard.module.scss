@@ -75,6 +75,33 @@
       .position{
         font-size: toRem(12);
       }
+
+      .vocation{
+        font-size: toRem(12);
+        opacity: 0.8;
+      }
+
+    }
+  }
+
+
+  &[data-in-vocation="true"] {
+    background-color: $gray01;
+    border-color: $gray01;
+    box-shadow: none;
+
+    .image{
+      filter: grayscale(1);
+    }
+
+    .content{
+      .name{
+        color: $gray02;
+      }
+
+      .position{
+        color: $gray02;
+      }
     }
   }
 

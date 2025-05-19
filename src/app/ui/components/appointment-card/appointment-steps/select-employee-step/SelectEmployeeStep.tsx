@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getOperators } from "@/app/backend/actions/operatorActions";
 import AppointmentCardLoadingState from "@/app/ui/components/appointment-card/appointment-card-loading-state/AppointmentCardLoadingState";
 
+const JONNY_OPERATOR_ID = "f1d333bd-164d-496c-b635-6d6b885e6d07";
+
 interface ISelectEmployeeStepProps {
   isValidChange: (isValid: boolean) => void;
 }
@@ -43,6 +45,7 @@ export default function SelectEmployeeStep(props: ISelectEmployeeStepProps) {
               name: operator.name,
               photo: operator.iconUrl,
               position: operator.description,
+              IsInVocation: operator.id === JONNY_OPERATOR_ID,
             }}
             isSelected={selectedEmployee === operator.id}
             onSelect={(selectedEmployee) => {
