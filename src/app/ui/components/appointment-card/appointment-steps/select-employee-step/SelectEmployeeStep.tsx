@@ -45,7 +45,6 @@ export default function SelectEmployeeStep(props: ISelectEmployeeStepProps) {
               name: operator.name,
               photo: operator.iconUrl,
               position: operator.description,
-              IsInVocation: operator.id === JONNY_OPERATOR_ID,
             }}
             isSelected={selectedEmployee === operator.id}
             onSelect={(selectedEmployee) => {
