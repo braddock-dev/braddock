@@ -18,6 +18,7 @@ import StatisticsCard from "./components/StatisticsCard";
 import AppointmentsChart from "@/app/admin/statistics/components/AppointmentsChart";
 import TreatmentsChart from "@/app/admin/statistics/components/TreatmentsChart";
 import RevenueChart from "@/app/admin/statistics/components/RevenueChart";
+import TopOperatorsChart from "@/app/admin/statistics/components/TopOperatorsChart";
 import DateRangePicker from "@/app/admin/statistics/components/DateRangePicker";
 import { AppointmentStatus } from "@/app/backend/business/treatments/data/AppointmentData";
 
@@ -253,17 +254,7 @@ export default function StatisticsPageContent() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Operadores</h3>
-          <div className="space-y-3">
-            {statistics.topOperators.map((operator, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-brown text-white rounded-full flex items-center justify-center text-sm font-semibold">{index + 1}</div>
-                  <span className="font-medium text-gray-900">{operator.name}</span>
-                </div>
-                <span className="text-brown font-semibold">{operator.count} agendamentos</span>
-              </div>
-            ))}
-          </div>
+          <TopOperatorsChart data={statistics.topOperators} />
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-sm border">
