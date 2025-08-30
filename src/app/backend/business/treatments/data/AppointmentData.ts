@@ -21,6 +21,7 @@ export interface IAppointment {
   treatments: ITreatment[];
   operatorId: string;
   state: AppointmentStatus;
+  dayInMillis: number;
 }
 
 export interface IAppointmentQueryData {

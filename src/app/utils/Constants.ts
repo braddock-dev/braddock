@@ -77,6 +77,7 @@ export const Constants = {
     ACCOUNT: "/admin/account",
     LOGIN: "/login",
     OPERATORS: "/admin/operators",
+    STATISTICS: "/admin/statistics",
   },
   UI: {
     CALENDAR: {
