@@ -5,7 +5,7 @@ import { formatPhoneNumber, getFormattedHourDuration, isDateInFuture, isDateInPa
 import ServiceItem from "@/app/ui/components/appointment-details/ServiceItem";
 import Image from "next/image";
 import AvatarUser from "@/app/ui/images/avatarFallback.png";
-import Button, { ButtonColors } from "@/app/ui/components/button/Button";
+import Button, { ButtonColors, ButtonSizes } from "@/app/ui/components/button/Button";
 import React, { useMemo } from "react";
 import { IAppointment, AppointmentStatus } from "@/app/backend/business/treatments/data/AppointmentData";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
@@ -132,7 +132,7 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
         <SectionInfo title={"O que aconteceu?"}>
           <div className="flex flex-col gap-3">
             <Button
-              color={ButtonColors.BROWN}
+              color={ButtonColors.LIGHT_BROWN}
               onClick={() => {
                 const newStatus =
                   appointment.state === AppointmentStatus.ACTIVE ? AppointmentStatus.CUSTOMER_DID_NOT_APPEAR : AppointmentStatus.ACTIVE;
