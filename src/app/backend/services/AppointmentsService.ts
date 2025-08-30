@@ -26,7 +26,7 @@ class AppointmentsService {
 
       Logger.log(this.LOG_TAG, "Get appointments response success", [response]);
 
-      if (!response || response.status !== HttpStatus.OK || !response?.data) {
+      if (!response || !HttpSuccessStatus.includes(response.status) || !response?.data) {
         throw new Error("Failed to get appointments");
       }
 
@@ -78,7 +78,7 @@ class AppointmentsService {
 
       Logger.log(this.LOG_TAG, "Schedule appointment response success", [response]);
 
-      if (!response || response.status !== HttpStatus.CREATED) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to schedule appointment");
       }
 
@@ -101,7 +101,7 @@ class AppointmentsService {
       return ApiInterface.send(request).then((response) => {
         Logger.debug(this.LOG_TAG, "Delete appointment response success", [response]);
 
-        if (!response || response.status !== HttpStatus.OK) {
+        if (!response || !HttpSuccessStatus.includes(response.status)) {
           throw new Error("Failed to delete appointment");
         }
 

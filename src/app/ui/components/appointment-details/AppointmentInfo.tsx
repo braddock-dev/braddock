@@ -26,24 +26,16 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
     mutationKey: ["updateAppointmentStatus", appointment.id],
     mutationFn: (newStatus: AppointmentStatus) => updateAppointment(appointment.id, newStatus),
     onSuccess: () => {
-      toast.success("Status do agendamento atualizado com sucesso!");
+      toast.success("Estado do agendamento atualizado com sucesso!");
       props.onStatusUpdate?.();
     },
     onError: () => {
-      toast.error("Erro ao atualizar status do agendamento");
+      toast.error("Erro ao atualizar estado do agendamento");
     },
   });
 
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const operators = useOperatorStore(operatorSelectors.operators);
-
-  const currentStatus = useMemo(() => {
-    const statusLabels = {
-      [AppointmentStatus.ACTIVE]: "Ativo",
-      [AppointmentStatus.CUSTOMER_DID_NOT_APPEAR]: "Cliente não compareceu",
-    };
-    return statusLabels[appointment.state] || "Ativo";
-  }, [appointment.state]);
 
   const selectedOperator = useMemo(() => {
     if (!appointment.operatorId) {

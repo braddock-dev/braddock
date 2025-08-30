@@ -1,6 +1,6 @@
 import Logger from "@/app/utils/Logger";
 import { ITimeOffResponse, IWorkingHoursResponse, NewTimeOffRequest } from "@/app/backend/services/data/TimeOffDaos";
-import { HttpMethods, HttpStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
+import { HttpMethods, HttpStatus, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 
@@ -23,7 +23,7 @@ class TimeOffService {
 
       const response = await ApiInterface.send(request);
 
-      if (response.status !== HttpStatus.CREATED) {
+      if (!HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error setting time off", response);
         throw new Error("Error setting time off");
       }
@@ -48,7 +48,7 @@ class TimeOffService {
 
       const response = await ApiInterface.send(request);
 
-      if (response.status !== HttpStatus.OK) {
+      if (!HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error getting time offs", response);
         throw new Error("Error getting time offs");
       }
@@ -73,7 +73,7 @@ class TimeOffService {
 
       const response = await ApiInterface.send(request);
 
-      if (response.status !== HttpStatus.OK) {
+      if (!HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error deleting time off", response);
         throw new Error("Error deleting time off");
       }
@@ -98,7 +98,7 @@ class TimeOffService {
 
       const response = await ApiInterface.send(request);
 
-      if (response.status !== HttpStatus.OK) {
+      if (!HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error getting working hours", response);
         throw new Error("Error getting working hours");
       }
