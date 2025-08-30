@@ -45,11 +45,11 @@ class TreatmentManager {
 
       const timeslotsResponse = await TreatmentsService.getTreatmentTimeslots(treatmentsId, employeeId, daysForward);
 
-      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [timeslotsResponse]);
+      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [timeslotsResponse.length]);
 
       const timeslots = TreatmentsDataAdapter.convertDataToDaySlots(timeslotsResponse);
 
-      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [timeslots]);
+      Logger.debug(this.LOG_TAG, "Get treatment timeslots response", [timeslots.length]);
 
       return timeslots;
     } catch (error) {

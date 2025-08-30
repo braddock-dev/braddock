@@ -1,5 +1,5 @@
 import Logger from "@/app/utils/Logger";
-import { HttpMethods, HttpStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
+import { HttpMethods, HttpStatus, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import { IAppointmentsResponse, INewAppointmentRequest, IQueryAppointmentRequest } from "@/app/backend/services/data/AppointmentDaos";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
@@ -112,6 +112,31 @@ class AppointmentsService {
       throw error;
     }
   }
+
+  public async putAppointment(appointmentId: string, appointmentData: Partial<INewAppointmentRequest>): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Putting appointment...", [appointmentId]);
+
+    try {
+      const request: IHttpRequestConfig = {
+        url: Constants.API_ROUTES.PUT_APPOINTMENT(appointmentId),
+        httpMethod: HttpMethods.PUT,
+        data: appointmentData,
+      }
+
+      return ApiInterface.send(request).then((response) => {
+        Logger.debug(this.LOG_TAG, "Put appointment response success", [response]);
+
+        if (!response || !HttpSuccessStatus.includes(response.status)) {
+          throw new Error("Failed to put appointment");
+        }
+
+        return response.data;
+      });
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Failed to put appointment.", error);
+      throw error;
+  }
+}
 }
 
 export default new AppointmentsService();

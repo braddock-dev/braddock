@@ -1,6 +1,11 @@
 import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 import { TZDate } from "@toast-ui/calendar";
 
+export enum AppointmentStatus {
+  ACTIVE = "Active",
+  CUSTOMER_DID_NOT_APPEAR = "CustomerDidNotAppear",
+}
+
 export interface IAppointment {
   businessId: string;
   id: string;
@@ -15,6 +20,7 @@ export interface IAppointment {
   startTime: string;
   treatments: ITreatment[];
   operatorId: string;
+  status: AppointmentStatus;
 }
 
 export interface IAppointmentQueryData {
