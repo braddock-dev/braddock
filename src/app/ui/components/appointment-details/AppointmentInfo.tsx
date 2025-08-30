@@ -1,25 +1,49 @@
 import SectionInfo from "@/app/ui/components/appointment-details/SectionInfo";
 import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
-import { formatPhoneNumber, getFormattedHourDuration, isDateInFuture } from "@/app/utils/functions";
+import { formatPhoneNumber, getFormattedHourDuration, isDateInFuture, isDateInPast } from "@/app/utils/functions";
 import ServiceItem from "@/app/ui/components/appointment-details/ServiceItem";
 import Image from "next/image";
 import AvatarUser from "@/app/ui/images/avatarFallback.png";
 import Button, { ButtonColors } from "@/app/ui/components/button/Button";
 import React, { useMemo } from "react";
-import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
+import { IAppointment, AppointmentStatus } from "@/app/backend/business/treatments/data/AppointmentData";
 import AlertDialogWrapper from "@/app/ui/components/alert-dialog-wrapper/AlertDialogWrapper";
 import { operatorSelectors, useOperatorStore } from "@/app/store/operatorStore";
+import { useMutation } from "@tanstack/react-query";
+import { updateAppointment } from "@/app/backend/actions/appointmentActions";
+import { toast } from "sonner";
 
 interface IAppointmentInfoProps {
   appointment: IAppointment;
   onEdit: () => void;
   onDelete: () => void;
   isDeleting?: boolean;
+  onStatusUpdate?: () => void;
 }
 function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
+  const { mutate: updateStatusMutation, isPending: isUpdatingStatus } = useMutation({
+    mutationKey: ["updateAppointmentStatus", appointment.id],
+    mutationFn: (newStatus: AppointmentStatus) => updateAppointment(appointment.id, newStatus),
+    onSuccess: () => {
+      toast.success("Status do agendamento atualizado com sucesso!");
+      props.onStatusUpdate?.();
+    },
+    onError: () => {
+      toast.error("Erro ao atualizar status do agendamento");
+    },
+  });
+
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const operators = useOperatorStore(operatorSelectors.operators);
+
+  const currentStatus = useMemo(() => {
+    const statusLabels = {
+      [AppointmentStatus.ACTIVE]: "Ativo",
+      [AppointmentStatus.CUSTOMER_DID_NOT_APPEAR]: "Cliente não compareceu",
+    };
+    return statusLabels[appointment.status] || "Ativo";
+  }, [appointment.status]);
 
   const selectedOperator = useMemo(() => {
     if (!appointment.operatorId) {
@@ -28,6 +52,11 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
 
     return operators.find((operator) => operator.id === appointment.operatorId);
   }, [appointment.operatorId, operators]);
+
+  const handleStatusUpdate = (newStatus: AppointmentStatus) => {
+    if (newStatus === appointment.status) return;
+    updateStatusMutation(newStatus);
+  };
 
   return (
     <div className="p-4 flex flex-col gap-6">
@@ -102,6 +131,25 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
 
             <Button color={ButtonColors.BROWN} onClick={props.onEdit}>
               EDITAR
+            </Button>
+          </div>
+        </SectionInfo>
+      )}
+
+      {isDateInPast(appointment.endTimeInMillis) && (
+        <SectionInfo title={"O que aconteceu?"}>
+          <div className="flex flex-col gap-3">
+            <Button
+              color={ButtonColors.BROWN}
+              onClick={() => {
+                const newStatus =
+                  appointment.status === AppointmentStatus.ACTIVE ? AppointmentStatus.CUSTOMER_DID_NOT_APPEAR : AppointmentStatus.ACTIVE;
+                handleStatusUpdate(newStatus);
+              }}
+              disabled={isUpdatingStatus}
+              isLoading={isUpdatingStatus}
+            >
+              {appointment.status === AppointmentStatus.ACTIVE ? "O Cliente Não Compareceu" : "O Cliente Compareceu"}
             </Button>
           </div>
         </SectionInfo>
