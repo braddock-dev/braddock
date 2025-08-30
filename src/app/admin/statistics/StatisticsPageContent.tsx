@@ -23,8 +23,8 @@ import { AppointmentStatus } from "@/app/backend/business/treatments/data/Appoin
 
 export default function StatisticsPageContent() {
   const [dateRange, setDateRange] = useState({
-    startDate: getPastXDaysDate(30), // Last 30 days
-    endDate: getFutureXDaysDate(0), // Today
+    startDate: getPastXDaysDate(6),
+    endDate: getFutureXDaysDate(0),
   });
 
   const filter = useMemo(
@@ -252,11 +252,6 @@ export default function StatisticsPageContent() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Receita por Período</h3>
-          <RevenueChart data={chartData} appointments={appointments || []} />
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Operadores</h3>
           <div className="space-y-3">
             {statistics.topOperators.map((operator, index) => (
@@ -269,6 +264,11 @@ export default function StatisticsPageContent() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Receita por Período</h3>
+          <RevenueChart data={chartData} appointments={appointments || []} />
         </div>
       </div>
 

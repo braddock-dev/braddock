@@ -1,8 +1,16 @@
+"use client";
+
+import * as React from "react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+
+import { ChartTooltipContent } from "@/components/ui/chart";
+import { IAppointment } from "@/app/backend/business/treatments/data/AppointmentData";
+import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 import dayjs from "@/app/utils/dayjs";
 
 interface RevenueChartProps {
   data: Array<{ date: string; appointments: number }> | null;
-  appointments: any[] | null;
+  appointments: IAppointment[] | null;
 }
 
 export default function RevenueChart({ data, appointments }: RevenueChartProps) {
@@ -10,7 +18,7 @@ export default function RevenueChart({ data, appointments }: RevenueChartProps) 
     return <div className="flex items-center justify-center h-48 text-gray-500">Nenhum dado disponível para exibir</div>;
   }
 
-  const hasPriceData = appointments.some((day) => day.appointments?.some((apt) => apt.treatments?.some((treatment) => treatment.price)));
+  const hasPriceData = appointments.some((apt) => apt.treatments?.some((treatment) => treatment.price));
 
   if (!hasPriceData) {
     return (
@@ -23,51 +31,59 @@ export default function RevenueChart({ data, appointments }: RevenueChartProps) 
     );
   }
 
+  // Calculate revenue data for each date
   const revenueData = data.map((item) => {
-    const dateAppointments = appointments.find((day) => dayjs(day.dayInMillis).format("YYYY-MM-DD") === item.date)?.appointments || [];
-    const dayRevenue = dateAppointments.reduce((total: number, apt: any) => {
+    const dateAppointments = appointments.filter((day) => dayjs(day.dayInMillis).format("YYYY-MM-DD") === item.date);
+    const dayRevenue = dateAppointments.reduce((total: number, apt: IAppointment) => {
       const appointmentRevenue =
-        apt.treatments?.reduce((treatmentTotal: number, treatment: any) => {
+        apt.treatments?.reduce((treatmentTotal: number, treatment: ITreatment) => {
           return treatmentTotal + (treatment.price || 0);
         }, 0) || 0;
       return total + appointmentRevenue;
     }, 0);
-    return { date: item.date, revenue: dayRevenue };
+    return {
+      date: new Date(item.date).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }),
+      revenue: dayRevenue,
+      originalDate: item.date,
+    };
   });
 
-  const maxRevenue = Math.max(...revenueData.map((d) => d.revenue));
-  const maxHeight = 120;
+  // Check if today's data exists to highlight it
+  const today = new Date().toISOString().split("T")[0];
+  const todayData = revenueData.find((item) => item.originalDate === today);
 
   return (
-    <div className="h-48">
-      <div className="flex items-end justify-between h-full gap-1">
-        {revenueData.map((item, index) => {
-          const height = maxRevenue > 0 ? (item.revenue / maxRevenue) * maxHeight : 0;
-          const isToday = new Date().toISOString().split("T")[0] === item.date;
-
-          return (
-            <div key={index} className="flex-1 flex flex-col items-center">
-              <div className="relative group">
-                <div
-                  className={`w-full rounded-t transition-all duration-200 ${isToday ? "bg-green-500" : "bg-green-400 hover:bg-green-500"}`}
-                  style={{ height: `${Math.max(height, 4)}px` }}
-                />
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                  {new Date(item.date).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}: €{item.revenue.toFixed(2)}
-                </div>
-              </div>
-              <span className="text-xs text-gray-500 mt-2 text-center">
-                {new Date(item.date).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex justify-between text-xs text-gray-400 mt-2">
-        <span>€{maxRevenue.toFixed(2)}</span>
-        <span>€{(maxRevenue / 2).toFixed(2)}</span>
-        <span>€0.00</span>
-      </div>
+    <div className="w-full h-[300px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={revenueData}>
+          <CartesianGrid strokeDasharray="1 1" />
+          <XAxis dataKey="date" className="text-xs" tick={{ fontSize: 12 }} />
+          <Tooltip
+            content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <ChartTooltipContent
+                    label="Receita"
+                    payload={payload.map((item: any) => ({
+                      name: "Receita",
+                      value: `€${item.value}`,
+                      fill: item.payload.originalDate === today ? "#10B981" : "#6B7280",
+                    }))}
+                    indicator="line"
+                  />
+                );
+              }
+              return null;
+            }}
+          />
+          <Bar
+            dataKey="revenue"
+            radius={[4, 4, 0, 0]}
+            className="fill-muted-foreground/20 hover:fill-muted-foreground/40 transition-colors"
+            fill="#734434"
+          />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }

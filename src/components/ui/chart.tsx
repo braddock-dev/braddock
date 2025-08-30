@@ -45,7 +45,7 @@ export function ChartTooltipContent({
   indicator?: "line" | "dot" | "dashed";
   payload: {
     name: string;
-    value: number;
+    value: number | string;
     fill: string;
   }[];
   nameKey?: string;
