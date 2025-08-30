@@ -78,6 +78,14 @@ export const Constants = {
     LOGIN: "/login",
     OPERATORS: "/admin/operators",
   },
+  UI: {
+    CALENDAR: {
+      CUSTOMER_DID_NOT_APPEAR_COLOR: "#ff6b6b",
+      PAST_APPOINTMENT_COLOR: "#939090",
+      DEFAULT_OPERATOR_COLOR: "#b47866",
+      DEFAULT_TIME_OFF_COLOR: "#383838",
+    },
+  },
   ERRORS: {
     GENERIC: {
       UNKNOWN: "GN_UNKNOWN",

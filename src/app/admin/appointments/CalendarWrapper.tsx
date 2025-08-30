@@ -75,7 +75,7 @@ export default function CalendarWrapper(props: ICalendarWrapperProps) {
     }
   }, [calendarInstance]);
 
-  const formattedMonth = currentDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
+  const formattedMonth = currentDate.toLocaleString("pt-BR", { month: "long", year: "numeric" });
 
   useEffect(() => {
     if (calendarRef.current && calendarRef.current.containerElementRef.current) {
