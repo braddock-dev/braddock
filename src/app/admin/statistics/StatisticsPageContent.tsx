@@ -23,7 +23,7 @@ import { AppointmentStatus } from "@/app/backend/business/treatments/data/Appoin
 
 export default function StatisticsPageContent() {
   const [dateRange, setDateRange] = useState({
-    startDate: getPastXDaysDate(6), // Last 7 days
+    startDate: getPastXDaysDate(30), // Last 30 days
     endDate: getFutureXDaysDate(0), // Today
   });
 
