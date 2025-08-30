@@ -10,7 +10,7 @@ export interface INewAppointmentRequest {
   customerEmail?: string;
   requestedBy?: AuthRoles;
   employeeId: string;
-  status?: AppointmentStatusValue;
+  state?: AppointmentStatusValue;
 }
 
 export interface IQueryAppointmentRequest {

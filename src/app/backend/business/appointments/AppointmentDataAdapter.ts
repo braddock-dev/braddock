@@ -48,7 +48,7 @@ class AppointmentDataAdapter {
       createdAt: data.createdAt,
       treatments: TreatmentsDataAdapter.convertDataToTreatments(data.treatments || []),
       operatorId: data.operatorId,
-      status: AppointmentDataAdapter.APPOINTMENT_MAPPING.APPOINTMENT_STATUS_INBOUND[data.status] || AppointmentStatus.ACTIVE,
+      state: AppointmentDataAdapter.APPOINTMENT_MAPPING.APPOINTMENT_STATUS_INBOUND[data.state] || AppointmentStatus.ACTIVE,
     };
   }
 
@@ -93,9 +93,9 @@ class AppointmentDataAdapter {
     };
   }
 
-  public createUpdateAppointmentRequest(status: AppointmentStatus): Partial<INewAppointmentRequest> {
+  public createUpdateAppointmentRequest(state: AppointmentStatus): Partial<INewAppointmentRequest> {
     return {
-      status: AppointmentDataAdapter.APPOINTMENT_MAPPING.APPOINTMENT_STATUS_OUTBOUND[status],
+      state: AppointmentDataAdapter.APPOINTMENT_MAPPING.APPOINTMENT_STATUS_OUTBOUND[state],
     };
   }
 }

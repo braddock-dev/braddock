@@ -121,7 +121,7 @@ class AppointmentsService {
         url: Constants.API_ROUTES.PUT_APPOINTMENT(appointmentId),
         httpMethod: HttpMethods.PUT,
         data: appointmentData,
-      }
+      };
 
       return ApiInterface.send(request).then((response) => {
         Logger.debug(this.LOG_TAG, "Put appointment response success", [response]);
@@ -135,8 +135,8 @@ class AppointmentsService {
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to put appointment.", error);
       throw error;
+    }
   }
-}
 }
 
 export default new AppointmentsService();

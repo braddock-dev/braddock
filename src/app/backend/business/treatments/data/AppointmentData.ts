@@ -20,7 +20,7 @@ export interface IAppointment {
   startTime: string;
   treatments: ITreatment[];
   operatorId: string;
-  status: AppointmentStatus;
+  state: AppointmentStatus;
 }
 
 export interface IAppointmentQueryData {

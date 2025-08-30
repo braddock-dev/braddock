@@ -42,8 +42,8 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
       [AppointmentStatus.ACTIVE]: "Ativo",
       [AppointmentStatus.CUSTOMER_DID_NOT_APPEAR]: "Cliente não compareceu",
     };
-    return statusLabels[appointment.status] || "Ativo";
-  }, [appointment.status]);
+    return statusLabels[appointment.state] || "Ativo";
+  }, [appointment.state]);
 
   const selectedOperator = useMemo(() => {
     if (!appointment.operatorId) {
@@ -54,7 +54,7 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
   }, [appointment.operatorId, operators]);
 
   const handleStatusUpdate = (newStatus: AppointmentStatus) => {
-    if (newStatus === appointment.status) return;
+    if (newStatus === appointment.state) return;
     updateStatusMutation(newStatus);
   };
 
@@ -143,13 +143,13 @@ function AppointmentInfo({ appointment, ...props }: IAppointmentInfoProps) {
               color={ButtonColors.BROWN}
               onClick={() => {
                 const newStatus =
-                  appointment.status === AppointmentStatus.ACTIVE ? AppointmentStatus.CUSTOMER_DID_NOT_APPEAR : AppointmentStatus.ACTIVE;
+                  appointment.state === AppointmentStatus.ACTIVE ? AppointmentStatus.CUSTOMER_DID_NOT_APPEAR : AppointmentStatus.ACTIVE;
                 handleStatusUpdate(newStatus);
               }}
               disabled={isUpdatingStatus}
               isLoading={isUpdatingStatus}
             >
-              {appointment.status === AppointmentStatus.ACTIVE ? "O Cliente Não Compareceu" : "O Cliente Compareceu"}
+              {appointment.state === AppointmentStatus.ACTIVE ? "O Cliente Não Compareceu" : "O Cliente Compareceu"}
             </Button>
           </div>
         </SectionInfo>

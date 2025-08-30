@@ -76,11 +76,11 @@ class AppointmentsManager {
     }
   }
 
-  public async updateAppointment(appointmentId: string, status: AppointmentStatus): Promise<void> {
-    Logger.debug(this.LOG_TAG, "Start updating appointment", [appointmentId, status]);
+  public async updateAppointment(appointmentId: string, state: AppointmentStatus): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start updating appointment", [appointmentId, state]);
 
     try {
-      const appointmentRequestData = AppointmentDataAdapter.createUpdateAppointmentRequest(status);
+      const appointmentRequestData = AppointmentDataAdapter.createUpdateAppointmentRequest(state);
 
       const response = await AppointmentsService.putAppointment(appointmentId, appointmentRequestData);
 
