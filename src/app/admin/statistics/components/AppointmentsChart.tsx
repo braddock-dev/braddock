@@ -1,45 +1,76 @@
+"use client";
+
+import * as React from "react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+
 interface AppointmentsChartProps {
   data: Array<{ date: string; appointments: number }> | null;
 }
 
 export default function AppointmentsChart({ data }: AppointmentsChartProps) {
   if (!data || data.length === 0) {
-    return <div className="flex items-center justify-center h-48 text-gray-500">Nenhum dado disponível para exibir</div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Agendamentos</CardTitle>
+          <CardDescription>Visão geral dos agendamentos por data</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center h-48 text-gray-500">Nenhum dado disponível para exibir</div>
+        </CardContent>
+      </Card>
+    );
   }
 
-  const maxAppointments = Math.max(...data.map((d) => d.appointments));
-  const maxHeight = 120;
+  // Transform data for the chart
+  const chartData = data.map((item) => ({
+    date: new Date(item.date).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+    }),
+    appointments: item.appointments,
+    originalDate: item.date,
+  }));
+
+  // Check if today's data exists to highlight it
+  const today = new Date().toISOString().split("T")[0];
+  const todayData = data.find((item) => item.date === today);
 
   return (
-    <div className="h-48">
-      <div className="flex items-end justify-between h-full gap-1">
-        {data.map((item, index) => {
-          const height = maxAppointments > 0 ? (item.appointments / maxAppointments) * maxHeight : 0;
-          const isToday = new Date().toISOString().split("T")[0] === item.date;
-
-          return (
-            <div key={index} className="flex-1 flex flex-col items-center">
-              <div className="relative group">
-                <div
-                  className={`w-full rounded-t transition-all duration-200 ${isToday ? "bg-brown" : "bg-gray-300 hover:bg-gray-400"}`}
-                  style={{ height: `${Math.max(height, 4)}px` }}
-                />
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                  {new Date(item.date).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}: {item.appointments} agendamentos
-                </div>
-              </div>
-              <span className="text-xs text-gray-500 mt-2 text-center">
-                {new Date(item.date).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex justify-between text-xs text-gray-400 mt-2">
-        <span>{maxAppointments}</span>
-        <span>{Math.round(maxAppointments / 2)}</span>
-        <span>0</span>
-      </div>
+    <div className="w-full h-[300px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData}>
+          <CartesianGrid strokeDasharray="1 1" />
+          <XAxis dataKey="date" className="text-xs" tick={{ fontSize: 12 }} />
+          <Tooltip
+            content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <ChartTooltipContent
+                    label="Agendamentos"
+                    payload={payload.map((item: any) => ({
+                      name: "Agendamentos",
+                      value: item.value,
+                      fill: item.payload.originalDate === today ? "#8B4513" : "#6B7280",
+                    }))}
+                    indicator="line"
+                  />
+                );
+              }
+              return null;
+            }}
+          />
+          <Bar
+            dataKey="appointments"
+            radius={[4, 4, 0, 0]}
+            className="fill-muted-foreground/20 hover:fill-muted-foreground/40 transition-colors"
+            fill="#734434"
+          />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }
