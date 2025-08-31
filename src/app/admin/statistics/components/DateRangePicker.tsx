@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dayjs from "@/app/utils/dayjs";
 import { Calendar, X, AlertCircle } from "lucide-react";
+import { Constants } from "@/app/utils/Constants";
 
 interface DateRangePickerProps {
   startDate: number;
@@ -39,13 +40,17 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
   };
 
   const handleStartDateChange = (newStartDate: number) => {
-    setTempStartDate(newStartDate);
-    validateDateRange(newStartDate, tempEndDate);
+    // Ensure start date is set to beginning of day (00:00:00)
+    const startOfDay = dayjs(newStartDate).startOf("day").valueOf();
+    setTempStartDate(startOfDay);
+    validateDateRange(startOfDay, tempEndDate);
   };
 
   const handleEndDateChange = (newEndDate: number) => {
-    setTempEndDate(newEndDate);
-    validateDateRange(tempStartDate, newEndDate);
+    // Ensure end date is set to end of day (23:59:59)
+    const endOfDay = dayjs(newEndDate).endOf("day").valueOf();
+    setTempEndDate(endOfDay);
+    validateDateRange(tempStartDate, endOfDay);
   };
 
   const handleApply = () => {
@@ -57,8 +62,8 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
   };
 
   const handleReset = () => {
-    const thirtyDaysAgo = dayjs().subtract(30, "days").valueOf();
-    const today = dayjs().valueOf();
+    const thirtyDaysAgo = dayjs().subtract(30, "days").startOf("day").valueOf();
+    const today = dayjs().endOf("day").valueOf();
     setTempStartDate(thirtyDaysAgo);
     setTempEndDate(today);
     setError(null);
@@ -66,7 +71,7 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
     setIsOpen(false);
   };
 
-  const formatDate = (timestamp: number) => dayjs(timestamp).format("DD/MM/YYYY");
+  const formatDate = (timestamp: number) => dayjs(timestamp).format(Constants.TIME.DAY_DATE_FORMAT);
 
   const getDateRangeLabel = () => {
     const start = dayjs(startDate);
@@ -139,8 +144,8 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const yesterday = dayjs().subtract(1, "day");
+                      const today = dayjs().endOf("day");
+                      const yesterday = dayjs().subtract(1, "day").startOf("day");
                       setTempStartDate(yesterday.valueOf());
                       setTempEndDate(today.valueOf());
                       setError(null);
@@ -151,8 +156,8 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
                   </button>
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const weekAgo = dayjs().subtract(7, "days");
+                      const today = dayjs().endOf("day");
+                      const weekAgo = dayjs().subtract(7, "days").startOf("day");
                       setTempStartDate(weekAgo.valueOf());
                       setTempEndDate(today.valueOf());
                       setError(null);
@@ -163,8 +168,8 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
                   </button>
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const monthAgo = dayjs().subtract(30, "days");
+                      const today = dayjs().endOf("day");
+                      const monthAgo = dayjs().subtract(30, "days").startOf("day");
                       setTempStartDate(monthAgo.valueOf());
                       setTempEndDate(today.valueOf());
                       setError(null);
@@ -175,8 +180,8 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
                   </button>
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const quarterAgo = dayjs().subtract(90, "days");
+                      const today = dayjs().endOf("day");
+                      const quarterAgo = dayjs().subtract(90, "days").startOf("day");
                       setTempStartDate(quarterAgo.valueOf());
                       setTempEndDate(today.valueOf());
                       setError(null);

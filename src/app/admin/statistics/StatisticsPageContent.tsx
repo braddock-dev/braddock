@@ -21,11 +21,13 @@ import RevenueChart from "@/app/admin/statistics/components/RevenueChart";
 import TopOperatorsChart from "@/app/admin/statistics/components/TopOperatorsChart";
 import DateRangePicker from "@/app/admin/statistics/components/DateRangePicker";
 import { AppointmentStatus } from "@/app/backend/business/treatments/data/AppointmentData";
+import { Constants } from "@/app/utils/Constants";
+import Loading from "./loading";
 
 export default function StatisticsPageContent() {
   const [dateRange, setDateRange] = useState({
-    startDate: getPastXDaysDate(6),
-    endDate: getFutureXDaysDate(0),
+    startDate: getPastXDaysDate(Constants.APPOINTMENTS.STATISTICS_FILTER.DEFAULT_PAST_DAYS),
+    endDate: getFutureXDaysDate(Constants.APPOINTMENTS.STATISTICS_FILTER.DEFAULT_FUTURE_DAYS),
   });
 
   const filter = useMemo(
@@ -151,11 +153,7 @@ export default function StatisticsPageContent() {
   }, [appointments, dateRange]);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full w-full p-80">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brown"></div>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (!statistics) {
@@ -173,15 +171,17 @@ export default function StatisticsPageContent() {
           <h1 className="text-2xl font-bold text-gray-900">Estatísticas</h1>
           <p className="text-gray-600">Visão geral dos agendamentos e desempenho do negócio</p>
         </div>
-        <DateRangePicker startDate={dateRange.startDate} endDate={dateRange.endDate} onDateChange={setDateRange} maxDays={90} />
+        <DateRangePicker
+          startDate={dateRange.startDate}
+          endDate={dateRange.endDate}
+          onDateChange={setDateRange}
+          maxDays={Constants.APPOINTMENTS.STATISTICS_FILTER.DEFAULT_MAX_DAYS}
+        />
       </div>
 
       {/* Summary Section */}
       <div className="bg-gradient-to-r from-brown to-brown01 text-white p-6 rounded-lg">
         <h2 className="text-xl font-semibold mb-2">Resumo do Período</h2>
-        <p className="text-white/90">
-          Período selecionado: {dayjs(dateRange.startDate).format("DD/MM/YYYY")} - {dayjs(dateRange.endDate).format("DD/MM/YYYY")}
-        </p>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
             <p className="text-sm text-white/80">Total de Agendamentos</p>
