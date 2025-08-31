@@ -7,7 +7,7 @@ import MenuItem, { ISideMenuItem } from "@/app/ui/components/side-menu/MenuItem"
 import { useMemo } from "react";
 import HomeIcon from "@/app/ui/vectors/home.svg";
 import { usePathname } from "next/navigation";
-import { Archive, UserIcon, Users, X, UserRoundCog, SquareUser } from "lucide-react";
+import { Archive, UserIcon, Users, X, UserRoundCog, SquareUser, BarChart3 } from "lucide-react";
 import { menuActions, menuSelectors, useMenuStore } from "@/app/store/menuStore";
 
 export default function SideMenu() {
@@ -36,6 +36,11 @@ export default function SideMenu() {
         label: "Clientes",
         icon: <Users className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.CUSTOMERS,
+      },
+      {
+        label: "Estatísticas",
+        icon: <BarChart3 className="shrink-0 size-4" />,
+        url: Constants.APP_ROUTES.STATISTICS,
       },
       {
         label: "Minha Conta",

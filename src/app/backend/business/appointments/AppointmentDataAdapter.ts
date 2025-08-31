@@ -49,6 +49,7 @@ class AppointmentDataAdapter {
       treatments: TreatmentsDataAdapter.convertDataToTreatments(data.treatments || []),
       operatorId: data.operatorId,
       state: AppointmentDataAdapter.APPOINTMENT_MAPPING.APPOINTMENT_STATUS_INBOUND[data.state] || AppointmentStatus.ACTIVE,
+      dayInMillis: dayjs(data.startTimeInMillis).startOf("day").valueOf(),
     };
   }
 
