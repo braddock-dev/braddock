@@ -23,6 +23,11 @@ export default function SideMenu() {
         url: Constants.APP_ROUTES.APPOINTMENTS,
       },
       {
+        label: "Estatísticas",
+        icon: <BarChart3 className="shrink-0 size-4" />,
+        url: Constants.APP_ROUTES.STATISTICS,
+      },
+      {
         label: "Serviços",
         icon: <Archive className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.SERVICES,
@@ -36,11 +41,6 @@ export default function SideMenu() {
         label: "Clientes",
         icon: <Users className="shrink-0 size-4" />,
         url: Constants.APP_ROUTES.CUSTOMERS,
-      },
-      {
-        label: "Estatísticas",
-        icon: <BarChart3 className="shrink-0 size-4" />,
-        url: Constants.APP_ROUTES.STATISTICS,
       },
       {
         label: "Minha Conta",

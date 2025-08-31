@@ -115,6 +115,7 @@ export const Constants = {
   NOT_ALLOWED_SERVICES: ["Platinado"],
   TIME: {
     DEFAULT_TIME_ZONE: "Europe/Lisbon",
+    DAY_DATE_FORMAT: "DD/MM/YYYY",
   },
   LOCALE: {
     DEFAULT_LANGUAGE: "pt",
@@ -128,6 +129,11 @@ export const Constants = {
     CUSTOMER_FILTER: {
       DEFAULT_PAST_DAYS: 30,
       DEFAULT_FUTURE_DAYS: 180,
+    },
+    STATISTICS_FILTER: {
+      DEFAULT_PAST_DAYS: 6,
+      DEFAULT_FUTURE_DAYS: 0,
+      DEFAULT_MAX_DAYS: 90,
     },
   },
   TIMESLOTS: {

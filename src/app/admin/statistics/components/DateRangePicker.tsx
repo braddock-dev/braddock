@@ -2,34 +2,76 @@
 
 import { useState } from "react";
 import dayjs from "@/app/utils/dayjs";
-import { Calendar, X } from "lucide-react";
+import { Calendar, X, AlertCircle } from "lucide-react";
+import { Constants } from "@/app/utils/Constants";
 
 interface DateRangePickerProps {
   startDate: number;
   endDate: number;
   onDateChange: (dates: { startDate: number; endDate: number }) => void;
+  maxDays?: number;
 }
 
-export default function DateRangePicker({ startDate, endDate, onDateChange }: DateRangePickerProps) {
+export default function DateRangePicker({ startDate, endDate, onDateChange, maxDays = 90 }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [tempStartDate, setTempStartDate] = useState(startDate);
   const [tempEndDate, setTempEndDate] = useState(endDate);
+  const [error, setError] = useState<string | null>(null);
+
+  const MAX_DAYS = maxDays; // Use the prop value with default fallback
+
+  const validateDateRange = (start: number, end: number): boolean => {
+    const startDate = dayjs(start);
+    const endDate = dayjs(end);
+    const diffInDays = endDate.diff(startDate, "day");
+
+    if (diffInDays > MAX_DAYS) {
+      setError(`O período máximo permitido é de (${Math.round(MAX_DAYS / 30)} meses)`);
+      return false;
+    }
+
+    if (diffInDays < 0) {
+      setError("A data final deve ser posterior à data inicial");
+      return false;
+    }
+
+    setError(null);
+    return true;
+  };
+
+  const handleStartDateChange = (newStartDate: number) => {
+    // Ensure start date is set to beginning of day (00:00:00)
+    const startOfDay = dayjs(newStartDate).startOf("day").valueOf();
+    setTempStartDate(startOfDay);
+    validateDateRange(startOfDay, tempEndDate);
+  };
+
+  const handleEndDateChange = (newEndDate: number) => {
+    // Ensure end date is set to end of day (23:59:59)
+    const endOfDay = dayjs(newEndDate).endOf("day").valueOf();
+    setTempEndDate(endOfDay);
+    validateDateRange(tempStartDate, endOfDay);
+  };
 
   const handleApply = () => {
-    onDateChange({ startDate: tempStartDate, endDate: tempEndDate });
-    setIsOpen(false);
+    if (validateDateRange(tempStartDate, tempEndDate)) {
+      onDateChange({ startDate: tempStartDate, endDate: tempEndDate });
+      setIsOpen(false);
+      setError(null);
+    }
   };
 
   const handleReset = () => {
-    const thirtyDaysAgo = dayjs().subtract(30, "days").valueOf();
-    const today = dayjs().valueOf();
+    const thirtyDaysAgo = dayjs().subtract(30, "days").startOf("day").valueOf();
+    const today = dayjs().endOf("day").valueOf();
     setTempStartDate(thirtyDaysAgo);
     setTempEndDate(today);
+    setError(null);
     onDateChange({ startDate: thirtyDaysAgo, endDate: today });
     setIsOpen(false);
   };
 
-  const formatDate = (timestamp: number) => dayjs(timestamp).format("DD/MM/YYYY");
+  const formatDate = (timestamp: number) => dayjs(timestamp).format(Constants.TIME.DAY_DATE_FORMAT);
 
   const getDateRangeLabel = () => {
     const start = dayjs(startDate);
@@ -72,7 +114,9 @@ export default function DateRangePicker({ startDate, endDate, onDateChange }: Da
                 <input
                   type="date"
                   value={dayjs(tempStartDate).format("YYYY-MM-DD")}
-                  onChange={(e) => setTempStartDate(dayjs(e.target.value).valueOf())}
+                  onChange={(e) => handleStartDateChange(dayjs(e.target.value).valueOf())}
+                  min={dayjs(tempEndDate).subtract(MAX_DAYS, "days").format("YYYY-MM-DD")}
+                  max={dayjs(tempEndDate).format("YYYY-MM-DD")}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                 />
               </div>
@@ -82,19 +126,29 @@ export default function DateRangePicker({ startDate, endDate, onDateChange }: Da
                 <input
                   type="date"
                   value={dayjs(tempEndDate).format("YYYY-MM-DD")}
-                  onChange={(e) => setTempEndDate(dayjs(e.target.value).valueOf())}
+                  onChange={(e) => handleEndDateChange(dayjs(e.target.value).valueOf())}
+                  min={dayjs(tempStartDate).add(1, "day").format("YYYY-MM-DD")}
+                  max={dayjs(tempStartDate).add(MAX_DAYS, "days").format("YYYY-MM-DD")}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                 />
               </div>
+
+              {error && (
+                <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-md">
+                  <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                  <span className="text-sm text-red-700">{error}</span>
+                </div>
+              )}
 
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const yesterday = dayjs().subtract(1, "day");
+                      const today = dayjs().endOf("day");
+                      const yesterday = dayjs().subtract(1, "day").startOf("day");
                       setTempStartDate(yesterday.valueOf());
                       setTempEndDate(today.valueOf());
+                      setError(null);
                     }}
                     className="px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                   >
@@ -102,10 +156,11 @@ export default function DateRangePicker({ startDate, endDate, onDateChange }: Da
                   </button>
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const weekAgo = dayjs().subtract(7, "days");
+                      const today = dayjs().endOf("day");
+                      const weekAgo = dayjs().subtract(7, "days").startOf("day");
                       setTempStartDate(weekAgo.valueOf());
                       setTempEndDate(today.valueOf());
+                      setError(null);
                     }}
                     className="px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                   >
@@ -113,10 +168,11 @@ export default function DateRangePicker({ startDate, endDate, onDateChange }: Da
                   </button>
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const monthAgo = dayjs().subtract(30, "days");
+                      const today = dayjs().endOf("day");
+                      const monthAgo = dayjs().subtract(30, "days").startOf("day");
                       setTempStartDate(monthAgo.valueOf());
                       setTempEndDate(today.valueOf());
+                      setError(null);
                     }}
                     className="px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                   >
@@ -124,10 +180,11 @@ export default function DateRangePicker({ startDate, endDate, onDateChange }: Da
                   </button>
                   <button
                     onClick={() => {
-                      const today = dayjs();
-                      const quarterAgo = dayjs().subtract(90, "days");
+                      const today = dayjs().endOf("day");
+                      const quarterAgo = dayjs().subtract(90, "days").startOf("day");
                       setTempStartDate(quarterAgo.valueOf());
                       setTempEndDate(today.valueOf());
+                      setError(null);
                     }}
                     className="px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                   >
@@ -144,7 +201,8 @@ export default function DateRangePicker({ startDate, endDate, onDateChange }: Da
                   </button>
                   <button
                     onClick={handleApply}
-                    className="flex-1 px-3 py-2 text-sm font-medium text-white bg-brown border border-transparent rounded-md hover:bg-brown/90 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
+                    disabled={!!error}
+                    className="flex-1 px-3 py-2 text-sm font-medium text-white bg-brown border border-transparent rounded-md hover:bg-brown/90 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Aplicar
                   </button>
