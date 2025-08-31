@@ -18,15 +18,13 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
   const [tempEndDate, setTempEndDate] = useState(endDate);
   const [error, setError] = useState<string | null>(null);
 
-  const MAX_DAYS = maxDays; // Use the prop value with default fallback
-
   const validateDateRange = (start: number, end: number): boolean => {
     const startDate = dayjs(start);
     const endDate = dayjs(end);
     const diffInDays = endDate.diff(startDate, "day");
 
-    if (diffInDays > MAX_DAYS) {
-      setError(`O período máximo permitido é de (${Math.round(MAX_DAYS / 30)} meses)`);
+    if (diffInDays > maxDays) {
+      setError(`O período máximo permitido é de (${maxDays} dias)`);
       return false;
     }
 
@@ -115,7 +113,7 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
                   type="date"
                   value={dayjs(tempStartDate).format("YYYY-MM-DD")}
                   onChange={(e) => handleStartDateChange(dayjs(e.target.value).valueOf())}
-                  min={dayjs(tempEndDate).subtract(MAX_DAYS, "days").format("YYYY-MM-DD")}
+                  min={dayjs(tempEndDate).subtract(maxDays, "days").format("YYYY-MM-DD")}
                   max={dayjs(tempEndDate).format("YYYY-MM-DD")}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                 />
@@ -128,7 +126,7 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
                   value={dayjs(tempEndDate).format("YYYY-MM-DD")}
                   onChange={(e) => handleEndDateChange(dayjs(e.target.value).valueOf())}
                   min={dayjs(tempStartDate).add(1, "day").format("YYYY-MM-DD")}
-                  max={dayjs(tempStartDate).add(MAX_DAYS, "days").format("YYYY-MM-DD")}
+                  max={dayjs(tempStartDate).add(maxDays, "days").format("YYYY-MM-DD")}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                 />
               </div>
@@ -142,6 +140,20 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
 
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => {
+                      const startToday = dayjs().endOf("day").startOf("day");
+                      const endToday = dayjs().endOf("day");
+
+                      setTempStartDate(startToday.valueOf());
+                      setTempEndDate(endToday.valueOf());
+                      setError(null);
+                    }}
+                    className="px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
+                  >
+                    Hoje
+                  </button>
+
                   <button
                     onClick={() => {
                       const today = dayjs().endOf("day");
@@ -177,18 +189,6 @@ export default function DateRangePicker({ startDate, endDate, onDateChange, maxD
                     className="px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
                   >
                     Último Mês
-                  </button>
-                  <button
-                    onClick={() => {
-                      const today = dayjs().endOf("day");
-                      const quarterAgo = dayjs().subtract(90, "days").startOf("day");
-                      setTempStartDate(quarterAgo.valueOf());
-                      setTempEndDate(today.valueOf());
-                      setError(null);
-                    }}
-                    className="px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-brown focus:border-transparent"
-                  >
-                    Último Trimestre
                   </button>
                 </div>
 
