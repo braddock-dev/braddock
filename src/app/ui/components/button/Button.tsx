@@ -10,6 +10,12 @@ export enum ButtonColors {
   LIGHT_BROWN = "light-brown",
 }
 
+export enum ButtonSizes {
+  DEFAULT = "default",
+  SM = "sm",
+  LG = "lg",
+}
+
 interface IButtonColorsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: ButtonColors;
   children: ReactElement | string;
@@ -18,17 +24,10 @@ interface IButtonColorsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   target?: "_blank" | "_self";
   isLoading?: boolean;
+  size?: ButtonSizes;
 }
 
-export default function Button({
-  color,
-  href,
-  target,
-  fullWidth,
-  outline,
-  isLoading,
-  ...defaultButtonProps
-}: IButtonColorsProps) {
+export default function Button({ color, href, target, fullWidth, outline, isLoading, size, ...defaultButtonProps }: IButtonColorsProps) {
   return (
     <button
       {...defaultButtonProps}
@@ -36,16 +35,10 @@ export default function Button({
       data-button-color={color}
       data-full-width={fullWidth}
       data-outline={outline}
+      data-size={size}
     >
       {isLoading ? (
-        <Spinner
-          className={styles.spinner}
-          color={
-            color === ButtonColors.WHITE
-              ? SpinnerColor.BLACK
-              : SpinnerColor.WHITE
-          }
-        />
+        <Spinner className={styles.spinner} color={color === ButtonColors.WHITE ? SpinnerColor.BLACK : SpinnerColor.WHITE} />
       ) : (
         <>
           {href ? (

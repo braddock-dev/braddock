@@ -1,12 +1,33 @@
-import { IAppointment, IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
+import { AppointmentStatus, IAppointment, IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
 import TreatmentsDataAdapter from "@/app/backend/business/treatments/TreatmentsDataAdapter";
-import { IAppointmentsResponse, INewAppointmentRequest, IQueryAppointmentRequest } from "@/app/backend/services/data/AppointmentDaos";
+import {
+  AppointmentStatusValue,
+  IAppointmentsResponse,
+  INewAppointmentRequest,
+  IQueryAppointmentRequest,
+} from "@/app/backend/services/data/AppointmentDaos";
 import dayjs from "@/app/utils/dayjs";
 import { Constants } from "@/app/utils/Constants";
 import { getDifferenceInHours, getDifferenceInMinutes } from "@/app/utils/functions";
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 
+type AppointmentMapping = {
+  APPOINTMENT_STATUS_INBOUND: Record<AppointmentStatusValue, AppointmentStatus>;
+  APPOINTMENT_STATUS_OUTBOUND: Record<AppointmentStatus, AppointmentStatusValue>;
+};
+
 class AppointmentDataAdapter {
+  private static APPOINTMENT_MAPPING: AppointmentMapping = {
+    APPOINTMENT_STATUS_INBOUND: {
+      Active: AppointmentStatus.ACTIVE,
+      CustomerDidNotAppear: AppointmentStatus.CUSTOMER_DID_NOT_APPEAR,
+    },
+    APPOINTMENT_STATUS_OUTBOUND: {
+      [AppointmentStatus.ACTIVE]: "Active",
+      [AppointmentStatus.CUSTOMER_DID_NOT_APPEAR]: "CustomerDidNotAppear",
+    },
+  };
+
   private static DEFAULT_DATE_INTERVAL = {
     startDate: dayjs().startOf("day").valueOf(),
     endDate: dayjs().endOf("day").valueOf(),
@@ -27,6 +48,8 @@ class AppointmentDataAdapter {
       createdAt: data.createdAt,
       treatments: TreatmentsDataAdapter.convertDataToTreatments(data.treatments || []),
       operatorId: data.operatorId,
+      state: AppointmentDataAdapter.APPOINTMENT_MAPPING.APPOINTMENT_STATUS_INBOUND[data.state] || AppointmentStatus.ACTIVE,
+      dayInMillis: dayjs(data.startTimeInMillis).startOf("day").valueOf(),
     };
   }
 
@@ -68,6 +91,12 @@ class AppointmentDataAdapter {
       customerEmail: newAppointment.customerEmail,
       requestedBy: newAppointment.requestedBy,
       employeeId: newAppointment.employeeId,
+    };
+  }
+
+  public createUpdateAppointmentRequest(state: AppointmentStatus): Partial<INewAppointmentRequest> {
+    return {
+      state: AppointmentDataAdapter.APPOINTMENT_MAPPING.APPOINTMENT_STATUS_OUTBOUND[state],
     };
   }
 }

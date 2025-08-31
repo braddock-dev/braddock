@@ -9,6 +9,7 @@ import EditAppointmentWrapper from "@/app/ui/components/appointment-details/Edit
 interface IAppointmentDetailsProps {
   appointment?: IAppointment;
   onClose: () => void;
+  onStatusUpdate?: () => void;
 }
 export default function AppointmentDetails({
   appointment,
@@ -54,6 +55,7 @@ export default function AppointmentDetails({
       onEdit={() => setEditMode(true)}
       onDelete={() => deleteAppointmentMutation()}
       isDeleting={isPendingDeletion}
+      onStatusUpdate={props.onStatusUpdate}
     />
   );
 }

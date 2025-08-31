@@ -37,17 +37,11 @@ function isFraction(num: number) {
   return num !== Math.trunc(num);
 }
 
-export function removePhoneNumberPrefix(
-  phoneNumber: string,
-  prefix: string,
-): string {
+export function removePhoneNumberPrefix(phoneNumber: string, prefix: string): string {
   return phoneNumber.replace(prefix, "");
 }
 
-export const redirectNoCache = (
-  url: string | NextURL | URL,
-  init?: number | ResponseInit | any,
-): NextResponse => {
+export const redirectNoCache = (url: string | NextURL | URL, init?: number | ResponseInit | any): NextResponse => {
   const response = NextResponse.redirect(url, init);
   response.headers.set("x-middleware-cache", "no-cache");
   return response;
@@ -75,12 +69,12 @@ export function getDifferenceInHours(date1: number, date2: number): number {
 }
 
 export const getPastXDaysDate = (days: number): number => {
-  const date = dayJsWrapper(new Date());
+  const date = dayJsWrapper(new Date()).startOf("day");
   return date.subtract(days, "days").toDate().getTime();
 };
 
 export const getFutureXDaysDate = (days: number): number => {
-  const date = dayJsWrapper(new Date());
+  const date = dayJsWrapper(new Date()).endOf("day");
   return date.add(days, "days").toDate().getTime();
 };
 

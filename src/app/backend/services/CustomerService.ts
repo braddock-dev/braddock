@@ -1,13 +1,6 @@
 import Logger from "@/app/utils/Logger";
-import {
-  ICustomerResponse,
-  UpdateCustomerRequest,
-} from "@/app/backend/services/data/CustomerData";
-import {
-  HttpMethods,
-  HttpStatus,
-  IHttpRequestConfig,
-} from "@/app/backend/protocol/rest/IHttpInterface";
+import { ICustomerResponse, UpdateCustomerRequest } from "@/app/backend/services/data/CustomerData";
+import { HttpMethods, HttpStatus, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 
@@ -18,17 +11,12 @@ class CustomerService {
     Logger.info(this.LOG_TAG, "Service initialized");
   }
 
-  public async updateCustomerInfo(
-    customerData: UpdateCustomerRequest,
-    customerId?: string,
-  ): Promise<void> {
+  public async updateCustomerInfo(customerData: UpdateCustomerRequest, customerId?: string): Promise<void> {
     Logger.info(this.LOG_TAG, "Updating customer info", customerData);
 
     try {
       const request: IHttpRequestConfig = {
-        url: customerId
-          ? Constants.API_ROUTES.UPDATE_CUSTOMER_BUSINESS(customerId)
-          : Constants.API_ROUTES.UPDATE_CUSTOMER(),
+        url: customerId ? Constants.API_ROUTES.UPDATE_CUSTOMER_BUSINESS(customerId) : Constants.API_ROUTES.UPDATE_CUSTOMER(),
         httpMethod: HttpMethods.PUT,
         data: {
           ...customerData,
@@ -39,7 +27,7 @@ class CustomerService {
 
       Logger.info(this.LOG_TAG, "Customer info update response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error updating customer info", [response]);
         throw new Error("Failed to update customer info");
       }
@@ -51,10 +39,7 @@ class CustomerService {
     }
   }
 
-  public async getCustomers(
-    name?: string,
-    phoneNumber?: string,
-  ): Promise<ICustomerResponse[]> {
+  public async getCustomers(name?: string, phoneNumber?: string): Promise<ICustomerResponse[]> {
     Logger.info(this.LOG_TAG, "Getting customers...");
 
     try {
@@ -71,7 +56,7 @@ class CustomerService {
 
       Logger.info(this.LOG_TAG, "Get customers response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error getting customers", [response]);
         throw new Error("Failed to get customers");
       }

@@ -1,5 +1,5 @@
 import Logger from "@/app/utils/Logger";
-import { HttpMethods, HttpStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
+import { HttpMethods, HttpStatus, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 import { IOperatorResponse } from "@/app/backend/services/data/OperatorDaos";
@@ -24,7 +24,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Get operators response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK || !response?.data) {
+      if (!response || !HttpSuccessStatus.includes(response.status) || !response?.data) {
         throw new Error("Failed to get operators");
       }
 
@@ -51,7 +51,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Update operator response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK || !response?.data) {
+      if (!response || !HttpSuccessStatus.includes(response.status) || !response?.data) {
         throw new Error("Failed to update operator");
       }
 
@@ -77,7 +77,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Delete operator response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to delete operator");
       }
 
@@ -102,7 +102,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Create operator response", [response]);
 
-      if (!response || response.status !== HttpStatus.CREATED || !response?.data) {
+      if (!response || !HttpSuccessStatus.includes(response.status) || !response?.data) {
         throw new Error("Failed to create operator");
       }
 
@@ -129,7 +129,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Assign treatments response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to assign treatments to operator");
       }
 
@@ -156,7 +156,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Unassign treatments response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to unassign treatments from operator");
       }
 
