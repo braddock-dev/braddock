@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChartContainer, ChartContainerProps } from "recharts";
+import { ResponsiveContainer, ResponsiveContainerProps } from "recharts";
 
 import { cn } from "@/lib/utils";
 
@@ -12,19 +12,19 @@ export interface ChartConfig {
   };
 }
 
-export function Chart({ className, children, ...props }: ChartContainerProps) {
+export function Chart({ className, children, ...props }: ResponsiveContainerProps) {
   return (
-    <ChartContainer className={cn("h-full w-full", className)} {...props}>
+    <ResponsiveContainer className={cn("h-full w-full", className)} {...props}>
       {children}
-    </ChartContainer>
+    </ResponsiveContainer>
   );
 }
 
-export function ChartTooltip({ className, children, ...props }: React.ComponentProps<typeof ChartContainer>) {
+export function ChartTooltip({ className, children, ...props }: React.ComponentProps<typeof ResponsiveContainer>) {
   return (
-    <ChartContainer className={cn("h-full w-full", className)} {...props}>
+    <ResponsiveContainer className={cn("h-full w-full", className)} {...props}>
       {children}
-    </ChartContainer>
+    </ResponsiveContainer>
   );
 }
 
@@ -114,11 +114,11 @@ export function ChartTooltipContent({
   );
 }
 
-export function ChartLegend({ className, children, ...props }: React.ComponentProps<typeof ChartContainer>) {
+export function ChartLegend({ className, children, ...props }: React.ComponentProps<typeof ResponsiveContainer>) {
   return (
-    <ChartContainer className={cn("h-full w-full", className)} {...props}>
+    <ResponsiveContainer className={cn("h-full w-full", className)} {...props}>
       {children}
-    </ChartContainer>
+    </ResponsiveContainer>
   );
 }
 

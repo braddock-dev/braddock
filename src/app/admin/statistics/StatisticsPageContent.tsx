@@ -173,7 +173,7 @@ export default function StatisticsPageContent() {
           <h1 className="text-2xl font-bold text-gray-900">Estatísticas</h1>
           <p className="text-gray-600">Visão geral dos agendamentos e desempenho do negócio</p>
         </div>
-        <DateRangePicker startDate={dateRange.startDate} endDate={dateRange.endDate} onDateChange={setDateRange} />
+        <DateRangePicker startDate={dateRange.startDate} endDate={dateRange.endDate} onDateChange={setDateRange} maxDays={90} />
       </div>
 
       {/* Summary Section */}
