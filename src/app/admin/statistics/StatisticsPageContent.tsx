@@ -29,7 +29,7 @@ export default function StatisticsPageContent() {
   });
 
   const filter = useMemo(
-    (): any => ({
+    () => ({
       startDate: dateRange.startDate,
       endDate: dateRange.endDate,
     }),
