@@ -13,8 +13,8 @@ class AuthStoreInterface {
   }
 
   public setAuthCookies(authTokenInfo: IAuthTokenInfo) {
-    cookies().set(this.COOKIE_NAME, authTokenInfo.token);
-    cookies().set(this.COOKIE_EXPIRATION, authTokenInfo.expiration);
+    cookies().set(this.COOKIE_NAME, authTokenInfo.token, { expires: Number(authTokenInfo.expiration) });
+    cookies().set(this.COOKIE_EXPIRATION, authTokenInfo.expiration, { expires: Number(authTokenInfo.expiration) });
   }
 
   public removeAuthCookies() {
@@ -40,10 +40,7 @@ class AuthStoreInterface {
 
     const { token, expiration } = tokenInfo;
 
-    Logger.debug(this.LOG_TAG, "Checking if user is authenticated", [
-      token,
-      expiration,
-    ]);
+    Logger.debug(this.LOG_TAG, "Checking if user is authenticated", [token, expiration]);
 
     const now = new Date().getTime();
     const isTokenValid = now <= Number(expiration);
