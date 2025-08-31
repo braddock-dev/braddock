@@ -1,6 +1,11 @@
 import { ITreatment } from "@/app/backend/business/treatments/data/TreatmentsData";
 import { TZDate } from "@toast-ui/calendar";
 
+export enum AppointmentStatus {
+  ACTIVE = "Active",
+  CUSTOMER_DID_NOT_APPEAR = "CustomerDidNotAppear",
+}
+
 export interface IAppointment {
   businessId: string;
   id: string;
@@ -15,6 +20,7 @@ export interface IAppointment {
   startTime: string;
   treatments: ITreatment[];
   operatorId: string;
+  state: AppointmentStatus;
 }
 
 export interface IAppointmentQueryData {
@@ -37,9 +43,12 @@ export type IEvent = {
   end: TZDate;
   isReadOnly: boolean;
   backgroundColor?: string;
+  className?: string;
+  customStyle?: Record<string, string>;
   recurrenceRule?: string; //Spec: https://datatracker.ietf.org/doc/html/rfc5545#section-3.3.10
   raw: {
     type: EventType;
+    [key: string]: any;
   };
 };
 

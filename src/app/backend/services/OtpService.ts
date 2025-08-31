@@ -1,8 +1,5 @@
 import Logger from "@/app/utils/Logger";
-import {
-  HttpMethods,
-  IHttpRequestConfig,
-} from "@/app/backend/protocol/rest/IHttpInterface";
+import { HttpMethods, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 import { HttpStatusCode } from "axios";
@@ -31,17 +28,13 @@ class OtpService {
 
       Logger.info(this.LOG_TAG, "OTP response", [response]);
 
-      if (response.status !== HttpStatusCode.Ok) {
+      if (!HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error sending OTP", response.data);
         throw new Error(Constants.ERRORS.GENERIC.UNKNOWN);
       }
 
       if (response.data.requestId) {
-        Logger.debug(
-          this.LOG_TAG,
-          "OTP sent successfully",
-          response.data.requestId,
-        );
+        Logger.debug(this.LOG_TAG, "OTP sent successfully", response.data.requestId);
         return response.data.requestId;
       }
 
@@ -69,7 +62,7 @@ class OtpService {
 
       Logger.info(this.LOG_TAG, "OTP verified", [response]);
 
-      if (response.status !== HttpStatusCode.Ok) {
+      if (!HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error verifying OTP", [response.data]);
         throw new Error(Constants.ERRORS.LOGIN.INVALID_OTP);
       }

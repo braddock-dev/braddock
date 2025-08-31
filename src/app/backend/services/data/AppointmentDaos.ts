@@ -1,5 +1,7 @@
 import { AuthRoles } from "@/app/backend/business/auth/data/AuthDtos";
 
+export type AppointmentStatusValue = "Active" | "CustomerDidNotAppear";
+
 export interface INewAppointmentRequest {
   treatmentsId: string[];
   timeSlotId: number;
@@ -8,6 +10,7 @@ export interface INewAppointmentRequest {
   customerEmail?: string;
   requestedBy?: AuthRoles;
   employeeId: string;
+  state?: AppointmentStatusValue;
 }
 
 export interface IQueryAppointmentRequest {

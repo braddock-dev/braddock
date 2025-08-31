@@ -210,7 +210,13 @@ export default function AppointmentsPageContent() {
       </button>
 
       <SidePanelWrapper onClose={handleCloseDetailsSidePanel} title={"Detalhes do Agendamento"} isOpen={appointmentDetailsModalOpen}>
-        <AppointmentDetails appointment={selectedAppointment} onClose={handleCloseDetailsSidePanel} />
+        <AppointmentDetails
+          appointment={selectedAppointment}
+          onClose={handleCloseDetailsSidePanel}
+          onStatusUpdate={() => {
+            handleCloseDetailsSidePanel();
+          }}
+        />
       </SidePanelWrapper>
 
       <SidePanelWrapper onClose={handleCloseNewAppointmentSidePanel} title={"Novo Agendamento"} isOpen={newAppointmentModalOpen}>

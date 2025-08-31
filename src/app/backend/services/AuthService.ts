@@ -1,9 +1,5 @@
 import Logger from "@/app/utils/Logger";
-import {
-  HttpMethods,
-  HttpStatus,
-  IHttpRequestConfig,
-} from "@/app/backend/protocol/rest/IHttpInterface";
+import { HttpMethods, HttpStatus, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 import { IUserInfoResponse } from "@/app/backend/services/data/AuthDaos";
@@ -26,7 +22,7 @@ class AuthService {
 
       const response = await ApiInterface.send(request);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         Logger.error(this.LOG_TAG, "Error getting user info", [response]);
         throw new Error("Failed to get user info");
       }
@@ -50,19 +46,15 @@ class AuthService {
 
     return ApiInterface.send(request).then(
       (response) => {
-        if (response.status !== HttpStatus.OK) {
-          Logger.error(this.LOG_TAG, "Error refreshing Google Calendar token", [
-            response,
-          ]);
+        if (!HttpSuccessStatus.includes(response.status)) {
+          Logger.error(this.LOG_TAG, "Error refreshing Google Calendar token", [response]);
           throw Error("Failed to refresh Google Calendar token");
         }
 
         const { url } = response.data;
 
         if (!url) {
-          Logger.error(this.LOG_TAG, "Error refreshing Google Calendar token", [
-            response.data,
-          ]);
+          Logger.error(this.LOG_TAG, "Error refreshing Google Calendar token", [response.data]);
           throw Error("Failed to refresh Google Calendar token");
         }
 
@@ -70,13 +62,9 @@ class AuthService {
         return Promise.resolve(url);
       },
       (error) => {
-        Logger.error(
-          this.LOG_TAG,
-          "Error refreshing Google Calendar token",
-          error,
-        );
+        Logger.error(this.LOG_TAG, "Error refreshing Google Calendar token", error);
         throw Error(error);
-      },
+      }
     );
   }
 }

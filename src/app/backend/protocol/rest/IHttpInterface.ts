@@ -23,6 +23,13 @@ export enum HttpStatus {
   INTERNAL_ERROR = 500,
 }
 
+export const HttpSuccessStatus = [
+  HttpStatus.OK,
+  HttpStatus.CREATED,
+  HttpStatus.ACCEPTED,
+  HttpStatus.NO_CONTENT,
+];
+
 /**
  * Configures a request to be sent through the IHttpInterface.
  */

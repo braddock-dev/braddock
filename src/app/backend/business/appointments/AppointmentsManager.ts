@@ -1,7 +1,7 @@
 import Logger from "@/app/utils/Logger";
 import AppointmentsService from "@/app/backend/services/AppointmentsService";
 import AppointmentDataAdapter from "@/app/backend/business/appointments/AppointmentDataAdapter";
-import { IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
+import { AppointmentStatus, IAppointmentQueryData } from "@/app/backend/business/treatments/data/AppointmentData";
 import { INewAppointmentRequestData } from "@/app/backend/business/appointments/data/AppointmentData";
 
 class AppointmentsManager {
@@ -72,6 +72,23 @@ class AppointmentsManager {
       return;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Error deleting appointment", error);
+      throw error;
+    }
+  }
+
+  public async updateAppointment(appointmentId: string, state: AppointmentStatus): Promise<void> {
+    Logger.debug(this.LOG_TAG, "Start updating appointment", [appointmentId, state]);
+
+    try {
+      const appointmentRequestData = AppointmentDataAdapter.createUpdateAppointmentRequest(state);
+
+      const response = await AppointmentsService.putAppointment(appointmentId, appointmentRequestData);
+
+      Logger.debug(this.LOG_TAG, "Update appointment response", [response]);
+
+      return;
+    } catch (error) {
+      Logger.error(this.LOG_TAG, "Error updating appointment", error);
       throw error;
     }
   }

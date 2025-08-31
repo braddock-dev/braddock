@@ -3,7 +3,7 @@
 @import "src/app/ui/styles/breakpoints.scss";
 @import "src/app/ui/styles/mixins.scss";
 
-.container{
+.container {
   all: unset;
   padding: toRem(0) toRem(15);
   border-radius: toRem(10);
@@ -15,6 +15,14 @@
   align-items: center;
   @include defaultTransition();
   cursor: pointer;
+
+  &[data-size="sm"] {
+    height: toRem(32);
+  }
+
+  &[data-size="lg"] {
+    height: toRem(56);
+  }
 
   &:disabled {
     opacity: 0.6;
@@ -32,20 +40,20 @@
     color: $dark-brown;
   }
 
-    &[data-button-color="black"] {
-      background-color: $dark-brown;
-      color: $white;
-    }
+  &[data-button-color="black"] {
+    background-color: $dark-brown;
+    color: $white;
+  }
 
-    &[data-button-color="brown"] {
-      background-color: $brown;
-      color: $white;
-    }
+  &[data-button-color="brown"] {
+    background-color: $brown;
+    color: $white;
+  }
 
-    &[data-button-color="light-brown"] {
-      background-color: $light-brown;
-      color: $white;
-    }
+  &[data-button-color="light-brown"] {
+    background-color: $light-brown;
+    color: $white;
+  }
 
   &[data-outline="true"] {
     background-color: transparent;
@@ -63,9 +71,8 @@
     padding: toRem(0) toRem(10);
   }
 
-  .link{
+  .link {
     text-decoration: none;
     color: inherit;
   }
-
 }

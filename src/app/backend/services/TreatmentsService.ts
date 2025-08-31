@@ -1,5 +1,5 @@
 import Logger from "@/app/utils/Logger";
-import { HttpMethods, HttpStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
+import { HttpMethods, HttpStatus, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
 import { ITreatmentRequest } from "@/app/backend/services/data/TreatmentsDaos";
@@ -32,7 +32,7 @@ class TreatmentsService {
 
       Logger.log(this.LOG_TAG, "Get treatments response success");
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to get treatments");
       }
 
@@ -61,7 +61,7 @@ class TreatmentsService {
 
       Logger.log(this.LOG_TAG, "Get treatments timeslots response success");
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to get treatment timeslots");
       }
 
@@ -86,7 +86,7 @@ class TreatmentsService {
 
       Logger.log(this.LOG_TAG, "Create treatment response", [response]);
 
-      if (!response || ![HttpStatus.CREATED, HttpStatus.OK].includes(response.status)) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to create treatment");
       }
 
@@ -110,7 +110,7 @@ class TreatmentsService {
 
       Logger.log(this.LOG_TAG, "Delete treatment response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to delete treatment");
       }
 
@@ -135,7 +135,7 @@ class TreatmentsService {
 
       Logger.log(this.LOG_TAG, "Update treatment response", [response]);
 
-      if (!response || response.status !== HttpStatus.OK) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to update treatment");
       }
 

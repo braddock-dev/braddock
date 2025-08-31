@@ -4,10 +4,14 @@ import { Constants } from "@/app/utils/Constants";
 import { HttpStatus } from "@/app/backend/protocol/rest/IHttpInterface";
 import { GET_USER_INFO_RESPONSE, SEND_OTP_RESPONSE, VERIFY_OTP_RESPONSE } from "@/mocks/data/authMockData";
 import { APPOINTMENTS } from "@/mocks/data/appointments";
+import { OPERATORS } from "@/mocks/data/operators";
 
 export const handlers = [
   http.get(Constants.API_ROUTES.GET_OPERATOR_TREATMENTS(":businessId", "10"), () => {
     return HttpResponse.json(TREATMENTS_LIST, { status: HttpStatus.OK });
+  }),
+  http.get(Constants.API_ROUTES.GET_OPERATORS(":businessId"), () => {
+    return HttpResponse.json(OPERATORS, { status: HttpStatus.OK });
   }),
   http.post(Constants.API_ROUTES.GET_TIMESLOTS(":businessId"), () => {
     return HttpResponse.json(TIME_SLOTS, { status: HttpStatus.OK });
