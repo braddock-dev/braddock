@@ -1,0 +1,81 @@
+@import "@/app/ui/styles/vars";
+@import "@/app/ui/styles/functions";
+@import "@/app/ui/styles/breakpoints";
+
+.container {
+  width: toRem(300);
+  height: toRem(150);
+  background-color: $brown02;
+  border-radius: toRem(10);
+  outline: toRem(1) dashed $brown02;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in 0.2s;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    outline-width: toRem(1.4);
+  }
+
+  .plusIcon {
+    width: toRem(30);
+    height: toRem(30);
+
+    path {
+      fill: $brown;
+    }
+  }
+
+  &[data-has-file="true"] {
+    outline: toRem(1) solid $gray;
+  }
+
+  .spinner {
+    width: toRem(30);
+    height: toRem(30);
+  }
+
+  .imageContainer {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: toRem(10);
+    position: relative;
+    border: toRem(1) solid $brown;
+    position: relative;
+
+    .image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .editIconContainer {
+      position: absolute;
+      top: toRem(16);
+      right: toRem(16);
+      padding: toRem(8);
+      background-color: $brown;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+
+      .editIcon {
+        width: toRem(24);
+        height: toRem(24);
+
+        path {
+          fill: $white;
+          stroke: $white;
+        }
+      }
+    }
+  }
+}
