@@ -7,7 +7,7 @@ export async function getOperators(): Promise<IOperator[]> {
   return OperatorManager.getOperators();
 }
 
-export async function updateOperator(operatorId: string, data: IOperator): Promise<IOperator> {
+export async function updateOperator(operatorId: string, data: IOperator): Promise<void> {
   return OperatorManager.updateOperator(operatorId, data);
 }
 
