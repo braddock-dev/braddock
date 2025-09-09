@@ -101,7 +101,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Create operator response", [response]);
 
-      if (!response || !HttpSuccessStatus.includes(response.status) || !response?.data) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to create operator");
       }
 
