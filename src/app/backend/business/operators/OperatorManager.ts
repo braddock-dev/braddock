@@ -1,8 +1,7 @@
-import Logger from "@/app/utils/Logger";
 import { IOperator, IToggleTreatment } from "@/app/backend/business/operators/data/OperatorDtos";
-import OperatorService from "@/app/backend/services/OperatorService";
 import OperatorDataAdapter from "@/app/backend/business/operators/OperatorDataAdapter";
-import { IOperatorResponse } from "../../services/data/OperatorDaos";
+import OperatorService from "@/app/backend/services/OperatorService";
+import Logger from "@/app/utils/Logger";
 
 class OperatorManager {
   private readonly LOG_TAG = "OperatorManager";
@@ -27,17 +26,15 @@ class OperatorManager {
     }
   }
 
-  public async updateOperator(operatorId: string, data: IOperator): Promise<IOperator> {
+  public async updateOperator(operatorId: string, data: IOperator): Promise<void> {
     Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
 
     try {
       const operatorRequestData = OperatorDataAdapter.convertDataToOperatorRequest(data);
-      const operatorResponse = await OperatorService.updateOperator(operatorId, operatorRequestData);
-      const operator = OperatorDataAdapter.convertDataToOperator(operatorResponse);
+      await OperatorService.updateOperator(operatorId, operatorRequestData);
 
-      Logger.log(this.LOG_TAG, "Update operator response success", [operator]);
+      Logger.log(this.LOG_TAG, "Update operator response success");
 
-      return operator;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to update operator.", error);
       throw error;

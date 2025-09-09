@@ -1,8 +1,8 @@
-import Logger from "@/app/utils/Logger";
-import { HttpMethods, HttpStatus, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
-import { Constants } from "@/app/utils/Constants";
 import ApiInterface from "@/app/backend/protocol/rest/ApiInterface";
+import { HttpMethods, HttpSuccessStatus, IHttpRequestConfig } from "@/app/backend/protocol/rest/IHttpInterface";
 import { IOperatorResponse } from "@/app/backend/services/data/OperatorDaos";
+import { Constants } from "@/app/utils/Constants";
+import Logger from "@/app/utils/Logger";
 
 class OperatorService {
   private readonly LOG_TAG = "OperatorService";
@@ -37,7 +37,7 @@ class OperatorService {
     }
   }
 
-  public async updateOperator(operatorId: string, data: IOperatorResponse): Promise<IOperatorResponse> {
+  public async updateOperator(operatorId: string, data: IOperatorResponse): Promise<void> {
     Logger.debug(this.LOG_TAG, "Updating operator...", [operatorId, data]);
 
     try {
@@ -51,13 +51,12 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Update operator response", [response]);
 
-      if (!response || !HttpSuccessStatus.includes(response.status) || !response?.data) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to update operator");
       }
 
       Logger.log(this.LOG_TAG, "Update operator response success", [response.data]);
 
-      return response.data;
     } catch (error) {
       Logger.error(this.LOG_TAG, "Failed to update operator.", error);
       throw error;
@@ -102,7 +101,7 @@ class OperatorService {
 
       Logger.debug(this.LOG_TAG, "Create operator response", [response]);
 
-      if (!response || !HttpSuccessStatus.includes(response.status) || !response?.data) {
+      if (!response || !HttpSuccessStatus.includes(response.status)) {
         throw new Error("Failed to create operator");
       }
 
